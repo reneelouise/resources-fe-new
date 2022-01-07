@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "../styles/App.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { IUser } from "../utils/interfaces";
 
 import AppBar from "@mui/material/AppBar";
@@ -10,9 +10,16 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+// import Paper from "@mui/material/Paper";
+
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 const Header = (): JSX.Element => {
   const [users, setUsers] = useState<IUser[]>([]);
+  const [selectedUser, setSelectedUser] = useState<string>("");
   const [loggedInUser, setLoggedInUser] = useState<string>();
   const [showLogInForm, setShowLogInForm] = useState<boolean>(false);
 
@@ -35,14 +42,18 @@ const Header = (): JSX.Element => {
 
   const handleLogout = () => {
     setShowLogInForm(false);
+    localStorage.removeItem("loggedInUser");
     setLoggedInUser("");
   };
 
   const handleLogin = () => {
-    setLoggedInUser(
-      (document.getElementById("users") as HTMLInputElement).value
-    );
+    setLoggedInUser(selectedUser);
+    localStorage.setItem("loggedInUser", selectedUser);
     setShowLogInForm(false);
+  };
+
+  const handleSelectChange = (userName: string) => {
+    setSelectedUser(userName);
   };
 
   return (
@@ -52,63 +63,86 @@ const Header = (): JSX.Element => {
           <Toolbar>
             <Stack
               direction={{ xs: "column", sm: "row" }}
-              spacing={{ xs: 1, sm: 2, md: 4 }}
+              spacing={{ xs: 1, sm: 1, md: 1 }}
             >
               <Button sx={{ my: 2, color: "white", display: "block" }}>
                 Resources
               </Button>
+              <Button sx={{ my: 2, color: "white", display: "block" }}>
+                Study List
+              </Button>
             </Stack>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            >
+              BiblioTech
+            </Typography>
 
-            <Box>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                BiblioTech
-              </Typography>
-            </Box>
-            <Button color="inherit">Login</Button>
+            {!showLogInForm && !loggedInUser && (
+              <Button color="inherit" onClick={() => setShowLogInForm(true)}>
+                Login
+              </Button>
+            )}
+            {showLogInForm && !loggedInUser && (
+              <Box sx={{ minWidth: "300px", textAlign: "left" }}>
+                <FormControl variant="standard">
+                  <Stack direction="row" spacing={2}>
+                    <div
+                      style={{
+                        backgroundColor: "white",
+                        borderRadius: "5px",
+                        minWidth: "200px",
+                        fontSize: "16px",
+                      }}
+                    >
+                      <InputLabel id="select-user-label">
+                        Select a user
+                      </InputLabel>
+
+                      <Select
+                        sx={{ width: 200 }}
+                        labelId="select-user"
+                        id="users"
+                        value={selectedUser}
+                        label="Select user"
+                        onChange={(e) => handleSelectChange(e.target.value)}
+                      >
+                        {users.map((user) => (
+                          <MenuItem key={user.id} value={user.id}>
+                            {user.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </div>
+                    <Button color="inherit" onClick={handleLogin}>
+                      Login
+                    </Button>
+                    <Button
+                      color="inherit"
+                      onClick={() => setShowLogInForm(false)}
+                    >
+                      Cancel
+                    </Button>
+                  </Stack>
+                </FormControl>
+              </Box>
+            )}
+            {loggedInUser && (
+              <>
+                <Typography variant="body1" display="block" mr={3}>
+                  <em>You are logged in as user {loggedInUser}</em>
+                </Typography>
+                <Button color="inherit" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </>
+            )}
           </Toolbar>
         </AppBar>
       </Box>
-      <div id="header">
-        <nav id="container">
-          <p>Resources</p>
-          {/* <Link to="/resources">Resources</Link>
-                    <Link to="/studylist">Study List</Link> */}
-          <h1>Bibliotech</h1>
-          {!showLogInForm && !loggedInUser && (
-            <button id="login-btn" onClick={() => setShowLogInForm(true)}>
-              Login
-            </button>
-          )}
-          {showLogInForm && !loggedInUser && (
-            <div>
-              <select id="users">
-                <option value="" selected disabled hidden>
-                  Select a user to login
-                </option>
-                {users.map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.name}
-                  </option>
-                ))}
-              </select>
-              <button id="login-btn" onClick={handleLogin}>
-                Login
-              </button>
-              <button id="cancel-btn" onClick={() => setShowLogInForm(false)}>
-                Cancel
-              </button>
-            </div>
-          )}
-          {loggedInUser && (
-            <>
-              <p>You are logged in as user {loggedInUser}</p>
-              <button id="logout-btn" onClick={handleLogout}>
-                Log out
-              </button>
-            </>
-          )}
-        </nav>
-      </div>
     </>
   );
 };

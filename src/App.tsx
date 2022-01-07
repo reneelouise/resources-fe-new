@@ -7,6 +7,7 @@ import Search from "./components/Search";
 import StudyList from "./components/StudyList";
 
 export default function App(): JSX.Element {
+  const [loggedInUser, setLoggedInUser] = useState<string>('');
   return (
     <>
       <Header />
