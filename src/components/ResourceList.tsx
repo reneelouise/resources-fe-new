@@ -12,7 +12,7 @@ const ResourceList = (): JSX.Element => {
   const fetchResources = async () => {
     try {
       const res = await axios.get(`${baseUrl}/resources`);
-      setResources(res.data);
+      setResources(res.data.data);
     } catch (error) {
       console.error(error);
     }
