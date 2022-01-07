@@ -1,115 +1,100 @@
-*{
-    margin:0px;
-    padding:0px;
-    text-align: center;
-    
+* {
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
 }
 
 body {
-    max-width: 100%;
-    /* overflow-x: hidden; */
-    }
-    
-
-#container{
-    display:flex;
-    justify-content: space-between;
-    background-color: rgb(71, 133, 216);
-    width: 99%;
-    height: 50px;
-    padding: 15px;
-    /* position: absolute; */
-
+  max-width: 100%;
+  /* overflow-x: hidden; */
 }
 
-#header h1{
-    color: white;
-    font-size: 40px;
+#container {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(71, 133, 216);
+  width: 99%;
+  height: 50px;
+  padding: 15px;
+  /* position: absolute; */
 }
 
-#header p{
-    font-size:20px;
-
+#header h1 {
+  color: white;
+  font-size: 40px;
 }
 
-#login-btn{
-    width: 90px;
-    height:30px;
-    font-size: 20px;
-    margin-right: 10px;
-    margin-top:10px;
+#header p {
+  font-size: 20px;
+}
+
+#login-btn {
+  width: 90px;
+  height: 30px;
+  font-size: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 
 #user-names {
-    width: 300px;
-    height:30px;
-    font-size: 20px;
-    margin-right: 10px;
-    margin-top:10px;
-
+  width: 300px;
+  height: 30px;
+  font-size: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 
-#cancel-btn{
-    width: 90px;
-    height:30px;
-    font-size: 20px;
-    margin-right: 10px;
-    margin-top:10px;
-    
+#cancel-btn {
+  width: 90px;
+  height: 30px;
+  font-size: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 
-#users{
-    width: 300px;
-    height:30px;
-    font-size: 20px;
-    margin-right: 10px;
-    margin-top:10px;
-
+#users {
+  width: 300px;
+  height: 30px;
+  font-size: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 
-
-#search{
-    width: 300px;
-    height:30px;
-    font-size: 20px;
-    margin-right: 10px;
-    margin-top:10px;
-
+#search {
+  width: 300px;
+  height: 30px;
+  font-size: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 
-#search-btn{
-    width: 90px;
-    height:30px;
-    font-size: 20px;
-    margin-right: 10px;
-    margin-top:10px;
+#search-btn {
+  width: 90px;
+  height: 30px;
+  font-size: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
 }
 
-#search-form{
-    display: flex;
-    justify-content: center;
+#search-form {
+  display: flex;
+  justify-content: center;
 }
 
-#tags{
-    display: inline-block;
-    justify-content: center;
-    margin: 10px;
-    border-radius: 10px;
-
-
-
+#tags {
+  display: inline-block;
+  justify-content: center;
+  margin: 10px;
+  border-radius: 10px;
 }
 
-#tags h2{
-    display: inline;
-    align-items: center;
-   
-
+#tags h2 {
+  display: inline;
+  align-items: center;
 }
 
-
-#search-container{
-    display:block;
-    justify-content: center;
-    /* background-color: blueviolet; */
+#search-container {
+  display: block;
+  justify-content: center;
+  /* background-color: blueviolet; */
 }
