@@ -15,7 +15,7 @@ function CommentsSection({
     <>
       <Typography variant="h6">Comments:</Typography>
       <List>
-        {comments.map(el => (
+        {comments.map((el) => (
           <CommentComponent
             key={el.id}
             id={el.id}
