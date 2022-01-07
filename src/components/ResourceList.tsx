@@ -1,15 +1,41 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { Resource } from "./Resource";
-import { IResource } from "../utils/interfaces";
+import { IResource, Comment } from "../utils/interfaces";
+import CommentsSection from "./CommentsSection";
+import CommentComponent from "./CommentComponent";
+import { SubmitComment } from "./SubmitComment";
+import {
+  IconButton,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  DialogActions,
+  Card,
+  Typography,
+  Box,
+} from "@mui/material";
+import {
+  OpenInFull as OpenInFullIcon,
+  Delete as DeleteIcon,
+} from "@mui/icons-material";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import axios from "axios";
 
-const ResourceList = (): JSX.Element => {
+interface ResourceProps extends IResource {
+  handleRefetch: () => void;
+}
+
+export const Resource = (props: ResourceProps): JSX.Element => {
+  const [open, setOpen] = useState<boolean>(false);
+  const [comments, setComments] = useState<Comment[]>([]);
   const [resources, setResources] = useState<IResource[]>([]);
-  const [refetch, setRefetch] = useState<number>(1);
+  const [refetchComments, setRefetchComments] = useState<number>(1);
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
-  const fetchResources = async () => {
+  const fetchComments = async () => {
     try {
       const res = await axios.get(`${baseUrl}/resources`);
       setResources(res.data.data);
@@ -18,41 +44,91 @@ const ResourceList = (): JSX.Element => {
     }
   };
 
-  const handleRefetch = () => {
-    setRefetch((prev) => -prev);
-  };
-
   useEffect(() => {
-    fetchResources();
-  }, [refetch]);
+    fetchComments();
+  }, []);
+
+  const handleDeleteResource = () => {
+    axios
+      .delete(`${baseUrl}/resources/${props.id}`)
+      .then(() => props.handleRefetch);
+  };
 
   return (
     <>
-      {resources.map((resource) => (
-        <div key={resource.id}>
-          <Resource
-            {...resource}
-            // id={resource.id}
-            // user_name={resource.author_id}
-            // is_faculty={resource.is_faculty}
-            // resource_name={resource.name}
-            // description={resource.description}
-            // url={resource.url}
-            // content_type={resource.content_type}
-            // mark_stage={resource.mark_stage}
-            // created_at={resource.created_at}
-            // recommendation_type={resource.recommendation_reason}
-            // recommendation_reason={resource.recommendation_reason}
-            // count_of_likes={resource.count_of_likes}
-            // count_of_dislikes={resource.count_of_dislikes}
-            // number_of_comments={resource.number_of_comments}
-            // tags={resource.tags}
-            handleRefetch={handleRefetch}
-          />
-        </div>
-      ))}
+      <Card sx={{ width: "250px" }}>
+        <Typography variant="h6" component="h6">
+          {props.name}
+        </Typography>
+        <Typography>Author: {props.author_id}</Typography>
+        <Typography variant="body2">
+          Content type: {props.content_type}
+        </Typography>
+        <Typography variant="body2">Tags: {props.tags}</Typography>
+        <Typography variant="body2">
+          <ThumbUpIcon /> {props.count_of_likes}
+          <ThumbDownIcon /> {props.count_of_dislikes}
+          {props.number_of_comments} comments!
+        </Typography>
+        <IconButton color="primary" onClick={() => setOpen(true)}>
+          <Typography>Expand</Typography>
+          <OpenInFullIcon />
+        </IconButton>
+        <IconButton onClick={handleDeleteResource}>
+          <DeleteIcon />
+        </IconButton>
+      </Card>
+      <Dialog
+        fullWidth
+        scroll="paper"
+        sx={{ height: "100%" }}
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        <DialogTitle>{props.name}</DialogTitle>
+        <DialogContent style={{ height: "450px" }}>
+          <Typography> Author: {props.author_id} </Typography>
+          <Typography variant="body2">
+            Content type: {props.content_type}
+          </Typography>
+          <Typography variant="body2"> Tags: {props.tags} </Typography>
+          <Typography variant="body2">
+            <ThumbUpIcon /> {props.count_of_likes}
+            <ThumbDownIcon /> {props.count_of_dislikes}
+            {props.number_of_comments} comments
+          </Typography>
+          <Box
+            style={{
+              position: "absolute",
+              left: "17%",
+              top: "75%",
+            }}
+          >
+            <CommentsSection
+              comments={comments}
+              setRefetchComments={setRefetchComments}
+            />
+          </Box>
+          <Box
+            style={{
+              position: "absolute",
+              left: "17%",
+              top: "65%",
+            }}
+          >
+            <SubmitComment
+              resource_id={props.id}
+              author_id={props.author_id}
+              setRefetchComments={setRefetchComments}
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
 
-export default ResourceList;
+export default Resource;
