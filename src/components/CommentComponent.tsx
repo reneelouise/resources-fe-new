@@ -28,7 +28,7 @@ function CommentComponent({
 
   return (
     <>
-      <ListItem >
+      <ListItem>
         {/* <IconButton>
           <DeleteIcon />
         </IconButton> */}

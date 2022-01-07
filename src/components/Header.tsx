@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "../styles/App.css";
 import axios from "axios";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IUser } from "../utils/interfaces";
 
 import AppBar from "@mui/material/AppBar";
@@ -54,6 +54,7 @@ const Header = (): JSX.Element => {
     setSelectedUser(userName);
   };
 
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -62,6 +63,7 @@ const Header = (): JSX.Element => {
             <Stack
               direction={{ xs: "column", sm: "row" }}
               spacing={{ xs: 1, sm: 1, md: 1 }}
+
             >
               <Button sx={{ my: 2, color: "white", display: "block" }}>
                 Resources
@@ -141,6 +143,7 @@ const Header = (): JSX.Element => {
           </Toolbar>
         </AppBar>
       </Box>
+
     </>
   );
 };

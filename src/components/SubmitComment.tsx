@@ -1,8 +1,8 @@
 import { TextField, Button } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 
 interface SubmitCommentProps {
   resource_id: number;
@@ -16,7 +16,7 @@ export function SubmitComment({
   setRefetchComments,
 }: SubmitCommentProps): JSX.Element {
   const [input, setInput] = useState<string>("");
-  const [isLike, setIsLike] = useState<boolean>()
+  const [isLike, setIsLike] = useState<boolean>();
   const handleSubmit = () => {
     axios
       .post(
@@ -25,8 +25,8 @@ export function SubmitComment({
           resource_id: resource_id,
           author_id: author_id,
           is_like: isLike,
-          text: input
-      }
+          text: input,
+        }
       )
       .then(() => setRefetchComments((prevRefetch) => -prevRefetch))
       .then(() => setInput(""))
@@ -35,8 +35,8 @@ export function SubmitComment({
 
   return (
     <>
-    < ThumbUpIcon onClick={() => setIsLike(true)} />
-    < ThumbDownIcon onClick={() => setIsLike(false)} />
+      <ThumbUpIcon onClick={() => setIsLike(true)} />
+      <ThumbDownIcon onClick={() => setIsLike(false)} />
       <TextField
         onChange={(e) => setInput(e.target.value)}
         id="standard-required"
