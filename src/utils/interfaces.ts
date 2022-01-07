@@ -32,3 +32,10 @@ export interface Comment {
   name: string;
   is_faculty: boolean;
 }
+
+export interface IPopularResource {
+  id: number;
+  user_name: string;
+  resource_name: string;
+  popularity: number;
+}
