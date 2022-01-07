@@ -7,10 +7,10 @@ interface Tags {
   times_used?: number;
 }
 
-const Search = (): JSX.Element => {
+const Search = () => {
   const [tags, setTags] = useState<Tags[]>([]);
   const [keyword, setKeyword] = useState<string>("");
-  // const [filteredResults, setFilteredResults] = useState<any[]>([]);
+  const [filteredResults, setFilteredResults] = useState<any[]>([]);
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
@@ -22,6 +22,10 @@ const Search = (): JSX.Element => {
       console.error(error);
     }
   };
+
+  // const searchTagClick = () => {
+
+  // }
 
   useEffect(() => {
     // console.log('useEffect is firing')
@@ -37,7 +41,7 @@ const Search = (): JSX.Element => {
       <div id="search-container">
         <div id="search-form">
           <form>
-            <p>Searched terms: {keyword} </p>
+            <h2>Searched terms: {keyword}</h2>
             <input
               id="search"
               value={keyword}
@@ -50,9 +54,11 @@ const Search = (): JSX.Element => {
         </div>
         {tags.map((tag) => {
           return (
-            <div id="tags" key={tag.tag_id}>
-              <button>{tag.name}</button>
-            </div>
+            <>
+              <div id="tags" key={tag.tag_id}>
+                <button onClick={() => setKeyword(tag.name)}>{tag.name}</button>
+              </div>
+            </>
           );
         })}{" "}
       </div>
