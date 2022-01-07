@@ -54,7 +54,6 @@ const Header = (): JSX.Element => {
     setSelectedUser(userName);
   };
 
-
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -63,7 +62,6 @@ const Header = (): JSX.Element => {
             <Stack
               direction={{ xs: "column", sm: "row" }}
               spacing={{ xs: 1, sm: 1, md: 1 }}
-
             >
               <Button sx={{ my: 2, color: "white", display: "block" }}>
                 Resources
@@ -143,7 +141,6 @@ const Header = (): JSX.Element => {
           </Toolbar>
         </AppBar>
       </Box>
-
     </>
   );
 };
