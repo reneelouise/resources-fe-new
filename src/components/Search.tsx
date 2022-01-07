@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 interface Tags {
-  tag_id?: number;
+  tag_id: number;
   name: string;
   times_used?: number;
 }
 
-const Search = () => {
+const Search = (): JSX.Element => {
   const [tags, setTags] = useState<Tags[]>([]);
   const [keyword, setKeyword] = useState<string>("");
-  const [filteredResults, setFilteredResults] = useState<any[]>([]);
+  // const [filteredResults, setFilteredResults] = useState<any[]>([]);
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
@@ -50,11 +50,9 @@ const Search = () => {
         </div>
         {tags.map((tag) => {
           return (
-            <>
-              <div id="tags" key={tag.tag_id}>
-                <button>{tag.name}</button>
-              </div>
-            </>
+            <div id="tags" key={tag.tag_id}>
+              <button>{tag.name}</button>
+            </div>
           );
         })}{" "}
       </div>

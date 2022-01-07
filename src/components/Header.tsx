@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "../styles/App.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { IUser } from "../utils/interfaces";
 
 import AppBar from "@mui/material/AppBar";
@@ -12,14 +12,14 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import Paper from "@mui/material/Paper";
+// import Paper from "@mui/material/Paper";
 
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 
 const Header = (): JSX.Element => {
   const [users, setUsers] = useState<IUser[]>([]);
-  const [selectedUser, setSelectedUser] = useState<string>();
+  const [selectedUser, setSelectedUser] = useState<string>("");
   const [loggedInUser, setLoggedInUser] = useState<string>();
   const [showLogInForm, setShowLogInForm] = useState<boolean>(false);
 
@@ -85,15 +85,14 @@ const Header = (): JSX.Element => {
               </Button>
             )}
             {showLogInForm && !loggedInUser && (
-              <Box>
-                <FormControl variant="standard" sx={{ minWidth: 120 }}>
+              <Box sx={{ minWidth: "300px", textAlign: "left" }}>
+                <FormControl variant="standard">
                   <Stack direction="row" spacing={2}>
                     <div
                       style={{
                         backgroundColor: "white",
                         borderRadius: "5px",
                         minWidth: "200px",
-                        // margin: "0",
                         fontSize: "16px",
                       }}
                     >
@@ -102,6 +101,7 @@ const Header = (): JSX.Element => {
                       </InputLabel>
 
                       <Select
+                        sx={{ width: 200 }}
                         labelId="select-user"
                         id="users"
                         value={selectedUser}
