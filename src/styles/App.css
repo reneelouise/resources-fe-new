@@ -93,12 +93,17 @@ body {
 #tags{
     display: inline-block;
     justify-content: center;
+    margin: 10px;
+    border-radius: 10px;
+
+
 
 }
 
 #tags h2{
     display: inline;
     align-items: center;
+   
 
 }
 
@@ -106,5 +111,5 @@ body {
 #search-container{
     display:block;
     justify-content: center;
-    background-color: blueviolet;
+    /* background-color: blueviolet; */
 }

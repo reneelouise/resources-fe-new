@@ -10,7 +10,9 @@ interface Tags {
 
 const Search = () => {
 
-  const [tags, setTags] = useState<Tags[]>([])
+  const [tags, setTags] = useState<Tags[]>([]);
+  const [keyword, setKeyword] = useState<string>("");
+  const [filteredResults, setFilteredResults] = useState<any[]>([]);
 
   const baseUrl = 'https://bibliotech-project.herokuapp.com'
 
@@ -29,30 +31,48 @@ const Search = () => {
   }, []);
 
 
+  // const tagClickHandler = (tag_id) => {
+  //   if(tag_id)
+  // }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
 
     <>
-    <div id="search-container">
-<div id="search-form">
-      <form >
-        <input id="search" type="text" placeholder="Search for resources" />
-        <button id="search-btn">Search</button>
-      </form>
-      </div>
+      <div id="search-container">
+        <div id="search-form">
+          <form >
+            <p>Searched terms: {keyword} </p>
+            <input id="search" value={keyword} type="text" placeholder="Search for resources" onChange={(e) => setKeyword(e.target.value)} />
+            <button id="search-btn">Search</button>
+          </form>
+        </div>
 
 
 
 
-      {tags.map((tag) => {
-        return (
-          <>
-            <div id="tags" key={tag.tag_id}>
-              <button>{tag.name}</button>
-            </div>
-          </>
-        )
-      })} </div></>)
+
+        {tags.map((tag) => {
+          return (
+            <>
+              <div id="tags" key={tag.tag_id}>
+                <button>{tag.name}</button>
+              </div>
+            </>
+          )
+        })} </div></>)
 
 
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IResource, Comment } from '../utils/interfaces';
 import CommentsSection from './CommentsSection';
 import CommentComponent from './CommentComponent';
@@ -19,6 +19,8 @@ import {
   OpenInFull as OpenInFullIcon,
   Delete as DeleteIcon,
 } from "@mui/icons-material";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import axios from 'axios';
 
 interface ResourceProps extends IResource {
@@ -32,6 +34,19 @@ export const Resource = (props: ResourceProps): JSX.Element => {
     const [refetchComments, setRefetchComments] = useState<number>(1);
 
     const baseUrl = "https://bibliotech-project.herokuapp.com"
+
+    const fetchComments = async () => {
+        try {
+            const res = await axios.get(`${baseUrl}/resources/${props.id}/comments`)
+            setComments(res.data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    
+    useEffect(() => {
+        fetchComments();
+    }, []);
 
     const handleDeleteResource = () => {
         axios
@@ -47,7 +62,9 @@ export const Resource = (props: ResourceProps): JSX.Element => {
                 <Typography variant="body2">Content type: {props.content_type}</Typography>
                 <Typography variant="body2">Tags: {props.tags}</Typography>
                 <Typography variant="body2">
-                    👍 {props.count_of_likes} 👎 {props.count_of_dislikes} {props.number_of_comments} comments
+                    <ThumbUpIcon /> {props.count_of_likes} 
+                    <ThumbDownIcon /> {props.count_of_dislikes} 
+                    {props.number_of_comments} comments
                 </Typography>
                 <IconButton color="primary" onClick={() => setOpen(true)}>
                     <Typography>Expand</Typography>
@@ -70,8 +87,10 @@ export const Resource = (props: ResourceProps): JSX.Element => {
                     <Typography variant="body2">Content type: {props.content_type}</Typography>
                     <Typography variant="body2"> Tags: {props.tags} </Typography>
                     <Typography variant="body2">
-                        👍 {props.count_of_likes} 👎 {props.count_of_dislikes} {props.number_of_comments} comments
-                    </Typography>
+                    <ThumbUpIcon /> {props.count_of_likes} 
+                    <ThumbDownIcon /> {props.count_of_dislikes} 
+                    {props.number_of_comments} comments
+                </Typography>
                     <Box
                         style={{
                             position: "absolute",
