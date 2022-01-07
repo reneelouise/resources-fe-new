@@ -5,9 +5,19 @@ import PopularResources from "./components/PopularResources";
 import ResourceList from "./components/ResourceList";
 import Search from "./components/Search";
 import StudyList from "./components/StudyList";
+import { IResource } from "./utils/interfaces";
+
+
 
 export default function App(): JSX.Element {
+ 
+
+
   return (
+
+    
+
+
     <>
       <Header />
       <Search />

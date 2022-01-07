@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 
+
 interface Tags {
   tag_id?: number;
   name: string;
   times_used?: number;
 }
+
+
 
 const Search = () => {
 
@@ -24,6 +27,11 @@ const Search = () => {
       console.error(error)
     }
   }
+
+
+  // const searchTagClick = () => {
+
+  // }
 
   useEffect(() => {
     // console.log('useEffect is firing')
@@ -54,7 +62,7 @@ const Search = () => {
       <div id="search-container">
         <div id="search-form">
           <form >
-            <p>Searched terms: {keyword} </p>
+            <h2>Searched terms: {keyword}</h2>
             <input id="search" value={keyword} type="text" placeholder="Search for resources" onChange={(e) => setKeyword(e.target.value)} />
             <button id="search-btn">Search</button>
           </form>
@@ -68,7 +76,7 @@ const Search = () => {
           return (
             <>
               <div id="tags" key={tag.tag_id}>
-                <button>{tag.name}</button>
+                <button onClick={() => setKeyword(tag.name)}>{tag.name}</button>
               </div>
             </>
           )
