@@ -11,8 +11,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-// import Paper from "@mui/material/Paper";
+import Paper from "@mui/material/Paper";
 
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -59,84 +58,105 @@ const Header = (): JSX.Element => {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              spacing={{ xs: 1, sm: 1, md: 1 }}
-            >
+            <Box sx={{ flexGrow: 1, display: { xs: "flex" } }}>
               <Button sx={{ my: 2, color: "white", display: "block" }}>
                 Resources
               </Button>
               <Button sx={{ my: 2, color: "white", display: "block" }}>
                 Study List
               </Button>
-            </Stack>
+            </Box>
             <Typography
               variant="h6"
               noWrap
               component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+              sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}
             >
-              BiblioTech
+              📚 BiblioTech
             </Typography>
 
             {!showLogInForm && !loggedInUser && (
-              <Button color="inherit" onClick={() => setShowLogInForm(true)}>
-                Login
-              </Button>
+              <Paper sx={{ display: { xs: "flex" } }}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => setShowLogInForm(true)}
+                >
+                  Login
+                </Button>
+              </Paper>
             )}
             {showLogInForm && !loggedInUser && (
-              <Box sx={{ minWidth: "300px", textAlign: "left" }}>
-                <FormControl variant="standard">
-                  <Stack direction="row" spacing={2}>
-                    <div
-                      style={{
-                        backgroundColor: "white",
-                        borderRadius: "5px",
-                        minWidth: "200px",
-                        fontSize: "16px",
-                      }}
-                    >
-                      <InputLabel id="select-user-label">
-                        Select a user
-                      </InputLabel>
-
-                      <Select
-                        sx={{ width: 200 }}
-                        labelId="select-user"
-                        id="users"
-                        value={selectedUser}
-                        label="Select user"
-                        onChange={(e) => handleSelectChange(e.target.value)}
+              <Box
+                sx={{
+                  minWidth: "300px",
+                  textAlign: "left",
+                  display: { xs: "flex" },
+                }}
+              >
+                <Paper sx={{ px: 1.5, py: 0.5 }}>
+                  <FormControl variant="outlined">
+                    <Stack direction="row" spacing={2}>
+                      <div
+                        style={{
+                          backgroundColor: "white",
+                          borderRadius: "5px",
+                          minWidth: "200px",
+                          fontSize: "8px",
+                        }}
                       >
-                        {users.map((user) => (
-                          <MenuItem key={user.id} value={user.id}>
-                            {user.name}
+                        <Select
+                          displayEmpty
+                          sx={{ width: 200, py: 0 }}
+                          id="users"
+                          value={selectedUser}
+                          onChange={(e) => handleSelectChange(e.target.value)}
+                        >
+                          <MenuItem value="">
+                            <em>Select a user</em>
                           </MenuItem>
-                        ))}
-                      </Select>
-                    </div>
-                    <Button color="inherit" onClick={handleLogin}>
-                      Login
-                    </Button>
-                    <Button
-                      color="inherit"
-                      onClick={() => setShowLogInForm(false)}
-                    >
-                      Cancel
-                    </Button>
-                  </Stack>
-                </FormControl>
+                          {users.map((user) => (
+                            <MenuItem key={user.id} value={user.id}>
+                              {user.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </div>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={handleLogin}
+                      >
+                        Login
+                      </Button>
+                      <Button
+                        color="error"
+                        variant="outlined"
+                        onClick={() => setShowLogInForm(false)}
+                      >
+                        Cancel
+                      </Button>
+                    </Stack>
+                  </FormControl>
+                </Paper>
               </Box>
             )}
             {loggedInUser && (
-              <>
-                <Typography variant="body1" display="block" mr={3}>
-                  <em>You are logged in as user {loggedInUser}</em>
-                </Typography>
-                <Button color="inherit" onClick={handleLogout}>
-                  Logout
-                </Button>
-              </>
+              <Paper sx={{ p: 0.5, display: { xs: "flex" } }}>
+                <Stack direction="row" spacing={2}>
+                  <Typography variant="body1" display="block" mx={2} py={1}>
+                    You are logged in as user: <strong>{loggedInUser}</strong>
+                  </Typography>
+
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </Stack>
+              </Paper>
             )}
           </Toolbar>
         </AppBar>
