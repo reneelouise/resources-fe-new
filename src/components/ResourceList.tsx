@@ -36,8 +36,8 @@ export const Resource = (props: ResourceProps): JSX.Element => {
 
   const fetchComments = async () => {
     try {
-      const res = await axios.get(`${baseUrl}/resources/${props.id}/comments`);
-      setComments(res.data);
+      const res = await axios.get(`${baseUrl}/resources`);
+      setResources(res.data.data);
     } catch (error) {
       console.error(error);
     }
