@@ -30,6 +30,7 @@ interface ResourceProps extends IResource {
 export const Resource = (props: ResourceProps): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
   const [comments, setComments] = useState<Comment[]>([]);
+  const [resources, setResources] = useState<IResource[]>([]);
   const [refetchComments, setRefetchComments] = useState<number>(1);
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
