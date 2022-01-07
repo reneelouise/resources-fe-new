@@ -48,7 +48,7 @@ export const Resource = (props: ResourceProps): JSX.Element => {
   const handleDeleteResource = () => {
     axios
       .delete(`${baseUrl}/resources/${props.id}`)
-      .then(() => props.setRefetch(prev => -prev));
+      .then(() => props.setRefetch((prev) => -prev));
   };
 
   return (
@@ -115,7 +115,7 @@ export const Resource = (props: ResourceProps): JSX.Element => {
           >
             <SubmitComment
               resource_id={props.id}
-              user_id={localStorage.getItem('loggedInUser')}
+              user_id={localStorage.getItem("loggedInUser")}
               setRefetchComments={setRefetchComments}
               setRefetch={props.setRefetch}
             />

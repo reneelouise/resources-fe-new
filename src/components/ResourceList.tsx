@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Resource } from "./Resource";
 import { IResource } from "../utils/interfaces";
-import { PinDropSharp } from "@mui/icons-material";
 
 const ResourceList = (): JSX.Element => {
   const [resources, setResources] = useState<IResource[]>([]);
@@ -19,10 +18,6 @@ const ResourceList = (): JSX.Element => {
     }
   };
 
-  const handleRefetch = () => {
-    setRefetch((prev) => -prev);
-  };
-
   useEffect(() => {
     fetchResources();
   }, [refetch]);
@@ -31,10 +26,7 @@ const ResourceList = (): JSX.Element => {
     <>
       {resources.map((resource) => (
         <div key={resource.id}>
-          <Resource
-            {...resource}
-            setRefetch={setRefetch}
-          />
+          <Resource {...resource} setRefetch={setRefetch} />
         </div>
       ))}
     </>

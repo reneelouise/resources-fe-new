@@ -3,7 +3,6 @@ import { useState } from "react";
 import axios from "axios";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
-import { IResource } from '../utils/interfaces';
 
 interface SubmitCommentProps {
   resource_id: number;
@@ -32,8 +31,8 @@ export function SubmitComment({
         }
       )
       .then(() => setRefetchComments((prevRefetch) => -prevRefetch))
-      .then(() => setRefetch(prev => -prev))
-      .then(() => setInput(''))
+      .then(() => setRefetch((prev) => -prev))
+      .then(() => setInput(""))
       .then(() => setInput(undefined))
       .then(() => setIsLike(undefined))
       .catch((err) => console.error(err));
