@@ -67,7 +67,7 @@ export const Resource = (props: ResourceProps): JSX.Element => {
         <Typography variant="body2">
           <ThumbUpIcon /> {props.count_of_likes}
           <ThumbDownIcon /> {props.count_of_dislikes}
-          {props.number_of_comments} comments
+          {props.number_of_comments} comments!
         </Typography>
         <IconButton color="primary" onClick={() => setOpen(true)}>
           <Typography>Expand</Typography>
