@@ -12,14 +12,12 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
 import Paper from "@mui/material/Paper";
-
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
 const Header = (): JSX.Element => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [selectedUser, setSelectedUser] = useState<string>("");
-  const [loggedInUser, setLoggedInUser] = useState<string>();
   const [showLogInForm, setShowLogInForm] = useState<boolean>(false);
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
@@ -40,18 +38,35 @@ const Header = (): JSX.Element => {
   }, []);
 
   const handleLogout = () => {
+    localStorage.removeItem("loggedInUser");
+    setSelectedUser("");
     setShowLogInForm(false);
-    setLoggedInUser("");
   };
 
   const handleLogin = () => {
-    setLoggedInUser(selectedUser);
+    localStorage.setItem("loggedInUser", selectedUser);
     setShowLogInForm(false);
   };
 
-  const handleSelectChange = (userName: string) => {
-    setSelectedUser(userName);
+  const handleSelectChange = (userId: string) => {
+    setSelectedUser(userId);
   };
+
+  const handleCancel = () => {
+    setSelectedUser("");
+    setShowLogInForm(false);
+  };
+
+  const getUserNameFromId = (userId: number) => {
+    for (const user of users) {
+      if (user.id === userId) {
+        return user.name;
+      }
+    }
+  };
+
+  const userIdInLocalStorage = localStorage.getItem("loggedInUser");
+  console.log(userIdInLocalStorage);
 
   return (
     <>
@@ -62,9 +77,11 @@ const Header = (): JSX.Element => {
               <Button sx={{ my: 2, color: "white", display: "block" }}>
                 Resources
               </Button>
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
-                Study List
-              </Button>
+              {userIdInLocalStorage && (
+                <Button sx={{ my: 2, color: "white", display: "block" }}>
+                  Study List
+                </Button>
+              )}
             </Box>
             <Typography
               variant="h6"
@@ -75,7 +92,7 @@ const Header = (): JSX.Element => {
               📚 BiblioTech
             </Typography>
 
-            {!showLogInForm && !loggedInUser && (
+            {!showLogInForm && !userIdInLocalStorage && (
               <Paper sx={{ display: { xs: "flex" } }}>
                 <Button
                   variant="outlined"
@@ -86,7 +103,7 @@ const Header = (): JSX.Element => {
                 </Button>
               </Paper>
             )}
-            {showLogInForm && !loggedInUser && (
+            {showLogInForm && !userIdInLocalStorage && (
               <Box
                 sx={{
                   minWidth: "300px",
@@ -132,7 +149,7 @@ const Header = (): JSX.Element => {
                       <Button
                         color="error"
                         variant="outlined"
-                        onClick={() => setShowLogInForm(false)}
+                        onClick={handleCancel}
                       >
                         Cancel
                       </Button>
@@ -141,11 +158,14 @@ const Header = (): JSX.Element => {
                 </Paper>
               </Box>
             )}
-            {loggedInUser && (
+            {userIdInLocalStorage && (
               <Paper sx={{ p: 0.5, display: { xs: "flex" } }}>
                 <Stack direction="row" spacing={2}>
                   <Typography variant="body1" display="block" mx={2} py={1}>
-                    You are logged in as user: <strong>{loggedInUser}</strong>
+                    You are logged in as:{" "}
+                    <strong>
+                      {getUserNameFromId(Number(userIdInLocalStorage))}
+                    </strong>
                   </Typography>
 
                   <Button
