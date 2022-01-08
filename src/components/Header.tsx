@@ -78,9 +78,14 @@ const Header = (): JSX.Element => {
                 Resources
               </Button>
               {userIdInLocalStorage && (
-                <Button sx={{ my: 2, color: "white", display: "block" }}>
-                  Study List
-                </Button>
+                <>
+                  <Button sx={{ my: 2, color: "white", display: "block" }}>
+                    Study List
+                  </Button>
+                  <Button sx={{ my: 2, color: "white", display: "block" }}>
+                    Create New Resource
+                  </Button>
+                </>
               )}
             </Box>
             <Typography
