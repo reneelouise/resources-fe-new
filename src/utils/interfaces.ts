@@ -1,7 +1,8 @@
 export interface IResource {
   id: number;
   name: string;
-  author_id: string;
+  user_name: string;
+  user_id: string;
   is_faculty: boolean;
   description: string;
   url: string;

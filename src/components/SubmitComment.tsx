@@ -6,30 +6,35 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 
 interface SubmitCommentProps {
   resource_id: number;
-  author_id: string;
+  user_id: string | null;
   setRefetchComments: React.Dispatch<React.SetStateAction<number>>;
+  setRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export function SubmitComment({
   resource_id,
-  author_id,
+  user_id,
   setRefetchComments,
+  setRefetch,
 }: SubmitCommentProps): JSX.Element {
-  const [input, setInput] = useState<string>("");
-  const [isLike, setIsLike] = useState<boolean>();
+  const [input, setInput] = useState<string | undefined>(undefined);
+  const [isLike, setIsLike] = useState<boolean | undefined>(undefined);
   const handleSubmit = () => {
     axios
       .post(
         `https://bibliotech-project.herokuapp.com/resources/${resource_id}/comments`,
         {
           resource_id: resource_id,
-          author_id: author_id,
+          author_id: user_id,
           is_like: isLike,
           text: input,
         }
       )
       .then(() => setRefetchComments((prevRefetch) => -prevRefetch))
+      .then(() => setRefetch((prev) => -prev))
       .then(() => setInput(""))
+      .then(() => setInput(undefined))
+      .then(() => setIsLike(undefined))
       .catch((err) => console.error(err));
   };
 
