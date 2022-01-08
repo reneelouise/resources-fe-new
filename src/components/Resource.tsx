@@ -32,18 +32,19 @@ export const Resource = (props: ResourceProps): JSX.Element => {
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
-  const fetchComments = async () => {
-    try {
-      const res = await axios.get(`${baseUrl}/resources/${props.id}/comments`);
-      setComments(res.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const res = await axios.get(
+          `${baseUrl}/resources/${props.id}/comments`
+        );
+        setComments(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
     fetchComments();
-  }, [refetchComments]);
+  }, [refetchComments, props.id]);
 
   const handleDeleteResource = () => {
     axios
