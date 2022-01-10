@@ -72,7 +72,6 @@ export default function CreateNewResource(): JSX.Element {
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setResourceName(resourceName.trim());
@@ -98,7 +97,7 @@ export default function CreateNewResource(): JSX.Element {
             recommendation_type: recommendationType,
             recommendation_reason: recommendationReason,
           })
-          .then((res) => setOpenSubmit(true));
+          .then(() => setOpenSubmit(true));
         delay(3000).then(() => setOpenSubmit(false));
         setResourceName(" ");
         setDescription(" ");
