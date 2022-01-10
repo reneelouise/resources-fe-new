@@ -10,6 +10,7 @@ import {
   DialogActions,
   Card,
   Grid,
+  Link,
   Typography,
   Box,
 } from "@mui/material";
@@ -31,6 +32,7 @@ export const Resource = (props: ResourceProps): JSX.Element => {
     count_of_likes,
     count_of_dislikes,
     number_of_comments,
+    url,
   } = props;
   const [open, setOpen] = useState<boolean>(false);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -66,12 +68,21 @@ export const Resource = (props: ResourceProps): JSX.Element => {
   return (
     <>
       <Card sx={{ minWidth: "100%", mb: 2, p: 2 }}>
-        <Grid item xs={12}>
-          <Box>
-            <Typography variant="h6" component="h6" py={1}>
-              {resource_name}
-            </Typography>
-          </Box>
+        <Grid container direction="row" justifyContent="space-between">
+          <Grid item xs={10}>
+            <Box>
+              <Typography variant="h6" component="h6" py={1}>
+                {resource_name}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={2}>
+            <Link href={url} style={{ textDecoration: "none" }} target="_blank">
+              <Button color="primary" variant="outlined">
+                Go to resource
+              </Button>
+            </Link>
+          </Grid>
         </Grid>
 
         <Grid container>
