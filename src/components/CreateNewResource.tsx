@@ -1,64 +1,80 @@
-import { useState } from 'react'
-import axios from 'axios'
-import { Dialog, DialogContent, DialogActions, Container, Box, Grid, TextField, Button, FormControl, InputLabel, Select, MenuItem, FormLabel, RadioGroup, FormControlLabel, Radio, Typography } from '@mui/material';
-
+import { useState } from "react";
+import axios from "axios";
+import {
+  Dialog,
+  DialogContent,
+  DialogActions,
+  Container,
+  Box,
+  Grid,
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Typography,
+} from "@mui/material";
 
 export default function CreateNewResource(): JSX.Element {
-  const [resourceName, setResourceName] = useState<string>(" ")
-  const [description, setDescription] = useState<string>(" ")
-  const [url, setUrl] = useState<string>(" ")
-  const [contentType, setContentType] = useState<string>(" ")
-  const [markStage, setMarkStage] = useState<string>(" ")
-  const [recommendationType, setRecommendationType] = useState<string>(" ")
-  const [recommendationReason, setRecommendationReason] = useState<string>(" ")
+  const [resourceName, setResourceName] = useState<string>(" ");
+  const [description, setDescription] = useState<string>(" ");
+  const [url, setUrl] = useState<string>(" ");
+  const [contentType, setContentType] = useState<string>(" ");
+  const [markStage, setMarkStage] = useState<string>(" ");
+  const [recommendationType, setRecommendationType] = useState<string>(" ");
+  const [recommendationReason, setRecommendationReason] = useState<string>(" ");
   const [open, setOpen] = useState<boolean>(false);
 
   const content_type = [
-    'magazine',
-    'book',
-    'documentary',
-    'events',
-    'podcast',
-    'video',
-    'article',
-    'blog',
-    'course',
-    'eBook',
-    'exercise',
-    'software tool',
-    'documentation',
-    'cheatsheet',
-    'diagram',
-    'reference',
-    'youtube channel',
-    'organisation',
-    'other']
+    "magazine",
+    "book",
+    "documentary",
+    "events",
+    "podcast",
+    "video",
+    "article",
+    "blog",
+    "course",
+    "eBook",
+    "exercise",
+    "software tool",
+    "documentation",
+    "cheatsheet",
+    "diagram",
+    "reference",
+    "youtube channel",
+    "organisation",
+    "other",
+  ];
 
-  const mark_stage =
-    [
-      'Week 1: Workflows',
-      'Week 2: Typescript and code quality',
-      'Week 3: React, HTML and CSS',
-      'Week 4: React and event handlers',
-      'Week 5: React and useEffect',
-      'Week 7: NodeJs and Express',
-      'Week 8: SQL and persistence',
-      'Week 10+: Full stack projects'
-    ]
+  const mark_stage = [
+    "Week 1: Workflows",
+    "Week 2: Typescript and code quality",
+    "Week 3: React, HTML and CSS",
+    "Week 4: React and event handlers",
+    "Week 5: React and useEffect",
+    "Week 7: NodeJs and Express",
+    "Week 8: SQL and persistence",
+    "Week 10+: Full stack projects",
+  ];
 
-  const recommendation_type =
-    [
-      "I recommend this resource after having used it",
-      "I do not recommend this resource, having used it",
-      "I haven't used this resource but it looks promising"
-    ];
+  const recommendation_type = [
+    "I recommend this resource after having used it",
+    "I do not recommend this resource, having used it",
+    "I haven't used this resource but it looks promising",
+  ];
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const author = localStorage.getItem("loggedInUser")
-    const authorId = author ? Number(author) : null
+    const author = localStorage.getItem("loggedInUser");
+    const authorId = author ? Number(author) : null;
     const postToDb = async () => {
       try {
         await axios.post(`${baseUrl}/resources`, {
@@ -69,22 +85,29 @@ export default function CreateNewResource(): JSX.Element {
           content_type: contentType,
           mark_stage: markStage,
           recommendation_type: recommendationType,
-          recommendation_reason: recommendationReason
+          recommendation_reason: recommendationReason,
         });
         setResourceName("");
         setDescription("");
         setUrl("");
-        setContentType("")
-        setMarkStage("")
-        setRecommendationType("")
-        setRecommendationReason("")
+        setContentType("");
+        setMarkStage("");
+        setRecommendationType("");
+        setRecommendationReason("");
       } catch (error) {
         console.error(error);
       }
-    }
-    return (authorId && resourceName && url && contentType && markStage && recommendationType)
-      ? postToDb()
-      : setOpen(true), (
+    };
+    return (
+      authorId &&
+      resourceName &&
+      url &&
+      contentType &&
+      markStage &&
+      recommendationType
+        ? postToDb()
+        : setOpen(true),
+      (
         <>
           <Dialog
             fullWidth
@@ -102,19 +125,17 @@ export default function CreateNewResource(): JSX.Element {
           </Dialog>
         </>
       )
-
-  }
+    );
+  };
   return (
     <Container>
       <Typography variant="h4" gutterBottom sx={{ pt: 2 }} component="div">
         Create new resource
       </Typography>
-      <Box component="form" noValidate
-        onSubmit={handleSubmit}
-        sx={{ mt: 3 }}>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            {resourceName ?
+            {resourceName ? (
               <TextField
                 name="resourceName"
                 required
@@ -125,7 +146,8 @@ export default function CreateNewResource(): JSX.Element {
                 label="Resource Name"
                 autoFocus
               />
-              : <TextField
+            ) : (
+              <TextField
                 error
                 name="resourceName"
                 required
@@ -135,8 +157,8 @@ export default function CreateNewResource(): JSX.Element {
                 onChange={(e) => setResourceName(e.target.value)}
                 label="Resource Name"
                 autoFocus
-              />}
-
+              />
+            )}
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -151,7 +173,7 @@ export default function CreateNewResource(): JSX.Element {
             />
           </Grid>
           <Grid item xs={12}>
-            {url ?
+            {url ? (
               <TextField
                 name="resourceURL"
                 required
@@ -160,9 +182,9 @@ export default function CreateNewResource(): JSX.Element {
                 label="Resource URL"
                 value={url.trim()}
                 onChange={(e) => setUrl(e.target.value)}
-
               />
-              : <TextField
+            ) : (
+              <TextField
                 error
                 name="resourceURL"
                 required
@@ -171,13 +193,13 @@ export default function CreateNewResource(): JSX.Element {
                 label="Resource URL"
                 value={url.trim()}
                 onChange={(e) => setUrl(e.target.value)}
-
-              />}
+              />
+            )}
           </Grid>
           <Grid item xs={12}>
             <FormControl required fullWidth>
               <InputLabel id="content_type">Content Type</InputLabel>
-              {contentType ?
+              {contentType ? (
                 <Select
                   labelId="content_type"
                   id="select_content_type"
@@ -186,9 +208,16 @@ export default function CreateNewResource(): JSX.Element {
                   onChange={(e) => setContentType(e.target.value)}
                   label="Age"
                 >
-                  {content_type.map((el, i) => { return <MenuItem key={i} value={el}>{el}</MenuItem> })}
+                  {content_type.map((el, i) => {
+                    return (
+                      <MenuItem key={i} value={el}>
+                        {el}
+                      </MenuItem>
+                    );
+                  })}
                 </Select>
-                : <Select
+              ) : (
+                <Select
                   error
                   labelId="content_type"
                   id="select_content_type"
@@ -197,24 +226,39 @@ export default function CreateNewResource(): JSX.Element {
                   onChange={(e) => setContentType(e.target.value)}
                   label="Age"
                 >
-                  {content_type.map((el, i) => { return <MenuItem key={i} value={el}>{el}</MenuItem> })}
-                </Select>}
+                  {content_type.map((el, i) => {
+                    return (
+                      <MenuItem key={i} value={el}>
+                        {el}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              )}
             </FormControl>
           </Grid>
           <Grid item xs={12}>
             <FormControl required fullWidth>
               <InputLabel id="mark_stage">Select Mark Stage</InputLabel>
-              {markStage ? <Select
-                labelId="mark_stage"
-                id="select_mark_stage"
-                required
-                value={markStage.trim()}
-                onChange={(e) => setMarkStage(e.target.value)}
-                label="Mark Stage"
-              >
-                {mark_stage.map((el, i) => { return <MenuItem key={i} value={el}>{el}</MenuItem> })}
-              </Select>
-                : <Select
+              {markStage ? (
+                <Select
+                  labelId="mark_stage"
+                  id="select_mark_stage"
+                  required
+                  value={markStage.trim()}
+                  onChange={(e) => setMarkStage(e.target.value)}
+                  label="Mark Stage"
+                >
+                  {mark_stage.map((el, i) => {
+                    return (
+                      <MenuItem key={i} value={el}>
+                        {el}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              ) : (
+                <Select
                   error
                   labelId="mark_stage"
                   id="select_mark_stage"
@@ -223,31 +267,59 @@ export default function CreateNewResource(): JSX.Element {
                   onChange={(e) => setMarkStage(e.target.value)}
                   label="Mark Stage"
                 >
-                  {mark_stage.map((el, i) => { return <MenuItem key={i} value={el}>{el}</MenuItem> })}
-                </Select>}
+                  {mark_stage.map((el, i) => {
+                    return (
+                      <MenuItem key={i} value={el}>
+                        {el}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              )}
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            {recommendationType ? < FormControl required component="fieldset">
-              <FormLabel component="legend">Recommendation Type</FormLabel>
-              <RadioGroup
-                aria-label="recommendation_type"
-                name="recommendation_type"
-                onChange={(e) => setRecommendationType(e.target.value)}
-              >
-                {recommendation_type.map((el, i) => { return <FormControlLabel key={i} value={el} control={<Radio />} label={el} /> })}
-              </RadioGroup>
-            </FormControl>
-              : <FormControl error required component="fieldset">
+            {recommendationType ? (
+              <FormControl required component="fieldset">
                 <FormLabel component="legend">Recommendation Type</FormLabel>
                 <RadioGroup
                   aria-label="recommendation_type"
                   name="recommendation_type"
                   onChange={(e) => setRecommendationType(e.target.value)}
                 >
-                  {recommendation_type.map((el, i) => { return <FormControlLabel key={i} value={el} control={<Radio />} label={el} /> })}
+                  {recommendation_type.map((el, i) => {
+                    return (
+                      <FormControlLabel
+                        key={i}
+                        value={el}
+                        control={<Radio />}
+                        label={el}
+                      />
+                    );
+                  })}
                 </RadioGroup>
-              </FormControl>}
+              </FormControl>
+            ) : (
+              <FormControl error required component="fieldset">
+                <FormLabel component="legend">Recommendation Type</FormLabel>
+                <RadioGroup
+                  aria-label="recommendation_type"
+                  name="recommendation_type"
+                  onChange={(e) => setRecommendationType(e.target.value)}
+                >
+                  {recommendation_type.map((el, i) => {
+                    return (
+                      <FormControlLabel
+                        key={i}
+                        value={el}
+                        control={<Radio />}
+                        label={el}
+                      />
+                    );
+                  })}
+                </RadioGroup>
+              </FormControl>
+            )}
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -269,10 +341,7 @@ export default function CreateNewResource(): JSX.Element {
         >
           Create Resource
         </Button>
-
       </Box>
-    </Container >
+    </Container>
   );
 }
-
-

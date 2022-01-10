@@ -1,13 +1,11 @@
 import React from "react";
 
-
 /* interface StudyList{
 
 }*/
 
 export default function StudyList(): JSX.Element {
   return (
-
     <h1> studylist</h1>
 
     /*
@@ -57,8 +55,5 @@ export default function StudyList(): JSX.Element {
      // };
     */
     // export default ResourceList;
-
-
-
-  )
+  );
 }

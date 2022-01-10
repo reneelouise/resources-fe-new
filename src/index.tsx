@@ -12,7 +12,16 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route path="resources" element={<ResourceList />} />
-          <Route path="studylist" element={localStorage.getItem("loggedInUser") ? <StudyList />  : "You are not logged in"} />
+          <Route
+            path="studylist"
+            element={
+              localStorage.getItem("loggedInUser") ? (
+                <StudyList />
+              ) : (
+                "You are not logged in"
+              )
+            }
+          />
           <Route path="new" element={<CreateNewResource />} />
         </Route>
       </Routes>

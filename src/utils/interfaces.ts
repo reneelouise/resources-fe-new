@@ -17,7 +17,6 @@ export interface IResource {
   tags: string[] | null;
 }
 
-
 /*
 export interface IStudyList {
   id: number;
@@ -61,5 +60,3 @@ export interface IPopularResource {
   resource_name: string;
   popularity: number;
 }
-
-
