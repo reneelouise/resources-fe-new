@@ -1,16 +1,23 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Chip } from "@mui/material";
+import { IResource, IUser } from "../utils/interfaces";
 
 interface Tags {
   name: string;
   times_used?: number;
 }
 
-const Search = (): JSX.Element => {
+interface Props {
+  resources: IResource[]
+  setFilteredResults: (data: IResource[]) => void;
+
+}
+
+const Search = (props: Props): JSX.Element => {
+  const { resources, setFilteredResults } = props
   const [tags, setTags] = useState<Tags[]>([]);
   const [keyword, setKeyword] = useState<string>("");
-  // const [filteredResults, setFilteredResults] = useState<any[]>([]);
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
@@ -23,24 +30,32 @@ const Search = (): JSX.Element => {
     }
   };
 
-  // const searchTagClick = () => {
 
-  // }
+  const searchResources = (e: any) => {
+    e.preventDefault();
+    setFilteredResults(
+      resources.filter((resource) => {
+        return (
+          resource.content_type?.includes(keyword) || resource.user_name?.includes(keyword) ||
+          resource.tags?.includes(keyword)
+        );
+      })
+    );
+  };
+
+
 
   useEffect(() => {
-    // console.log('useEffect is firing')
+
     fetchTags();
   }, []);
 
-  // const tagClickHandler = (tag_id) => {
-  //   if(tag_id)
-  // }
 
   return (
     <>
       <div id="search-container">
         <div id="search-form">
-          <form>
+          <form onSubmit={(e) => searchResources(e)}>
             <input
               id="search"
               value={keyword}
@@ -54,16 +69,16 @@ const Search = (): JSX.Element => {
         {tags.map((tag) => {
           return (
             <div id="tags" key={tag.name}>
-              {/* <button onClick={() => setKeyword(tag.name)}>{tag.name}</button> */}
               <Chip
                 color="success"
                 clickable={true}
                 label={tag.name}
-                onClick={() => setKeyword(tag.name)}
+                onClick={() => setKeyword(tag.name)
+                }
               />
             </div>
           );
-        })}{" "}
+        })}
       </div>
     </>
   );
