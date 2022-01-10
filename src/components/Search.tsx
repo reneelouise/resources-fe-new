@@ -57,15 +57,15 @@ export default function Search(props: Props): JSX.Element {
 
   return (
     <>
-      <Grid container pt={3}>
+      <Grid
+        container
+        pt={3}
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+      >
         <Grid item xs></Grid>
-        <Grid
-          item
-          xs={6}
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-        >
+        <Grid item xs={6}>
           <form onSubmit={(e) => searchResources(e)}>
             <Stack direction="row" spacing={2}>
               <TextField
