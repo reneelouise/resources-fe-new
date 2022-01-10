@@ -1,16 +1,22 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Chip } from "@mui/material";
+import { IResource } from "../utils/interfaces";
 
 interface Tags {
   name: string;
   times_used?: number;
 }
 
-const Search = (): JSX.Element => {
+interface Props {
+  resources: IResource[];
+  setFilteredResults: (data: IResource[]) => void;
+}
+
+const Search = (props: Props): JSX.Element => {
+  const { resources, setFilteredResults } = props;
   const [tags, setTags] = useState<Tags[]>([]);
   const [keyword, setKeyword] = useState<string>("");
-  // const [filteredResults, setFilteredResults] = useState<any[]>([]);
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
@@ -23,24 +29,28 @@ const Search = (): JSX.Element => {
     }
   };
 
-  // const searchTagClick = () => {
-
-  // }
+  const searchResources = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFilteredResults(
+      resources.filter((resource) => {
+        return (
+          resource.content_type?.includes(keyword) ||
+          resource.user_name?.includes(keyword) ||
+          resource.tags?.includes(keyword)
+        );
+      })
+    );
+  };
 
   useEffect(() => {
-    // console.log('useEffect is firing')
     fetchTags();
   }, []);
-
-  // const tagClickHandler = (tag_id) => {
-  //   if(tag_id)
-  // }
 
   return (
     <>
       <div id="search-container">
         <div id="search-form">
-          <form>
+          <form onSubmit={(e) => searchResources(e)}>
             <input
               id="search"
               value={keyword}
@@ -48,14 +58,16 @@ const Search = (): JSX.Element => {
               placeholder="Search for resources"
               onChange={(e) => setKeyword(e.target.value)}
             />
-            <button id="search-btn">Search</button>
+            <button type="submit" id="search-btn">
+              Search
+            </button>
           </form>
         </div>
         {tags.map((tag) => {
           return (
             <div id="tags" key={tag.name}>
-              {/* <button onClick={() => setKeyword(tag.name)}>{tag.name}</button> */}
               <Chip
+                id="tag"
                 color="success"
                 clickable={true}
                 label={tag.name}
@@ -63,7 +75,7 @@ const Search = (): JSX.Element => {
               />
             </div>
           );
-        })}{" "}
+        })}
       </div>
     </>
   );

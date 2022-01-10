@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 const ResourceList = (): JSX.Element => {
   const [resources, setResources] = useState<IResource[]>([]);
   const [refetch, setRefetch] = useState<number>(1);
+  const [filteredResults, setFilteredResults] = useState<IResource[]>([]);
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
@@ -33,16 +34,25 @@ const ResourceList = (): JSX.Element => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Box>
-            <Search />
+            <Search
+              resources={resources}
+              setFilteredResults={setFilteredResults}
+            />
           </Box>
         </Grid>
         <Grid item xs={8}>
           <Box>
-            {resources.map((resource) => (
-              <div key={resource.id}>
-                <Resource {...resource} setRefetch={setRefetch} />
-              </div>
-            ))}
+            {filteredResults.length < 1
+              ? resources.map((resource) => (
+                  <div key={resource.id}>
+                    <Resource {...resource} setRefetch={setRefetch} />
+                  </div>
+                ))
+              : filteredResults.map((resource) => (
+                  <div key={resource.id}>
+                    <Resource {...resource} setRefetch={setRefetch} />
+                  </div>
+                ))}
           </Box>
         </Grid>
         <Grid item xs={4}>
