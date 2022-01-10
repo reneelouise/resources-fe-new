@@ -19,16 +19,6 @@ const Search = (props: Props): JSX.Element => {
   const [keyword, setKeyword] = useState<string>("");
 
   // const [filteredResults, setFilteredResults] = useState<any[]>([]);
-  const baseUrl = "https://bibliotech-project.herokuapp.com";
-
-  const fetchTags = async () => {
-    try {
-      const res = await axios.get(`${baseUrl}/tags/popular`);
-      setTags(res.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const searchResources = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,6 +34,16 @@ const Search = (props: Props): JSX.Element => {
   };
 
   useEffect(() => {
+    const baseUrl = process.env.REACT_APP_API_URL;
+
+    const fetchTags = async () => {
+      try {
+        const res = await axios.get(`${baseUrl}/tags/popular`);
+        setTags(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
     fetchTags();
   }, []);
 

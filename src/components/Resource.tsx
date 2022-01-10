@@ -30,9 +30,10 @@ export const Resource = (props: ResourceProps): JSX.Element => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [refetchComments, setRefetchComments] = useState<number>(1);
 
-  const baseUrl = "https://bibliotech-project.herokuapp.com";
+  const baseUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
+    const baseUrl = process.env.REACT_APP_API_URL;
     const fetchComments = async () => {
       try {
         const res = await axios.get(

@@ -69,7 +69,7 @@ export default function CreateNewResource(): JSX.Element {
     "I haven't used this resource but it looks promising",
   ];
 
-  const baseUrl = "https://bibliotech-project.herokuapp.com";
+  const baseUrl = process.env.REACT_APP_API_URL;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
