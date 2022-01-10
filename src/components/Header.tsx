@@ -13,7 +13,6 @@ import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 // import Paper from "@mui/material/Paper";
-
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
@@ -41,6 +40,8 @@ const Header = (): JSX.Element => {
   }, []);
 
   const handleLogout = () => {
+    localStorage.removeItem("loggedInUser");
+    setSelectedUser("");
     setShowLogInForm(false);
     localStorage.removeItem("loggedInUser");
     setLoggedInUser("");
@@ -52,26 +53,41 @@ const Header = (): JSX.Element => {
     setShowLogInForm(false);
   };
 
-  const handleSelectChange = (userName: string) => {
-    setSelectedUser(userName);
+  const handleSelectChange = (userId: string) => {
+    setSelectedUser(userId);
   };
+
+  const handleCancel = () => {
+    setSelectedUser("");
+    setShowLogInForm(false);
+  };
+
+  const getUserNameFromId = (userId: number) => {
+    for (const user of users) {
+      if (user.id === userId) {
+        return user.name;
+      }
+    }
+  };
+
+  const userIdInLocalStorage = localStorage.getItem("loggedInUser");
+//   console.log(userIdInLocalStorage);
 
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              spacing={{ xs: 1, sm: 1, md: 1 }}
-            >
+            <Box sx={{ flexGrow: 1, display: { xs: "flex" } }}>
               <Button sx={{ my: 2, color: "white", display: "block" }}>
                 Resources
               </Button>
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
-                Study List
-              </Button>
-            </Stack>
+              {userIdInLocalStorage && (
+                <Button sx={{ my: 2, color: "white", display: "block" }}>
+                  Study List
+                </Button>
+              )}
+            </Box>
             <Typography
               variant="h6"
               noWrap
@@ -139,6 +155,96 @@ const Header = (): JSX.Element => {
                   Logout
                 </Button>
               </>
+              sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}
+            >
+              📚 BiblioTech
+            </Typography>
+
+            {!showLogInForm && !userIdInLocalStorage && (
+              <Paper sx={{ display: { xs: "flex" } }}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => setShowLogInForm(true)}
+                >
+                  Login
+                </Button>
+              </Paper>
+            )}
+            {showLogInForm && !userIdInLocalStorage && (
+              <Box
+                sx={{
+                  minWidth: "300px",
+                  textAlign: "left",
+                  display: { xs: "flex" },
+                }}
+              >
+                <Paper sx={{ px: 1.5, py: 0.5 }}>
+                  <FormControl variant="outlined">
+                    <Stack direction="row" spacing={2}>
+                      <div
+                        style={{
+                          backgroundColor: "white",
+                          borderRadius: "5px",
+                          minWidth: "200px",
+                          fontSize: "8px",
+                        }}
+                      >
+                        <Select
+                          displayEmpty
+                          sx={{ width: 200, py: 0 }}
+                          id="users"
+                          value={selectedUser}
+                          onChange={(e) => handleSelectChange(e.target.value)}
+                        >
+                          <MenuItem value="">
+                            <em>Select a user</em>
+                          </MenuItem>
+                          {users.map((user) => (
+                            <MenuItem key={user.id} value={user.id}>
+                              {user.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </div>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={handleLogin}
+                      >
+                        Login
+                      </Button>
+                      <Button
+                        color="error"
+                        variant="outlined"
+                        onClick={handleCancel}
+                      >
+                        Cancel
+                      </Button>
+                    </Stack>
+                  </FormControl>
+                </Paper>
+              </Box>
+            )}
+            {userIdInLocalStorage && (
+              <Paper sx={{ p: 0.5, display: { xs: "flex" } }}>
+                <Stack direction="row" spacing={2}>
+                  <Typography variant="body1" display="block" mx={2} py={1}>
+                    You are logged in as:{" "}
+                    <strong>
+                      {getUserNameFromId(Number(userIdInLocalStorage))}
+                    </strong>
+                  </Typography>
+
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </Stack>
+              </Paper>
             )}
           </Toolbar>
         </AppBar>
