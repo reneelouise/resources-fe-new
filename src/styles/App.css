@@ -78,3 +78,11 @@ body {
   justify-content: center;
   /* background-color: blueviolet; */
 }
+
+#search{
+    width: 300px;
+    height: 30px;
+    font-size: 20px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
