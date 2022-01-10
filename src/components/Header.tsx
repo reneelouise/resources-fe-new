@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "../styles/App.css";
 import axios from "axios";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IUser } from "../utils/interfaces";
 
 import AppBar from "@mui/material/AppBar";
@@ -16,7 +16,7 @@ import Paper from "@mui/material/Paper";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
-const Header = (): JSX.Element => {
+export default function Header(): JSX.Element {
   const [users, setUsers] = useState<IUser[]>([]);
   const [selectedUser, setSelectedUser] = useState<string>("");
   const [loggedInUser, setLoggedInUser] = useState<string>();
@@ -71,21 +71,30 @@ const Header = (): JSX.Element => {
   };
 
   const userIdInLocalStorage = localStorage.getItem("loggedInUser");
-  //   console.log(userIdInLocalStorage);
-
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
             <Box sx={{ flexGrow: 1, display: { xs: "flex" } }}>
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
-                Resources
-              </Button>
-              {userIdInLocalStorage && (
+              <Link to="resources" style={{ textDecoration: "none" }}>
                 <Button sx={{ my: 2, color: "white", display: "block" }}>
-                  Study List
+                  Resources
                 </Button>
+              </Link>
+              {userIdInLocalStorage && (
+                <>
+                  <Link to="studylist" style={{ textDecoration: "none" }}>
+                    <Button sx={{ my: 2, color: "white", display: "block" }}>
+                      Study List
+                    </Button>
+                  </Link>
+                  <Link to="new" style={{ textDecoration: "none" }}>
+                    <Button sx={{ my: 2, color: "white", display: "block" }}>
+                      Create New Resource
+                    </Button>
+                  </Link>
+                </>
               )}
             </Box>
             <Typography
@@ -253,6 +262,4 @@ const Header = (): JSX.Element => {
       </Box>
     </>
   );
-};
-
-export default Header;
+}

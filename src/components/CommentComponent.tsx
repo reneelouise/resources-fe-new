@@ -1,6 +1,4 @@
-import { ListItem, ListItemText, IconButton } from "@mui/material";
-// import { Delete as DeleteIcon } from "@mui/icons-material";
-// import axios from "axios";
+import { ListItem, ListItemText } from "@mui/material";
 import { Comment } from "../utils/interfaces";
 
 interface CommentComponentProps extends Comment {
@@ -29,9 +27,6 @@ function CommentComponent({
   return (
     <>
       <ListItem>
-        {/* <IconButton>
-          <DeleteIcon />
-        </IconButton> */}
         <ListItemText primary={name} />
         <ListItemText secondary={text} />
         <ListItemText secondary={created_at} />
