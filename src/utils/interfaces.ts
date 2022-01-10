@@ -17,6 +17,27 @@ export interface IResource {
   tags: string[] | null;
 }
 
+
+/*
+export interface IStudyList {
+  id: number;
+  name: string;
+  user_name: string;
+  user_id: string;
+  is_faculty: boolean;
+  description: string;
+  url: string;
+  content_type: string;
+  mark_stage: string;
+  created_at: string;
+  recommendation_type: string;
+  recommendation_reason: string;
+  count_of_likes: number;
+  count_of_dislikes: number;
+  number_of_comments: number;
+  tags: string[] | null;
+}*/
+
 export interface IUser {
   id: number;
   name: string;
@@ -40,3 +61,5 @@ export interface IPopularResource {
   resource_name: string;
   popularity: number;
 }
+
+

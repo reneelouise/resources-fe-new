@@ -10,8 +10,8 @@ interface Tags {
 const Search = (): JSX.Element => {
   const [tags, setTags] = useState<Tags[]>([]);
   const [keyword, setKeyword] = useState<string>("");
-  // const [filteredResults, setFilteredResults] = useState<any[]>([]);
 
+  // const [filteredResults, setFilteredResults] = useState<any[]>([]);
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
   const fetchTags = async () => {
