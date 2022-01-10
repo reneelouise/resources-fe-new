@@ -13,7 +13,7 @@ ReactDOM.render(
         <Route path="/" element={<App />}>
           <Route path="resources" element={<ResourceList />} />
           <Route path="studylist" element={<StudyList />} />
-          <Route path="/new" element={<CreateNewResource />} />
+          <Route path="new" element={<CreateNewResource />} />
         </Route>
       </Routes>
     </BrowserRouter>
