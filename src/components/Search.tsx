@@ -65,6 +65,7 @@ const Search = (props: Props): JSX.Element => {
           return (
             <div id="tags" key={tag.name}>
               <Chip
+                id="tag" 
                 color="success"
                 clickable={true}
                 label={tag.name}
