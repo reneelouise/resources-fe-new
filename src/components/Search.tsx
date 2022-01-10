@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Chip } from "@mui/material";
+import {
+  Button,
+  Chip,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { IResource } from "../utils/interfaces";
 
 interface Tags {
@@ -13,7 +20,7 @@ interface Props {
   setFilteredResults: (data: IResource[]) => void;
 }
 
-const Search = (props: Props): JSX.Element => {
+export default function Search(props: Props): JSX.Element {
   const { resources, setFilteredResults } = props;
   const [tags, setTags] = useState<Tags[]>([]);
   const [keyword, setKeyword] = useState<string>("");
@@ -25,6 +32,7 @@ const Search = (props: Props): JSX.Element => {
     setFilteredResults(
       resources.filter((resource) => {
         return (
+          resource.resource_name?.includes(keyword) ||
           resource.content_type?.includes(keyword) ||
           resource.user_name?.includes(keyword) ||
           resource.tags?.includes(keyword)
@@ -49,37 +57,50 @@ const Search = (props: Props): JSX.Element => {
 
   return (
     <>
-      <div id="search-container">
-        <div id="search-form">
+      <Grid container pt={3}>
+        <Grid item xs></Grid>
+        <Grid
+          item
+          xs={6}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
           <form onSubmit={(e) => searchResources(e)}>
-            <input
-              id="search"
-              value={keyword}
-              type="text"
-              placeholder="Search for resources"
-              onChange={(e) => setKeyword(e.target.value)}
-            />
-            <button type="submit" id="search-btn">
-              Search
-            </button>
-          </form>
-        </div>
-        {tags.map((tag) => {
-          return (
-            <div id="tags" key={tag.name}>
-              <Chip
-                id="tag"
-                color="success"
-                clickable={true}
-                label={tag.name}
-                onClick={() => setKeyword(tag.name)}
+            <Stack direction="row" spacing={2}>
+              <TextField
+                fullWidth
+                id="search"
+                label="Search resources"
+                variant="outlined"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
               />
-            </div>
-          );
-        })}
-      </div>
+              <Button variant="contained" type="submit">
+                Search
+              </Button>
+            </Stack>
+          </form>
+          <Grid container py={2} justifyContent="center" alignItems="center">
+            <Stack direction="row" spacing={1}>
+              <Typography pt={0.5}>Popular tags:</Typography>
+              {tags.map((tag) => {
+                return (
+                  <Chip
+                    key={tag.name}
+                    id="tag"
+                    color="secondary"
+                    clickable={true}
+                    label={tag.name}
+                    onClick={() => setKeyword(tag.name)}
+                  />
+                );
+              })}
+            </Stack>
+          </Grid>
+        </Grid>
+        <Grid item xs></Grid>
+      </Grid>
     </>
   );
-};
-
-export default Search;
+}
