@@ -35,8 +35,10 @@ export default function ResourceLis(): JSX.Element {
             setFilteredResults={setFilteredResults}
           />
         </Grid>
-        <Divider variant="middle" />
-        <Grid item xs={7} pr={3}>
+      </Grid>
+      <Divider variant="middle" />
+      <Grid container pt={2} spacing={2}>
+        <Grid item xs={8}>
           <Box>
             {filteredResults.length < 1
               ? resources.map((resource) => (
@@ -51,10 +53,8 @@ export default function ResourceLis(): JSX.Element {
                 ))}
           </Box>
         </Grid>
-        <Grid item xs={4}>
-          <Box>
-            <PopularResources />
-          </Box>
+        <Grid item xs>
+          <PopularResources />
         </Grid>
       </Grid>
     </Container>

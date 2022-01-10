@@ -112,7 +112,6 @@ export default function Header(): JSX.Element {
               <Box
                 sx={{
                   minWidth: "300px",
-                  textAlign: "left",
                   display: { xs: "flex" },
                 }}
               >
@@ -129,8 +128,7 @@ export default function Header(): JSX.Element {
                       >
                         <Select
                           displayEmpty
-                          sx={{ width: 200, py: 0 }}
-                          id="users"
+                          sx={{ width: 200, height: "2.5rem" }}
                           value={selectedUser}
                           onChange={(e) => handleSelectChange(e.target.value)}
                         >
