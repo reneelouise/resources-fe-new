@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Chip } from "@mui/material";
-import { IResource, IUser } from "../utils/interfaces";
+import { IResource } from "../utils/interfaces";
 
 interface Tags {
   name: string;
@@ -29,7 +29,7 @@ const Search = (props: Props): JSX.Element => {
     }
   };
 
-  const searchResources = (e: any) => {
+  const searchResources = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFilteredResults(
       resources.filter((resource) => {
@@ -58,7 +58,9 @@ const Search = (props: Props): JSX.Element => {
               placeholder="Search for resources"
               onChange={(e) => setKeyword(e.target.value)}
             />
-            <button id="search-btn">Search</button>
+            <button type="submit" id="search-btn">
+              Search
+            </button>
           </form>
         </div>
         {tags.map((tag) => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Resource } from "./Resource";
-import { IResource, IUser } from "../utils/interfaces";
+import { IResource } from "../utils/interfaces";
 import PopularResources from "../components/PopularResources";
 import Search from "../components/Search";
 
