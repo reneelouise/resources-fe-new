@@ -81,9 +81,9 @@ const Search = (props: Props): JSX.Element => {
               </Button>
             </Stack>
           </form>
-          <Grid item py={2}>
+          <Grid container py={2} justifyContent="center" alignItems="center">
             <Stack direction="row" spacing={1}>
-              <Typography>Popular tags:</Typography>
+              <Typography pt={0.5}>Popular tags:</Typography>
               {tags.map((tag) => {
                 return (
                   <Chip
