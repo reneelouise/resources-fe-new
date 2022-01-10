@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Chip, tableHeadClasses } from "@mui/material";
+import { Chip } from "@mui/material";
 
 interface Tags {
   name: string;
