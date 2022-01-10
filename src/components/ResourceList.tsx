@@ -5,6 +5,10 @@ import { IResource } from "../utils/interfaces";
 import PopularResources from "../components/PopularResources";
 import Search from "../components/Search";
 
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+
 const ResourceList = (): JSX.Element => {
   const [resources, setResources] = useState<IResource[]>([]);
   const [refetch, setRefetch] = useState<number>(1);
@@ -25,15 +29,29 @@ const ResourceList = (): JSX.Element => {
   }, [refetch]);
 
   return (
-    <>
-      <Search />
-      <PopularResources />
-      {resources.map((resource) => (
-        <div key={resource.id}>
-          <Resource {...resource} setRefetch={setRefetch} />
-        </div>
-      ))}
-    </>
+    <Container maxWidth="xl">
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Box>
+            <Search />
+          </Box>
+        </Grid>
+        <Grid item xs={8}>
+          <Box>
+            {resources.map((resource) => (
+              <div key={resource.id}>
+                <Resource {...resource} setRefetch={setRefetch} />
+              </div>
+            ))}
+          </Box>
+        </Grid>
+        <Grid item xs={4}>
+          <Box>
+            <PopularResources />
+          </Box>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
