@@ -20,20 +20,16 @@ export default function Header(): JSX.Element {
   const [selectedUser, setSelectedUser] = useState<string>("");
   const [showLogInForm, setShowLogInForm] = useState<boolean>(false);
 
-  const baseUrl = "https://bibliotech-project.herokuapp.com";
-
-  const fetchUsers = async () => {
-    try {
-      // console.log('fetchUsers is running')
-      const res = await axios.get(`${baseUrl}/users`);
-      setUsers(res.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    // console.log('useEffect is firing')
+    const baseUrl = process.env.REACT_APP_API_URL;
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get(`${baseUrl}/users`);
+        setUsers(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
     fetchUsers();
   }, []);
 
@@ -66,6 +62,7 @@ export default function Header(): JSX.Element {
   };
 
   const userIdInLocalStorage = localStorage.getItem("loggedInUser");
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>

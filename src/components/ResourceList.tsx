@@ -14,18 +14,17 @@ const ResourceList = (): JSX.Element => {
   const [refetch, setRefetch] = useState<number>(1);
   const [filteredResults, setFilteredResults] = useState<IResource[]>([]);
 
-  const baseUrl = "https://bibliotech-project.herokuapp.com";
-
-  const fetchResources = async () => {
-    try {
-      const res = await axios.get(`${baseUrl}/resources`);
-      setResources(res.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
+    const fetchResources = async () => {
+      const baseUrl = process.env.REACT_APP_API_URL;
+      try {
+        const res = await axios.get(`${baseUrl}/resources`);
+        setResources(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     fetchResources();
   }, [refetch]);
 
