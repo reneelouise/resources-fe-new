@@ -41,7 +41,6 @@ const Search = (): JSX.Element => {
       <div id="search-container">
         <div id="search-form">
           <form>
-            
             <input
               id="search"
               value={keyword}
@@ -56,7 +55,12 @@ const Search = (): JSX.Element => {
           return (
             <div id="tags" key={tag.name}>
               {/* <button onClick={() => setKeyword(tag.name)}>{tag.name}</button> */}
-              <Chip color="success" clickable={true} label={tag.name} onClick={() => setKeyword(tag.name)} />
+              <Chip
+                color="success"
+                clickable={true}
+                label={tag.name}
+                onClick={() => setKeyword(tag.name)}
+              />
             </div>
           );
         })}{" "}
