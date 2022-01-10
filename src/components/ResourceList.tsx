@@ -7,7 +7,7 @@ import Search from "../components/Search";
 
 import { Box, Container, Divider, Grid } from "@mui/material";
 
-const ResourceList = (): JSX.Element => {
+export default function ResourceLis(): JSX.Element {
   const [resources, setResources] = useState<IResource[]>([]);
   const [refetch, setRefetch] = useState<number>(1);
   const [filteredResults, setFilteredResults] = useState<IResource[]>([]);
@@ -59,6 +59,4 @@ const ResourceList = (): JSX.Element => {
       </Grid>
     </Container>
   );
-};
-
-export default ResourceList;
+}

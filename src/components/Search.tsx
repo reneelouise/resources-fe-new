@@ -20,7 +20,7 @@ interface Props {
   setFilteredResults: (data: IResource[]) => void;
 }
 
-const Search = (props: Props): JSX.Element => {
+export default function Search(props: Props): JSX.Element {
   const { resources, setFilteredResults } = props;
   const [tags, setTags] = useState<Tags[]>([]);
   const [keyword, setKeyword] = useState<string>("");
@@ -103,6 +103,4 @@ const Search = (props: Props): JSX.Element => {
       </Grid>
     </>
   );
-};
-
-export default Search;
+}
