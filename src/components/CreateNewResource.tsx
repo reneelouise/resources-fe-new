@@ -1,9 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import {
-  Dialog,
-  DialogContent,
-  DialogActions,
   Container,
   Box,
   Grid,
@@ -18,6 +15,7 @@ import {
   FormControlLabel,
   Radio,
   Typography,
+  Alert,
 } from "@mui/material";
 
 export default function CreateNewResource(): JSX.Element {
@@ -28,7 +26,8 @@ export default function CreateNewResource(): JSX.Element {
   const [markStage, setMarkStage] = useState<string>(" ");
   const [recommendationType, setRecommendationType] = useState<string>(" ");
   const [recommendationReason, setRecommendationReason] = useState<string>(" ");
-  const [open, setOpen] = useState<boolean>(false);
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+  const [openSubmit, setOpenSubmit] = useState<boolean>(false);
 
   const content_type = [
     "magazine",
@@ -69,63 +68,56 @@ export default function CreateNewResource(): JSX.Element {
     "I haven't used this resource but it looks promising",
   ];
 
-  const baseUrl = process.env.REACT_APP_API_URL;
+  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+  const baseUrl = "https://bibliotech-project.herokuapp.com";
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setResourceName(resourceName.trim());
+    setDescription(description.trim());
+    setUrl(url.trim());
+    setContentType(contentType.trim());
+    setMarkStage(markStage.trim());
+    setRecommendationType(recommendationType.trim());
+    setRecommendationReason(recommendationReason.trim());
     const author = localStorage.getItem("loggedInUser");
     const authorId = author ? Number(author) : null;
     const postToDb = async () => {
       try {
-        await axios.post(`${baseUrl}/resources`, {
-          name: resourceName,
-          author_id: authorId,
-          description: description,
-          url: url,
-          content_type: contentType,
-          mark_stage: markStage,
-          recommendation_type: recommendationType,
-          recommendation_reason: recommendationReason,
-        });
-        setResourceName("");
-        setDescription("");
-        setUrl("");
-        setContentType("");
-        setMarkStage("");
-        setRecommendationType("");
-        setRecommendationReason("");
+        setOpenAlert(false);
+        await axios
+          .post(`${baseUrl}/resources`, {
+            name: resourceName,
+            author_id: authorId,
+            description: description,
+            url: url,
+            content_type: contentType,
+            mark_stage: markStage,
+            recommendation_type: recommendationType,
+            recommendation_reason: recommendationReason,
+          })
+          .then(() => setOpenSubmit(true));
+        delay(3000).then(() => setOpenSubmit(false));
+        setResourceName(" ");
+        setDescription(" ");
+        setUrl(" ");
+        setContentType(" ");
+        setMarkStage(" ");
+        setRecommendationType(" ");
+        setRecommendationReason(" ");
       } catch (error) {
         console.error(error);
       }
     };
-    return (
-      authorId &&
-      resourceName &&
-      url &&
-      contentType &&
-      markStage &&
-      recommendationType
-        ? postToDb()
-        : setOpen(true),
-      (
-        <>
-          <Dialog
-            fullWidth
-            scroll="paper"
-            sx={{ height: "100%" }}
-            open={open}
-            onClose={() => setOpen(false)}
-          >
-            <DialogContent style={{ height: "450px" }}>
-              <Typography> Please complete all required fields </Typography>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setOpen(false)}>Close</Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      )
-    );
+    return authorId &&
+      resourceName.trim() &&
+      url.trim() &&
+      contentType.trim() &&
+      markStage.trim() &&
+      recommendationType.trim()
+      ? postToDb()
+      : (setOpenAlert(true), delay(3000).then(() => setOpenAlert(false)));
   };
   return (
     <Container>
@@ -142,7 +134,7 @@ export default function CreateNewResource(): JSX.Element {
                 fullWidth
                 id="resourceName"
                 value={resourceName.trim()}
-                onChange={(e) => setResourceName(e.target.value)}
+                onChange={(e) => setResourceName(e.target.value.trim())}
                 label="Resource Name"
                 autoFocus
               />
@@ -154,7 +146,7 @@ export default function CreateNewResource(): JSX.Element {
                 fullWidth
                 id="resourceName"
                 value={resourceName.trim()}
-                onChange={(e) => setResourceName(e.target.value)}
+                onChange={(e) => setResourceName(e.target.value.trim())}
                 label="Resource Name"
                 autoFocus
               />
@@ -168,7 +160,7 @@ export default function CreateNewResource(): JSX.Element {
               rows={4}
               fullWidth
               value={description.trim()}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => setDescription(e.target.value.trim())}
               placeholder="Please enter a description for the resource"
             />
           </Grid>
@@ -181,7 +173,7 @@ export default function CreateNewResource(): JSX.Element {
                 id="resourceURL"
                 label="Resource URL"
                 value={url.trim()}
-                onChange={(e) => setUrl(e.target.value)}
+                onChange={(e) => setUrl(e.target.value.trim())}
               />
             ) : (
               <TextField
@@ -192,7 +184,7 @@ export default function CreateNewResource(): JSX.Element {
                 id="resourceURL"
                 label="Resource URL"
                 value={url.trim()}
-                onChange={(e) => setUrl(e.target.value)}
+                onChange={(e) => setUrl(e.target.value.trim())}
               />
             )}
           </Grid>
@@ -205,7 +197,7 @@ export default function CreateNewResource(): JSX.Element {
                   id="select_content_type"
                   required
                   value={contentType.trim()}
-                  onChange={(e) => setContentType(e.target.value)}
+                  onChange={(e) => setContentType(e.target.value.trim())}
                   label="Age"
                 >
                   {content_type.map((el, i) => {
@@ -223,7 +215,7 @@ export default function CreateNewResource(): JSX.Element {
                   id="select_content_type"
                   required
                   value={contentType.trim()}
-                  onChange={(e) => setContentType(e.target.value)}
+                  onChange={(e) => setContentType(e.target.value.trim())}
                   label="Age"
                 >
                   {content_type.map((el, i) => {
@@ -246,7 +238,7 @@ export default function CreateNewResource(): JSX.Element {
                   id="select_mark_stage"
                   required
                   value={markStage.trim()}
-                  onChange={(e) => setMarkStage(e.target.value)}
+                  onChange={(e) => setMarkStage(e.target.value.trim())}
                   label="Mark Stage"
                 >
                   {mark_stage.map((el, i) => {
@@ -264,7 +256,7 @@ export default function CreateNewResource(): JSX.Element {
                   id="select_mark_stage"
                   required
                   value={markStage.trim()}
-                  onChange={(e) => setMarkStage(e.target.value)}
+                  onChange={(e) => setMarkStage(e.target.value.trim())}
                   label="Mark Stage"
                 >
                   {mark_stage.map((el, i) => {
@@ -285,7 +277,7 @@ export default function CreateNewResource(): JSX.Element {
                 <RadioGroup
                   aria-label="recommendation_type"
                   name="recommendation_type"
-                  onChange={(e) => setRecommendationType(e.target.value)}
+                  onChange={(e) => setRecommendationType(e.target.value.trim())}
                 >
                   {recommendation_type.map((el, i) => {
                     return (
@@ -305,7 +297,7 @@ export default function CreateNewResource(): JSX.Element {
                 <RadioGroup
                   aria-label="recommendation_type"
                   name="recommendation_type"
-                  onChange={(e) => setRecommendationType(e.target.value)}
+                  onChange={(e) => setRecommendationType(e.target.value.trim())}
                 >
                   {recommendation_type.map((el, i) => {
                     return (
@@ -329,7 +321,7 @@ export default function CreateNewResource(): JSX.Element {
               rows={2}
               fullWidth
               placeholder="Please enter a reason for the recommendation"
-              onChange={(e) => setRecommendationReason(e.target.value)}
+              onChange={(e) => setRecommendationReason(e.target.value.trim())}
             />
           </Grid>
         </Grid>
@@ -341,6 +333,12 @@ export default function CreateNewResource(): JSX.Element {
         >
           Create Resource
         </Button>
+        {openAlert && (
+          <Alert severity="error">Please complete all required fields</Alert>
+        )}
+        {openSubmit && (
+          <Alert severity="success">Resource successfully submitted</Alert>
+        )}
       </Box>
     </Container>
   );
