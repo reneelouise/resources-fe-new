@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-// import Paper from "@mui/material/Paper";
+import Paper from "@mui/material/Paper";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
@@ -71,7 +71,7 @@ const Header = (): JSX.Element => {
   };
 
   const userIdInLocalStorage = localStorage.getItem("loggedInUser");
-//   console.log(userIdInLocalStorage);
+  //   console.log(userIdInLocalStorage);
 
   return (
     <>
@@ -155,6 +155,8 @@ const Header = (): JSX.Element => {
                   Logout
                 </Button>
               </>
+            )}
+            <Typography
               sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}
             >
               📚 BiblioTech

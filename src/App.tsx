@@ -5,7 +5,6 @@ import PopularResources from "./components/PopularResources";
 import Search from "./components/Search";
 
 export default function App(): JSX.Element {
-  const [loggedInUser, setLoggedInUser] = useState<string>("");
   return (
     <>
       <Header />

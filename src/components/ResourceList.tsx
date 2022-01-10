@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { IResource, Comment } from "../utils/interfaces";
 import CommentsSection from "./CommentsSection";
 import CommentComponent from "./CommentComponent";
+import Resource from "./Resource";
 import { SubmitComment } from "./SubmitComment";
 import {
   IconButton,
@@ -23,11 +24,11 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import axios from "axios";
 
-interface ResourceProps extends IResource {
+interface ResourceListProps extends IResource {
   handleRefetch: () => void;
 }
 
-export const Resource = (props: ResourceProps): JSX.Element => {
+export const ResourceList = (props: ResourceListProps): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
   const [comments, setComments] = useState<Comment[]>([]);
   const [resources, setResources] = useState<IResource[]>([]);
@@ -58,11 +59,11 @@ export const Resource = (props: ResourceProps): JSX.Element => {
     <>
       {resources.map((resource) => (
         <div key={resource.id}>
-          <Resource {...resource} setRefetch={setRefetch} />
+          <Resource {...resource} setRefetch={setRefetchComments} />
         </div>
       ))}
     </>
   );
 };
 
-export default Resource;
+export default ResourceList;
