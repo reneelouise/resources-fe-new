@@ -9,13 +9,12 @@ interface Tags {
 }
 
 interface Props {
-  resources: IResource[]
+  resources: IResource[];
   setFilteredResults: (data: IResource[]) => void;
-
 }
 
 const Search = (props: Props): JSX.Element => {
-  const { resources, setFilteredResults } = props
+  const { resources, setFilteredResults } = props;
   const [tags, setTags] = useState<Tags[]>([]);
   const [keyword, setKeyword] = useState<string>("");
 
@@ -30,26 +29,22 @@ const Search = (props: Props): JSX.Element => {
     }
   };
 
-
   const searchResources = (e: any) => {
     e.preventDefault();
     setFilteredResults(
       resources.filter((resource) => {
         return (
-          resource.content_type?.includes(keyword) || resource.user_name?.includes(keyword) ||
+          resource.content_type?.includes(keyword) ||
+          resource.user_name?.includes(keyword) ||
           resource.tags?.includes(keyword)
         );
       })
     );
   };
 
-
-
   useEffect(() => {
-
     fetchTags();
   }, []);
-
 
   return (
     <>
@@ -73,8 +68,7 @@ const Search = (props: Props): JSX.Element => {
                 color="success"
                 clickable={true}
                 label={tag.name}
-                onClick={() => setKeyword(tag.name)
-                }
+                onClick={() => setKeyword(tag.name)}
               />
             </div>
           );
