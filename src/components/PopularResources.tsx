@@ -26,6 +26,14 @@ const PopularResources = (): JSX.Element => {
     fetchPopularResources();
   }, []);
 
+  function fetchUserInitials(userName: string) {
+    let uppercasedInitials = "";
+    userName
+      .split(" ")
+      .map((word) => (uppercasedInitials += word[0].toUpperCase()));
+    return uppercasedInitials;
+  }
+
   return (
     <Container maxWidth="sm">
       <TableContainer component={Paper}>
@@ -48,7 +56,7 @@ const PopularResources = (): JSX.Element => {
                   {i + 1}
                 </TableCell>
                 <TableCell>{resource.resource_name}</TableCell>
-                <TableCell>{resource.user_name}</TableCell>
+                <TableCell>{fetchUserInitials(resource.user_name)}</TableCell>
                 <TableCell align="right">{resource.popularity}</TableCell>
               </TableRow>
             ))}
