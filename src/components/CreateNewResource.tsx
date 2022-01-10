@@ -15,7 +15,7 @@ import {
   FormControlLabel,
   Radio,
   Typography,
-  Alert
+  Alert,
 } from "@mui/material";
 
 export default function CreateNewResource(): JSX.Element {
@@ -68,7 +68,7 @@ export default function CreateNewResource(): JSX.Element {
     "I haven't used this resource but it looks promising",
   ];
 
-  const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+  const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
@@ -85,39 +85,39 @@ export default function CreateNewResource(): JSX.Element {
     const authorId = author ? Number(author) : null;
     const postToDb = async () => {
       try {
-        setOpenAlert(false)
-        await axios.post(`${baseUrl}/resources`, {
-          name: resourceName,
-          author_id: authorId,
-          description: description,
-          url: url,
-          content_type: contentType,
-          mark_stage: markStage,
-          recommendation_type: recommendationType,
-          recommendation_reason: recommendationReason,
-        }).then(res => setOpenSubmit(true));
-        delay(3000).then(() => setOpenSubmit(false))
+        setOpenAlert(false);
+        await axios
+          .post(`${baseUrl}/resources`, {
+            name: resourceName,
+            author_id: authorId,
+            description: description,
+            url: url,
+            content_type: contentType,
+            mark_stage: markStage,
+            recommendation_type: recommendationType,
+            recommendation_reason: recommendationReason,
+          })
+          .then((res) => setOpenSubmit(true));
+        delay(3000).then(() => setOpenSubmit(false));
         setResourceName(" ");
         setDescription(" ");
         setUrl(" ");
         setContentType(" ");
         setMarkStage(" ");
         setRecommendationType(" ");
-        setRecommendationReason(" ")
+        setRecommendationReason(" ");
       } catch (error) {
         console.error(error);
       }
     };
-    return (
-      (authorId &&
-        resourceName.trim() &&
-        url.trim() &&
-        contentType.trim() &&
-        markStage.trim() &&
-        recommendationType.trim())
-        ? (postToDb())
-        : (setOpenAlert(true), delay(3000).then(() => setOpenAlert(false)))
-    );
+    return authorId &&
+      resourceName.trim() &&
+      url.trim() &&
+      contentType.trim() &&
+      markStage.trim() &&
+      recommendationType.trim()
+      ? postToDb()
+      : (setOpenAlert(true), delay(3000).then(() => setOpenAlert(false)));
   };
   return (
     <Container>
@@ -333,8 +333,12 @@ export default function CreateNewResource(): JSX.Element {
         >
           Create Resource
         </Button>
-        {openAlert && <Alert severity="error">Please complete all required fields</Alert>}
-        {openSubmit && <Alert severity="success">Resource successfully submitted</Alert>}
+        {openAlert && (
+          <Alert severity="error">Please complete all required fields</Alert>
+        )}
+        {openSubmit && (
+          <Alert severity="success">Resource successfully submitted</Alert>
+        )}
       </Box>
     </Container>
   );
