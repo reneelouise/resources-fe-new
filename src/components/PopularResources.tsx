@@ -33,9 +33,13 @@ const PopularResources = (): JSX.Element => {
   }
 
   return (
-    <Container maxWidth="sm">
+    <Container>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 500 }} size="small" aria-label="a dense table">
+        <Table
+          sx={{ minWidth: "100%" }}
+          size="small"
+          aria-label="most popular resources"
+        >
           <TableHead>
             <TableRow>
               <TableCell align="left">Rank</TableCell>

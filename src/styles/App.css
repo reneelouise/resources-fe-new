@@ -1,16 +1,4 @@
-* {
+body {
   margin: 0px;
   padding: 0px;
-}
-
-#tags {
-  display: inline-block;
-  justify-content: center;
-  margin: 10px;
-  border-radius: 10px;
-}
-
-#tags h2 {
-  display: inline;
-  align-items: center;
 }
