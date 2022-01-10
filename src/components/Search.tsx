@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Chip } from "@mui/material";
 
 interface Tags {
-  tag_id: number;
   name: string;
   times_used?: number;
 }
@@ -41,7 +41,6 @@ const Search = (): JSX.Element => {
       <div id="search-container">
         <div id="search-form">
           <form>
-            <h2>Searched terms: {keyword}</h2>
             <input
               id="search"
               value={keyword}
@@ -54,8 +53,14 @@ const Search = (): JSX.Element => {
         </div>
         {tags.map((tag) => {
           return (
-            <div id="tags" key={tag.tag_id}>
-              <button onClick={() => setKeyword(tag.name)}>{tag.name}</button>
+            <div id="tags" key={tag.name}>
+              {/* <button onClick={() => setKeyword(tag.name)}>{tag.name}</button> */}
+              <Chip
+                color="success"
+                clickable={true}
+                label={tag.name}
+                onClick={() => setKeyword(tag.name)}
+              />
             </div>
           );
         })}{" "}
