@@ -3,20 +3,17 @@ import { IResource, Comment } from "../utils/interfaces";
 import CommentsSection from "./CommentsSection";
 import { SubmitComment } from "./SubmitComment";
 import {
-  IconButton,
   Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Card,
+  Grid,
+  Link,
   Typography,
   Box,
 } from "@mui/material";
-import {
-  OpenInFull as OpenInFullIcon,
-  Delete as DeleteIcon,
-} from "@mui/icons-material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import axios from "axios";
@@ -26,13 +23,25 @@ interface ResourceProps extends IResource {
 }
 
 export const Resource = (props: ResourceProps): JSX.Element => {
+  const {
+    id,
+    resource_name,
+    user_name,
+    content_type,
+    tags,
+    count_of_likes,
+    count_of_dislikes,
+    number_of_comments,
+    url,
+  } = props;
   const [open, setOpen] = useState<boolean>(false);
   const [comments, setComments] = useState<Comment[]>([]);
   const [refetchComments, setRefetchComments] = useState<number>(1);
 
-  const baseUrl = "https://bibliotech-project.herokuapp.com";
+  const baseUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
+    const baseUrl = process.env.REACT_APP_API_URL;
     const fetchComments = async () => {
       try {
         const res = await axios.get(
@@ -52,29 +61,101 @@ export const Resource = (props: ResourceProps): JSX.Element => {
       .then(() => props.setRefetch((prev) => -prev));
   };
 
+  const formatContentType = (word: string): string => {
+    return word[0].toUpperCase() + word.slice(1);
+  };
+
   return (
     <>
-      <Card sx={{ width: "250px" }}>
-        <Typography variant="h6" component="h6">
-          {props.id}
-        </Typography>
-        <Typography>Author: {props.user_name}</Typography>
-        <Typography variant="body2">
-          Content type: {props.content_type}
-        </Typography>
-        <Typography variant="body2">Tags: {props.tags}</Typography>
-        <Typography variant="body2">
-          <ThumbUpIcon /> {props.count_of_likes}
-          <ThumbDownIcon /> {props.count_of_dislikes}
-          {props.number_of_comments} comments
-        </Typography>
-        <IconButton color="primary" onClick={() => setOpen(true)}>
-          <Typography>Expand</Typography>
-          <OpenInFullIcon />
-        </IconButton>
-        <IconButton onClick={handleDeleteResource}>
-          <DeleteIcon />
-        </IconButton>
+      <Card sx={{ minWidth: "100%", mb: 2, p: 2 }}>
+        <Grid container direction="row" justifyContent="space-between">
+          <Grid item xs={10}>
+            <Box>
+              <Typography variant="h6" component="h6" py={1}>
+                {resource_name}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={2}>
+            <Link href={url} style={{ textDecoration: "none" }} target="_blank">
+              <Button color="primary" variant="outlined">
+                Go to resource
+              </Button>
+            </Link>
+          </Grid>
+        </Grid>
+
+        <Grid container>
+          <Grid item xs={3}>
+            <Typography variant="body1" component="h6">
+              Recommended By:
+            </Typography>
+          </Grid>
+          <Grid item xs={9}>
+            <Typography variant="body1" component="h6">
+              {user_name}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={3}>
+            <Typography variant="body1" component="h6">
+              Content Type:
+            </Typography>
+          </Grid>
+          <Grid item xs={9}>
+            <Typography variant="body1" component="h6">
+              {formatContentType(content_type)}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={3}>
+            <Typography variant="body1" component="h6">
+              Tags:
+            </Typography>
+          </Grid>
+          <Grid item xs={9}>
+            <Typography variant="body1" component="h6">
+              {!tags ? "No tags added" : tags}
+            </Typography>
+          </Grid>
+        </Grid>
+
+        <Grid container>
+          <Grid item xs={3}>
+            <Typography variant="body1" component="h6">
+              Likes: {count_of_likes}
+            </Typography>
+          </Grid>
+          <Grid item xs={3}>
+            <Typography variant="body1" component="h6">
+              Dislikes: {count_of_dislikes}
+            </Typography>
+          </Grid>
+          <Grid item xs={3}>
+            <Typography variant="body1" component="h6">
+              {number_of_comments} comments
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container direction="row" justifyContent="flex-end" p={2}>
+          <Button
+            color="primary"
+            variant="outlined"
+            onClick={() => setOpen(true)}
+            sx={{ mr: 1 }}
+          >
+            Open
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={handleDeleteResource}
+          >
+            Delete
+          </Button>
+        </Grid>
       </Card>
       <Dialog
         fullWidth
@@ -83,17 +164,15 @@ export const Resource = (props: ResourceProps): JSX.Element => {
         open={open}
         onClose={() => setOpen(false)}
       >
-        <DialogTitle>{props.name}</DialogTitle>
+        <DialogTitle>{resource_name}</DialogTitle>
         <DialogContent style={{ height: "450px" }}>
-          <Typography> Author: {props.user_name} </Typography>
+          <Typography> Author: {user_name} </Typography>
+          <Typography variant="body2">Content type: {content_type}</Typography>
+          <Typography variant="body2"> Tags: {tags} </Typography>
           <Typography variant="body2">
-            Content type: {props.content_type}
-          </Typography>
-          <Typography variant="body2"> Tags: {props.tags} </Typography>
-          <Typography variant="body2">
-            <ThumbUpIcon /> {props.count_of_likes}
-            <ThumbDownIcon /> {props.count_of_dislikes}
-            {props.number_of_comments} comments
+            <ThumbUpIcon /> {count_of_likes}
+            <ThumbDownIcon /> {count_of_dislikes}
+            {number_of_comments} comments
           </Typography>
           <Box
             style={{
@@ -115,7 +194,7 @@ export const Resource = (props: ResourceProps): JSX.Element => {
             }}
           >
             <SubmitComment
-              resource_id={props.id}
+              resource_id={id}
               user_id={localStorage.getItem("loggedInUser")}
               setRefetchComments={setRefetchComments}
               setRefetch={props.setRefetch}

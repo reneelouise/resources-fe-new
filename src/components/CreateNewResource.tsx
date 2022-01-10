@@ -72,6 +72,7 @@ export default function CreateNewResource(): JSX.Element {
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setResourceName(resourceName.trim());

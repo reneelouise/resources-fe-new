@@ -15,14 +15,12 @@ const PopularResources = (): JSX.Element => {
     []
   );
 
-  const baseUrl = "https://bibliotech-project.herokuapp.com";
-
-  const fetchPopularResources = async () => {
-    const res = await axios.get(`${baseUrl}/resources/popular`);
-    setPopularResources(res.data.data);
-  };
-
   useEffect(() => {
+    const baseUrl = process.env.REACT_APP_API_URL;
+    const fetchPopularResources = async () => {
+      const res = await axios.get(`${baseUrl}/resources/popular`);
+      setPopularResources(res.data.data);
+    };
     fetchPopularResources();
   }, []);
 

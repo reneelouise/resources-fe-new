@@ -1,6 +1,6 @@
 export interface IResource {
   id: number;
-  name: string;
+  resource_name: string;
   user_name: string;
   user_id: string;
   is_faculty: boolean;
