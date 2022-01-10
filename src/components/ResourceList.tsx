@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { IResource, Comment } from "../utils/interfaces";
 import CommentsSection from "./CommentsSection";
 import CommentComponent from "./CommentComponent";
+import Resource from "./Resource";
 import { SubmitComment } from "./SubmitComment";
 import {
   IconButton,
@@ -23,11 +24,11 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import axios from "axios";
 
-interface ResourceProps extends IResource {
+interface ResourceListProps extends IResource {
   handleRefetch: () => void;
 }
 
-export const Resource = (props: ResourceProps): JSX.Element => {
+export const ResourceList = (props: ResourceListProps): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
   const [comments, setComments] = useState<Comment[]>([]);
   const [resources, setResources] = useState<IResource[]>([]);
@@ -56,79 +57,13 @@ export const Resource = (props: ResourceProps): JSX.Element => {
 
   return (
     <>
-      <Card sx={{ width: "250px" }}>
-        <Typography variant="h6" component="h6">
-          {props.name}
-        </Typography>
-        <Typography>Author: {props.author_id}</Typography>
-        <Typography variant="body2">
-          Content type: {props.content_type}
-        </Typography>
-        <Typography variant="body2">Tags: {props.tags}</Typography>
-        <Typography variant="body2">
-          <ThumbUpIcon /> {props.count_of_likes}
-          <ThumbDownIcon /> {props.count_of_dislikes}
-          {props.number_of_comments} comments!
-        </Typography>
-        <IconButton color="primary" onClick={() => setOpen(true)}>
-          <Typography>Expand</Typography>
-          <OpenInFullIcon />
-        </IconButton>
-        <IconButton onClick={handleDeleteResource}>
-          <DeleteIcon />
-        </IconButton>
-      </Card>
-      <Dialog
-        fullWidth
-        scroll="paper"
-        sx={{ height: "100%" }}
-        open={open}
-        onClose={() => setOpen(false)}
-      >
-        <DialogTitle>{props.name}</DialogTitle>
-        <DialogContent style={{ height: "450px" }}>
-          <Typography> Author: {props.author_id} </Typography>
-          <Typography variant="body2">
-            Content type: {props.content_type}
-          </Typography>
-          <Typography variant="body2"> Tags: {props.tags} </Typography>
-          <Typography variant="body2">
-            <ThumbUpIcon /> {props.count_of_likes}
-            <ThumbDownIcon /> {props.count_of_dislikes}
-            {props.number_of_comments} comments
-          </Typography>
-          <Box
-            style={{
-              position: "absolute",
-              left: "17%",
-              top: "75%",
-            }}
-          >
-            <CommentsSection
-              comments={comments}
-              setRefetchComments={setRefetchComments}
-            />
-          </Box>
-          <Box
-            style={{
-              position: "absolute",
-              left: "17%",
-              top: "65%",
-            }}
-          >
-            <SubmitComment
-              resource_id={props.id}
-              author_id={props.author_id}
-              setRefetchComments={setRefetchComments}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Close</Button>
-        </DialogActions>
-      </Dialog>
+      {resources.map((resource) => (
+        <div key={resource.id}>
+          <Resource {...resource} setRefetch={setRefetchComments} />
+        </div>
+      ))}
     </>
   );
 };
 
-export default Resource;
+export default ResourceList;
