@@ -144,8 +144,8 @@ export default function CreateNewResource(): JSX.Element {
                 required
                 fullWidth
                 id="resourceName"
-                value={resourceName.trim()}
-                onChange={(e) => setResourceName(e.target.value.trim())}
+                value={resourceName}
+                onChange={(e) => setResourceName(e.target.value)}
                 label="Resource Name"
                 autoFocus
               />
@@ -156,8 +156,8 @@ export default function CreateNewResource(): JSX.Element {
                 required
                 fullWidth
                 id="resourceName"
-                value={resourceName.trim()}
-                onChange={(e) => setResourceName(e.target.value.trim())}
+                value={resourceName}
+                onChange={(e) => setResourceName(e.target.value)}
                 label="Resource Name"
                 autoFocus
               />
@@ -170,8 +170,8 @@ export default function CreateNewResource(): JSX.Element {
               multiline
               rows={4}
               fullWidth
-              value={description.trim()}
-              onChange={(e) => setDescription(e.target.value.trim())}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Please enter a description for the resource"
             />
           </Grid>
@@ -183,8 +183,8 @@ export default function CreateNewResource(): JSX.Element {
                 fullWidth
                 id="resourceURL"
                 label="Resource URL"
-                value={url.trim()}
-                onChange={(e) => setUrl(e.target.value.trim())}
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
               />
             ) : (
               <TextField
@@ -194,8 +194,8 @@ export default function CreateNewResource(): JSX.Element {
                 fullWidth
                 id="resourceURL"
                 label="Resource URL"
-                value={url.trim()}
-                onChange={(e) => setUrl(e.target.value.trim())}
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
               />
             )}
           </Grid>
@@ -207,8 +207,8 @@ export default function CreateNewResource(): JSX.Element {
                   labelId="content_type"
                   id="select_content_type"
                   required
-                  value={contentType.trim()}
-                  onChange={(e) => setContentType(e.target.value.trim())}
+                  value={contentType}
+                  onChange={(e) => setContentType(e.target.value)}
                   label="Age"
                 >
                   {content_type.map((el, i) => {
@@ -225,8 +225,8 @@ export default function CreateNewResource(): JSX.Element {
                   labelId="content_type"
                   id="select_content_type"
                   required
-                  value={contentType.trim()}
-                  onChange={(e) => setContentType(e.target.value.trim())}
+                  value={contentType}
+                  onChange={(e) => setContentType(e.target.value)}
                   label="Age"
                 >
                   {content_type.map((el, i) => {
@@ -248,8 +248,8 @@ export default function CreateNewResource(): JSX.Element {
                   labelId="mark_stage"
                   id="select_mark_stage"
                   required
-                  value={markStage.trim()}
-                  onChange={(e) => setMarkStage(e.target.value.trim())}
+                  value={markStage}
+                  onChange={(e) => setMarkStage(e.target.value)}
                   label="Mark Stage"
                 >
                   {mark_stage.map((el, i) => {
@@ -266,8 +266,8 @@ export default function CreateNewResource(): JSX.Element {
                   labelId="mark_stage"
                   id="select_mark_stage"
                   required
-                  value={markStage.trim()}
-                  onChange={(e) => setMarkStage(e.target.value.trim())}
+                  value={markStage}
+                  onChange={(e) => setMarkStage(e.target.value)}
                   label="Mark Stage"
                 >
                   {mark_stage.map((el, i) => {
@@ -288,7 +288,7 @@ export default function CreateNewResource(): JSX.Element {
                 <RadioGroup
                   aria-label="recommendation_type"
                   name="recommendation_type"
-                  onChange={(e) => setRecommendationType(e.target.value.trim())}
+                  onChange={(e) => setRecommendationType(e.target.value)}
                 >
                   {recommendation_type.map((el, i) => {
                     return (
@@ -308,7 +308,7 @@ export default function CreateNewResource(): JSX.Element {
                 <RadioGroup
                   aria-label="recommendation_type"
                   name="recommendation_type"
-                  onChange={(e) => setRecommendationType(e.target.value.trim())}
+                  onChange={(e) => setRecommendationType(e.target.value)}
                 >
                   {recommendation_type.map((el, i) => {
                     return (
@@ -332,7 +332,7 @@ export default function CreateNewResource(): JSX.Element {
               rows={2}
               fullWidth
               placeholder="Please enter a reason for the recommendation"
-              onChange={(e) => setRecommendationReason(e.target.value.trim())}
+              onChange={(e) => setRecommendationReason(e.target.value)}
             />
           </Grid>
         </Grid>
