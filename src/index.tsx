@@ -11,6 +11,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
+          <Route path="" element={<ResourceListPage />} />
           <Route path="resources" element={<ResourceListPage />} />
           <Route path="studylist" element={<StudyList />} />
           <Route path="new" element={<CreateNewResource />} />

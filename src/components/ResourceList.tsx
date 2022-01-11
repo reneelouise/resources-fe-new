@@ -43,7 +43,10 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
     })
     .map((resource) => (
       <div key={resource.id}>
-        <ResourceCard resource={resource} setRefetch={setRefetch} />
+        <ResourceCard
+          resource={resource}
+          setRefetch={() => setRefetch((prev) => -prev)}
+        />
       </div>
     ));
 

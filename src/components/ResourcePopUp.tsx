@@ -1,8 +1,5 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
 import { IResource } from "../utils/interfaces";
 import CommentsSection from "./CommentsSection";
-import SubmitComment from "./SubmitComment";
 import {
   Button,
   Dialog,
@@ -33,22 +30,6 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
     number_of_comments,
   } = props.resource;
 
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [refetchComments, setRefetchComments] = useState<number>(1);
-
-  useEffect(() => {
-    const baseUrl = process.env.REACT_APP_API_URL;
-    const fetchComments = async () => {
-      try {
-        const res = await axios.get(`${baseUrl}/resources/${id}/comments`);
-        setComments(res.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchComments();
-  }, [refetchComments, id]);
-
   return (
     <Dialog
       fullWidth
@@ -74,24 +55,7 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
             top: "75%",
           }}
         >
-          {/* <CommentsSection
-            comments={[...comments]}
-            setRefetchComments={setRefetchComments}
-          /> */}
-        </Box>
-        <Box
-          style={{
-            position: "absolute",
-            left: "17%",
-            top: "65%",
-          }}
-        >
-          {/* <SubmitComment
-            resource_id={id}
-            user_id={localStorage.getItem("loggedInUser")}
-            setRefetchComments={setRefetchComments}
-            // setRefetch={props.setRefetch}
-          /> */}
+          <CommentsSection resource_id={id} />
         </Box>
       </DialogContent>
       <DialogActions>
