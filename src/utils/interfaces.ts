@@ -14,7 +14,7 @@ export interface IResource {
   count_of_likes: number;
   count_of_dislikes: number;
   number_of_comments: number;
-  tags: string[] | null;
+  tags: string | null;
 }
 
 /*

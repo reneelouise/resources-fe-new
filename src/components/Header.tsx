@@ -4,16 +4,18 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { IUser } from "../utils/interfaces";
 
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import FormControl from "@mui/material/FormControl";
-import Paper from "@mui/material/Paper";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
+import {
+  AppBar,
+  Box,
+  Button,
+  FormControl,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material/";
 
 export default function Header(): JSX.Element {
   const [users, setUsers] = useState<IUser[]>([]);

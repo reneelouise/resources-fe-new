@@ -1,16 +1,17 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { Box } from "@mui/material";
 import { Resource } from "./Resource";
 import { IResource } from "../utils/interfaces";
-import PopularResources from "../components/PopularResources";
-import Search from "../components/Search";
 
-import { Box, Container, Divider, Grid } from "@mui/material";
+interface ResourceListProps {
+  searchTerm: string;
+}
 
-export default function ResourceLis(): JSX.Element {
+export default function ResourceList(props: ResourceListProps): JSX.Element {
+  const { searchTerm } = props;
   const [resources, setResources] = useState<IResource[]>([]);
   const [refetch, setRefetch] = useState<number>(1);
-  const [filteredResults, setFilteredResults] = useState<IResource[]>([]);
 
   useEffect(() => {
     const fetchResources = async () => {
@@ -22,41 +23,29 @@ export default function ResourceLis(): JSX.Element {
         console.error(error);
       }
     };
-
     fetchResources();
-  }, [refetch]);
+  }, [refetch, searchTerm]);
 
-  return (
-    <Container maxWidth="xl">
-      <Grid container>
-        <Grid item xs={12}>
-          <Search
-            resources={resources}
-            setFilteredResults={setFilteredResults}
-          />
-        </Grid>
-      </Grid>
-      <Divider variant="middle" />
-      <Grid container pt={2} spacing={2}>
-        <Grid item xs={8}>
-          <Box>
-            {filteredResults.length < 1
-              ? resources.map((resource) => (
-                  <div key={resource.id}>
-                    <Resource {...resource} setRefetch={setRefetch} />
-                  </div>
-                ))
-              : filteredResults.map((resource) => (
-                  <div key={resource.id}>
-                    <Resource {...resource} setRefetch={setRefetch} />
-                  </div>
-                ))}
-          </Box>
-        </Grid>
-        <Grid item xs>
-          <PopularResources />
-        </Grid>
-      </Grid>
-    </Container>
-  );
+  const filteredResources = resources
+    .filter((resource) => {
+      if (searchTerm) {
+        const lowercaseSearch = searchTerm.toLowerCase();
+        return (
+          resource.resource_name?.toLowerCase().includes(lowercaseSearch) ||
+          resource.content_type?.toLowerCase().includes(lowercaseSearch) ||
+          resource.user_name?.toLowerCase().includes(lowercaseSearch) ||
+          resource.description?.toLowerCase().includes(lowercaseSearch) ||
+          resource.tags?.toLowerCase().includes(lowercaseSearch)
+        );
+      } else {
+        return resource;
+      }
+    })
+    .map((resource) => (
+      <div key={resource.id}>
+        <Resource {...resource} setRefetch={setRefetch} />
+      </div>
+    ));
+
+  return <Box>{filteredResources}</Box>;
 }
