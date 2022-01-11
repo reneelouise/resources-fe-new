@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Button,
@@ -8,38 +8,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { IResource } from "../utils/interfaces";
 
 interface Tags {
   name: string;
   times_used?: number;
 }
 
-interface Props {
-  resources: IResource[];
-  setFilteredResults: (data: IResource[]) => void;
+interface SearchProps {
+  searchTerm: string;
+  setSearchTerm: (searchTerm: string) => void;
 }
 
-export default function Search(props: Props): JSX.Element {
-  const { resources, setFilteredResults } = props;
+export default function Search(props: SearchProps): JSX.Element {
+  const { searchTerm, setSearchTerm } = props;
+
   const [tags, setTags] = useState<Tags[]>([]);
-  const [keyword, setKeyword] = useState<string>("");
-
-  // const [filteredResults, setFilteredResults] = useState<any[]>([]);
-
-  const searchResources = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setFilteredResults(
-      resources.filter((resource) => {
-        return (
-          resource.resource_name?.includes(keyword) ||
-          resource.content_type?.includes(keyword) ||
-          resource.user_name?.includes(keyword) ||
-          resource.tags?.includes(keyword)
-        );
-      })
-    );
-  };
 
   useEffect(() => {
     const baseUrl = process.env.REACT_APP_API_URL;
@@ -66,21 +49,16 @@ export default function Search(props: Props): JSX.Element {
       >
         <Grid item xs></Grid>
         <Grid item xs={6}>
-          <form onSubmit={(e) => searchResources(e)}>
-            <Stack direction="row" spacing={2}>
-              <TextField
-                fullWidth
-                id="search"
-                label="Search resources"
-                variant="outlined"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-              />
-              <Button variant="contained" type="submit">
-                Search
-              </Button>
-            </Stack>
-          </form>
+          <Stack direction="row" spacing={2}>
+            <TextField
+              fullWidth
+              id="search"
+              label="Search resources"
+              variant="outlined"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Stack>
           <Grid container py={2} justifyContent="center" alignItems="center">
             <Stack direction="row" spacing={1}>
               <Typography pt={0.5}>Popular tags:</Typography>
@@ -92,7 +70,7 @@ export default function Search(props: Props): JSX.Element {
                     color="secondary"
                     clickable={true}
                     label={tag.name}
-                    onClick={() => setKeyword(tag.name)}
+                    onClick={() => setSearchTerm(tag.name)}
                   />
                 );
               })}
