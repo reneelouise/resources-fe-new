@@ -3,6 +3,7 @@ import axios from "axios";
 import { IResource } from "../utils/interfaces";
 import ResourcePopUp from "./ResourcePopUp";
 import { Button, Card, Grid, Link, Typography, Box } from "@mui/material";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 interface ResourceCardProps {
   resource: IResource;
@@ -13,12 +14,17 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
   const {
     id,
     resource_name,
+    description,
     user_name,
+    is_faculty,
     content_type,
     tags,
     count_of_likes,
     count_of_dislikes,
     number_of_comments,
+    created_at,
+    recommendation_type,
+    recommendation_reason,
     url,
   } = props.resource;
 
@@ -40,16 +46,20 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     <>
       <Card sx={{ minWidth: "100%", mb: 2, p: 2 }}>
         <Grid container direction="row" justifyContent="space-between">
-          <Grid item xs={10}>
+          <Grid item xs={9}>
             <Box>
               <Typography variant="h6" component="h6" py={1}>
                 {resource_name}
               </Typography>
             </Box>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             <Link href={url} style={{ textDecoration: "none" }} target="_blank">
-              <Button color="primary" variant="outlined">
+              <Button
+                color="primary"
+                variant="outlined"
+                endIcon={<OpenInNewIcon />}
+              >
                 Go to resource
               </Button>
             </Link>
@@ -64,6 +74,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           <Grid item xs={9}>
             <Typography variant="body1" component="h6">
               {user_name}
+              {is_faculty ? " (Academy Faculty)" : ""}
             </Typography>
           </Grid>
         </Grid>
@@ -82,6 +93,18 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
         <Grid container>
           <Grid item xs={3}>
             <Typography variant="body1" component="h6">
+              Description:
+            </Typography>
+          </Grid>
+          <Grid item xs={9}>
+            <Typography variant="body1" component="h6">
+              {description}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={3}>
+            <Typography variant="body1" component="h6">
               Tags:
             </Typography>
           </Grid>
@@ -91,19 +114,39 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
             </Typography>
           </Grid>
         </Grid>
+        <Grid container>
+          <Grid item xs={3}>
+            <Typography variant="body1" component="h6">
+              Added:
+            </Typography>
+          </Grid>
+          <Grid item xs={9}>
+            <Typography variant="body1" component="h6">
+              {created_at}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={6}>
+            <Typography variant="body1" component="h6">
+              {recommendation_type}:
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="body1" component="h6">
+              {recommendation_reason}
+            </Typography>
+          </Grid>
+        </Grid>
 
         <Grid container>
           <Grid item xs={3}>
             <Typography variant="body1" component="h6">
               Likes: {count_of_likes}
             </Typography>
-          </Grid>
-          <Grid item xs={3}>
             <Typography variant="body1" component="h6">
               Dislikes: {count_of_dislikes}
             </Typography>
-          </Grid>
-          <Grid item xs={3}>
             <Typography variant="body1" component="h6">
               {number_of_comments} comments
             </Typography>
