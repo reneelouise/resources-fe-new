@@ -72,6 +72,7 @@ export default function CreateNewResource(): JSX.Element {
 
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
+  // eslint-disable-next-line
   const isBadRequestError = (x: any): x is BadRequestError => {
     return x.response.status === 400;
   };
