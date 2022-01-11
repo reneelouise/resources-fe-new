@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { BadRequestError } from '../utils/interfaces'
 import {
   Container,
   Box,
@@ -15,7 +16,7 @@ import {
   FormControlLabel,
   Radio,
   Typography,
-  Alert,
+  Alert
 } from "@mui/material";
 
 export default function CreateNewResource(): JSX.Element {
@@ -26,8 +27,9 @@ export default function CreateNewResource(): JSX.Element {
   const [markStage, setMarkStage] = useState<string>(" ");
   const [recommendationType, setRecommendationType] = useState<string>(" ");
   const [recommendationReason, setRecommendationReason] = useState<string>(" ");
-  const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [openSubmit, setOpenSubmit] = useState<boolean>(false);
+  const [errorAlert, setErrorAlert] = useState<boolean>(false);
+  const [submittedAlert, setSubmittedAlert] = useState<boolean>(false);
+  const [alreadyExistsAlert, setAlreadyExistsAlert] = useState<boolean>(false);
 
   const content_type = [
     "magazine",
@@ -70,6 +72,10 @@ export default function CreateNewResource(): JSX.Element {
 
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
+  const isBadRequestError = (x: any): x is BadRequestError => {
+    return x.response.status === 400;
+  };
+
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -85,7 +91,7 @@ export default function CreateNewResource(): JSX.Element {
     const authorId = author ? Number(author) : null;
     const postToDb = async () => {
       try {
-        setOpenAlert(false);
+        setErrorAlert(false);
         await axios
           .post(`${baseUrl}/resources`, {
             name: resourceName,
@@ -97,8 +103,8 @@ export default function CreateNewResource(): JSX.Element {
             recommendation_type: recommendationType,
             recommendation_reason: recommendationReason,
           })
-          .then(() => setOpenSubmit(true));
-        delay(3000).then(() => setOpenSubmit(false));
+          .then(() => setSubmittedAlert(true));
+        delay(3000).then(() => setSubmittedAlert(false));
         setResourceName(" ");
         setDescription(" ");
         setUrl(" ");
@@ -108,6 +114,10 @@ export default function CreateNewResource(): JSX.Element {
         setRecommendationReason(" ");
       } catch (error) {
         console.error(error);
+        if (isBadRequestError(error)) {
+          setAlreadyExistsAlert(true);
+          delay(3000).then(() => setAlreadyExistsAlert(false));
+        }
       }
     };
     return authorId &&
@@ -117,7 +127,7 @@ export default function CreateNewResource(): JSX.Element {
       markStage.trim() &&
       recommendationType.trim()
       ? postToDb()
-      : (setOpenAlert(true), delay(3000).then(() => setOpenAlert(false)));
+      : (setErrorAlert(true), delay(3000).then(() => setErrorAlert(false)));
   };
   return (
     <Container>
@@ -333,11 +343,14 @@ export default function CreateNewResource(): JSX.Element {
         >
           Create Resource
         </Button>
-        {openAlert && (
+        {errorAlert && (
           <Alert severity="error">Please complete all required fields</Alert>
         )}
-        {openSubmit && (
+        {submittedAlert && (
           <Alert severity="success">Resource successfully submitted</Alert>
+        )}
+        {alreadyExistsAlert && (
+          <Alert severity="error">Resource already exists</Alert>
         )}
       </Box>
     </Container>
