@@ -1,28 +1,15 @@
-import { useState, useEffect } from "react";
-import { IResource, Comment } from "../utils/interfaces";
-import CommentsSection from "./CommentsSection";
-import { SubmitComment } from "./SubmitComment";
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Card,
-  Grid,
-  Link,
-  Typography,
-  Box,
-} from "@mui/material";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import { useState } from "react";
 import axios from "axios";
+import { IResource } from "../utils/interfaces";
+import ResourcePopUp from "./ResourcePopUp";
+import { Button, Card, Grid, Link, Typography, Box } from "@mui/material";
 
-interface ResourceProps extends IResource {
+interface ResourceCardProps {
+  resource: IResource;
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const Resource = (props: ResourceProps): JSX.Element => {
+export default function ResourceCard(props: ResourceCardProps): JSX.Element {
   const {
     id,
     resource_name,
@@ -33,31 +20,15 @@ export const Resource = (props: ResourceProps): JSX.Element => {
     count_of_dislikes,
     number_of_comments,
     url,
-  } = props;
+  } = props.resource;
+
   const [open, setOpen] = useState<boolean>(false);
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [refetchComments, setRefetchComments] = useState<number>(1);
 
   const baseUrl = process.env.REACT_APP_API_URL;
 
-  useEffect(() => {
-    const baseUrl = process.env.REACT_APP_API_URL;
-    const fetchComments = async () => {
-      try {
-        const res = await axios.get(
-          `${baseUrl}/resources/${props.id}/comments`
-        );
-        setComments(res.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchComments();
-  }, [refetchComments, props.id]);
-
   const handleDeleteResource = () => {
     axios
-      .delete(`${baseUrl}/resources/${props.id}`)
+      .delete(`${baseUrl}/resources/${id}`)
       .then(() => props.setRefetch((prev) => -prev));
   };
 
@@ -84,7 +55,6 @@ export const Resource = (props: ResourceProps): JSX.Element => {
             </Link>
           </Grid>
         </Grid>
-
         <Grid container>
           <Grid item xs={3}>
             <Typography variant="body1" component="h6">
@@ -156,57 +126,12 @@ export const Resource = (props: ResourceProps): JSX.Element => {
             Delete
           </Button>
         </Grid>
+        <ResourcePopUp
+          resource={props.resource}
+          open={open}
+          handleOpen={(newValue) => setOpen(newValue)}
+        />
       </Card>
-      <Dialog
-        fullWidth
-        scroll="paper"
-        sx={{ height: "100%" }}
-        open={open}
-        onClose={() => setOpen(false)}
-      >
-        <DialogTitle>{resource_name}</DialogTitle>
-        <DialogContent style={{ height: "450px" }}>
-          <Typography> Author: {user_name} </Typography>
-          <Typography variant="body2">Content type: {content_type}</Typography>
-          <Typography variant="body2"> Tags: {tags} </Typography>
-          <Typography variant="body2">
-            <ThumbUpIcon /> {count_of_likes}
-            <ThumbDownIcon /> {count_of_dislikes}
-            {number_of_comments} comments
-          </Typography>
-          <Box
-            style={{
-              position: "absolute",
-              left: "17%",
-              top: "75%",
-            }}
-          >
-            <CommentsSection
-              comments={comments}
-              setRefetchComments={setRefetchComments}
-            />
-          </Box>
-          <Box
-            style={{
-              position: "absolute",
-              left: "17%",
-              top: "65%",
-            }}
-          >
-            <SubmitComment
-              resource_id={id}
-              user_id={localStorage.getItem("loggedInUser")}
-              setRefetchComments={setRefetchComments}
-              setRefetch={props.setRefetch}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Close</Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
-};
-
-export default Resource;
+}

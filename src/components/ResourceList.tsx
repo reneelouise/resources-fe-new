@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Box } from "@mui/material";
-import { Resource } from "./Resource";
+import ResourceCard from "./ResourceCard";
 import { IResource } from "../utils/interfaces";
 
 interface ResourceListProps {
@@ -43,7 +43,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
     })
     .map((resource) => (
       <div key={resource.id}>
-        <Resource {...resource} setRefetch={setRefetch} />
+        <ResourceCard resource={resource} setRefetch={setRefetch} />
       </div>
     ));
 

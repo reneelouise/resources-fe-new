@@ -7,7 +7,7 @@ interface CommentsSectionProps {
   setRefetchComments: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function CommentsSection({
+export default function CommentsSection({
   comments,
   setRefetchComments,
 }: CommentsSectionProps): JSX.Element {
@@ -15,23 +15,21 @@ function CommentsSection({
     <>
       <Typography variant="h6">Comments:</Typography>
       <List>
-        {comments.map((el) => (
+        {comments.map((comment) => (
           <CommentComponent
-            key={el.id}
-            id={el.id}
-            resource_id={el.resource_id}
+            key={comment.id}
+            id={comment.id}
+            resource_id={comment.resource_id}
             setRefetchComments={setRefetchComments}
-            author_id={el.author_id}
-            is_like={el.is_like}
-            text={el.text}
-            created_at={el.created_at}
-            name={el.name}
-            is_faculty={el.is_faculty}
+            author_id={comment.author_id}
+            is_like={comment.is_like}
+            text={comment.text}
+            created_at={comment.created_at}
+            name={comment.name}
+            is_faculty={comment.is_faculty}
           />
         ))}
       </List>
     </>
   );
 }
-
-export default CommentsSection;
