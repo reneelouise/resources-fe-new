@@ -1,13 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Button,
-  Chip,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Chip, Grid, Stack, TextField, Typography } from "@mui/material";
 
 interface Tags {
   name: string;
