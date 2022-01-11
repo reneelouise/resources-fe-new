@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { BadRequestError } from '../utils/interfaces'
+import { BadRequestError } from "../utils/interfaces";
 import {
   Container,
   Box,
@@ -16,7 +16,7 @@ import {
   FormControlLabel,
   Radio,
   Typography,
-  Alert
+  Alert,
 } from "@mui/material";
 
 export default function CreateNewResource(): JSX.Element {

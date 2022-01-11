@@ -61,10 +61,9 @@ export interface IPopularResource {
   popularity: number;
 }
 
-
 export interface BadRequestError {
   response: {
-    status: 400,
-    message: string
-  }
+    status: 400;
+    message: string;
+  };
 }
