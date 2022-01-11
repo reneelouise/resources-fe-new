@@ -19,6 +19,7 @@ export default function Search(props: SearchProps): JSX.Element {
 
   useEffect(() => {
     const baseUrl = process.env.REACT_APP_API_URL;
+    /*const baseUrl = process.env.REACT_APP_API_URL;*/
 
     const fetchTags = async () => {
       try {
