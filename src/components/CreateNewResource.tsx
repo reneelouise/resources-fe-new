@@ -98,6 +98,8 @@ export default function CreateNewResource(): JSX.Element {
     ("inherit" | "default" | "primary" | "secondary" | undefined)[]
   >(Array(tags.length).fill("primary"));
 
+  console.log(tagSelection);
+
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
   // eslint-disable-next-line
@@ -212,11 +214,19 @@ export default function CreateNewResource(): JSX.Element {
               size="small"
               color={tagColour[i]}
               aria-label="add"
-              onClick={() => {
-                setTagSelection([...tagSelection, tag]);
-                tagColour[i] = "secondary";
-                setTagColour(tagColour);
-              }}
+              onClick={() =>
+                tagColour[i] === 'primary'
+                  ? (
+                    setTagSelection([...tagSelection, tag]),
+                    tagColour[i] = "secondary",
+                    setTagColour(tagColour)
+                  )
+                  : (
+                    setTagSelection(tagSelection.filter(el => el !== tag)),
+                    tagColour[i] = "primary",
+                    setTagColour(tagColour)
+                  )
+              }
             >
               {tag}
             </Fab>
@@ -400,6 +410,6 @@ export default function CreateNewResource(): JSX.Element {
           <Alert severity="error">Resource already exists</Alert>
         )}
       </Box>
-    </Container>
+    </Container >
   );
 }
