@@ -4,6 +4,7 @@ import { IResource } from "../utils/interfaces";
 import ResourcePopUp from "./ResourcePopUp";
 import { Button, Card, Grid, Link, Typography, Box } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import timestampConverter from "../utils/timestampConverter";
 
 interface ResourceCardProps {
   resource: IResource;
@@ -122,7 +123,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           </Grid>
           <Grid item xs={9}>
             <Typography variant="body1" component="h6">
-              {created_at}
+              {timestampConverter(created_at)}
             </Typography>
           </Grid>
         </Grid>

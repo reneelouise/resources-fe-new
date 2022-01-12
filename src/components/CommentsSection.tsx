@@ -1,71 +1,68 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { List, Typography } from "@mui/material";
-import CommentComponent from "./CommentComponent";
-import { Comment } from "../utils/interfaces";
-import { Box } from "@mui/material";
-// import SubmitComment from "./SubmitComment";
+import { Divider, Grid, Stack, Typography } from "@mui/material";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import CommentIcon from "@mui/icons-material/Comment";
+import CommentList from "./CommentList";
+
+import SubmitComment from "./SubmitComment";
+import { IResource } from "../utils/interfaces";
 
 interface CommentsSectionProps {
-  resource_id: number;
+  resource: IResource;
 }
 
-export default function CommentsSection({
-  resource_id,
-}: CommentsSectionProps): JSX.Element {
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [refetchComments, setRefetchComments] = useState<number>(1);
-
-  useEffect(() => {
-    const baseUrl = process.env.REACT_APP_API_URL;
-    const fetchComments = async () => {
-      try {
-        const res = await axios.get(
-          `${baseUrl}/resources/${resource_id}/comments`
-        );
-        setComments(res.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchComments();
-  }, [refetchComments, resource_id]);
+export default function CommentsSection(
+  props: CommentsSectionProps
+): JSX.Element {
+  const { id, count_of_likes, count_of_dislikes, number_of_comments } =
+    props.resource;
 
   return (
     <>
-      <Typography variant="h6">Comments:</Typography>
-      <List>
-        {comments
-          ? comments.map((comment) => (
-              <CommentComponent
-                key={comment.id}
-                id={comment.id}
-                resource_id={comment.resource_id}
-                setRefetchComments={setRefetchComments}
-                author_id={comment.author_id}
-                is_like={comment.is_like}
-                text={comment.text}
-                created_at={comment.created_at}
-                name={comment.name}
-                is_faculty={comment.is_faculty}
-              />
-            ))
-          : "No comments"}
-        <Box
-          style={{
-            position: "absolute",
-            left: "17%",
-            top: "65%",
-          }}
-        >
-          {/* <SubmitComment
-            resource_id={id}
-            user_id={localStorage.getItem("loggedInUser")}
-            setRefetchComments={setRefetchComments}
-            // setRefetch={props.setRefetch}
-          /> */}
-        </Box>
-      </List>
+      <Grid container py={3}>
+        <SubmitComment
+          resource_id={id}
+          user_id={localStorage.getItem("loggedInUser")}
+          // setRefetchComments={setRefetchComments}
+          // setRefetch={props.setRefetch}
+        />
+      </Grid>
+      <Grid container py={3}>
+        <Grid item xs={12}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            spacing={2}
+          >
+            <Typography variant="h6">Comments:</Typography>
+            <Stack
+              direction="row"
+              spacing={2}
+              divider={<Divider orientation="vertical" flexItem />}
+            >
+              <Stack direction="row" spacing={1}>
+                <ThumbUpIcon color="success" />
+                <Typography variant="body1">{count_of_likes}</Typography>
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <ThumbDownIcon color="error" />
+                <Typography variant="body1">{count_of_dislikes}</Typography>
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <CommentIcon color="primary" />
+                <Typography variant="body1">{number_of_comments}</Typography>
+              </Stack>
+            </Stack>
+          </Stack>
+        </Grid>
+
+        <Grid container>
+          <Grid item xs={12}>
+            <CommentList resourceId={id} />
+          </Grid>
+        </Grid>
+      </Grid>
     </>
   );
 }
