@@ -4,6 +4,8 @@ import Search from "./Search";
 import ResourceList from "./ResourceList";
 import { Container, Divider, Grid } from "@mui/material";
 
+
+
 export default function ResourceListPage(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -17,7 +19,7 @@ export default function ResourceListPage(): JSX.Element {
       <Divider variant="middle" />
       <Grid container pt={2} spacing={2}>
         <Grid item xs={8}>
-          <ResourceList searchTerm={searchTerm} />
+          <ResourceList searchTerm={searchTerm}  />
         </Grid>
         <Grid item xs>
           <PopularResources />

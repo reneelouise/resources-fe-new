@@ -11,6 +11,7 @@ interface ResourceListProps {
 export default function ResourceList(props: ResourceListProps): JSX.Element {
   const { searchTerm } = props;
   const [resources, setResources] = useState<IResource[]>([]);
+  const [itemsInStudyList, setItemsInStudyList] = useState<number[]>([]);
   const [refetch, setRefetch] = useState<number>(1);
 
   useEffect(() => {
@@ -19,12 +20,19 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
       try {
         const res = await axios.get(`${baseUrl}/resources`);
         setResources(res.data.data);
+
+        const loggedInUser = localStorage.getItem("loggedInUser");
+        const studylist = await axios.get(`${baseUrl}/users/${loggedInUser}/study_list`)
+
+        setItemsInStudyList(studylist.data.data.map((resource: IResource) => resource.id))
+
       } catch (error) {
         console.error(error);
       }
     };
     fetchResources();
   }, [refetch, searchTerm]);
+
 
   const filteredResources = resources
     .filter((resource) => {
@@ -45,6 +53,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
       <div key={resource.id}>
         <ResourceCard
           resource={resource}
+          isOnStudyList={itemsInStudyList.includes(resource.id)}
           setRefetch={() => setRefetch((prev) => -prev)}
         />
       </div>
