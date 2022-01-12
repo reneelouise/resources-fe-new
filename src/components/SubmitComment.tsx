@@ -14,18 +14,15 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 interface SubmitCommentProps {
   resource_id: number;
   user_id: string | null;
-  // setRefetchComments: React.Dispatch<React.SetStateAction<number>>;
-  // setRefetch: React.Dispatch<React.SetStateAction<number>>;
+  refetchValue: number;
+  toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function SubmitComment({
-  resource_id,
-  user_id,
-}: // setRefetchComments,
-// setRefetch,
-SubmitCommentProps): JSX.Element {
+export default function SubmitComment(props: SubmitCommentProps): JSX.Element {
+  const { resource_id, user_id } = props;
   const [commentInput, setCommentInput] = useState<string>("");
   const [isLike, setIsLike] = useState<boolean | undefined>(undefined);
+
   const handleCommentSubmit = () => {
     axios
       .post(
@@ -37,10 +34,11 @@ SubmitCommentProps): JSX.Element {
           text: commentInput,
         }
       )
-      // .then(() => setRefetchComments((prevRefetch) => -prevRefetch))
-      // .then(() => setRefetch((prev) => -prev))
+
+      // .then(() => setRefetch((prev) => -prev)
       .then(() => setCommentInput(""))
       .then(() => setIsLike(undefined))
+      .then(() => props.toggleRefetch((prev) => -prev))
       .catch((err) => console.error(err));
   };
 
@@ -54,7 +52,7 @@ SubmitCommentProps): JSX.Element {
           <Stack direction="row" spacing={2}>
             <Button
               color="success"
-              variant="outlined"
+              variant={isLike === true ? "contained" : "outlined"}
               sx={{ width: "50%" }}
               onClick={() => setIsLike(true)}
               startIcon={<ThumbUpIcon />}
@@ -63,7 +61,7 @@ SubmitCommentProps): JSX.Element {
             </Button>
             <Button
               color="error"
-              variant="outlined"
+              variant={isLike === false ? "contained" : "outlined"}
               sx={{ width: "50%" }}
               onClick={() => setIsLike(false)}
               startIcon={<ThumbDownIcon />}
@@ -83,7 +81,11 @@ SubmitCommentProps): JSX.Element {
               value={commentInput}
             />
 
-            <Button variant="outlined" color="error">
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => setIsLike(undefined)}
+            >
               Cancel
             </Button>
             <Button variant="contained" onClick={handleCommentSubmit}>

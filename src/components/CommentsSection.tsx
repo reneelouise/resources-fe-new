@@ -3,12 +3,13 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import CommentIcon from "@mui/icons-material/Comment";
 import CommentList from "./CommentList";
-
 import SubmitComment from "./SubmitComment";
 import { IResource } from "../utils/interfaces";
 
 interface CommentsSectionProps {
   resource: IResource;
+  refetchValue: number;
+  toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function CommentsSection(
@@ -23,8 +24,8 @@ export default function CommentsSection(
         <SubmitComment
           resource_id={id}
           user_id={localStorage.getItem("loggedInUser")}
-          // setRefetchComments={setRefetchComments}
-          // setRefetch={props.setRefetch}
+          refetchValue={props.refetchValue}
+          toggleRefetch={props.toggleRefetch}
         />
       </Grid>
       <Grid container py={3}>
@@ -59,7 +60,11 @@ export default function CommentsSection(
 
         <Grid container>
           <Grid item xs={12}>
-            <CommentList resourceId={id} />
+            <CommentList
+              resourceId={id}
+              refetchValue={props.refetchValue}
+              toggleRefetch={props.toggleRefetch}
+            />
           </Grid>
         </Grid>
       </Grid>

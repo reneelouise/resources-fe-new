@@ -17,12 +17,13 @@ import timestampConverter from "../utils/timestampConverter";
 
 interface CommentListProps {
   resourceId: number;
+  refetchValue: number;
+  toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function CommentList(props: CommentListProps): JSX.Element {
-  const { resourceId } = props;
+  const { resourceId, refetchValue } = props;
   const [comments, setComments] = useState<Comment[]>([]);
-  const [refetchComments, setRefetchComments] = useState<number>(1);
 
   useEffect(() => {
     const baseUrl = process.env.REACT_APP_API_URL;
@@ -37,11 +38,11 @@ export default function CommentList(props: CommentListProps): JSX.Element {
       }
     };
     fetchComments();
-  }, [refetchComments, resourceId]);
+  }, [refetchValue, resourceId]);
 
   //   const handleCommentDelete = () => {
-  // const baseUrl = process.env.REACT_APP_API_URL;
-  // axios
+  //    const baseUrl = process.env.REACT_APP_API_URL;
+  //    axios
   //   .delete(`${baseUrl}${paste_id}/comments/${comment_id}`)
   //   .then(() => setRefetchComments((prevRefetch) => -prevRefetch));
   //   };

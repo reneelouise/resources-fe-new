@@ -8,7 +8,8 @@ import timestampConverter from "../utils/timestampConverter";
 
 interface ResourceCardProps {
   resource: IResource;
-  setRefetch: React.Dispatch<React.SetStateAction<number>>;
+  refetchValue: number;
+  toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function ResourceCard(props: ResourceCardProps): JSX.Element {
@@ -36,7 +37,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
   const handleDeleteResource = () => {
     axios
       .delete(`${baseUrl}/resources/${id}`)
-      .then(() => props.setRefetch((prev) => -prev));
+      .then(() => props.toggleRefetch((prev) => -prev));
   };
 
   const formatContentType = (word: string): string => {
@@ -173,6 +174,8 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
         <ResourcePopUp
           resource={props.resource}
           open={open}
+          refetchValue={props.refetchValue}
+          toggleRefetch={props.toggleRefetch}
           handleOpen={(newValue) => setOpen(newValue)}
         />
       </Card>
