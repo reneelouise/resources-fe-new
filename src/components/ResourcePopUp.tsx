@@ -9,6 +9,7 @@ import {
   DialogActions,
   Grid,
   Link,
+  Stack,
   Typography,
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -39,35 +40,34 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
 
   return (
     <Dialog
-      fullWidth
+      maxWidth={"xl"}
       scroll="paper"
       sx={{ height: "100%" }}
       open={props.open}
       onClose={() => props.handleOpen(false)}
     >
       <DialogTitle>
-        <Grid container direction="row" justifyContent="space-between">
-          <Grid item xs={8}>
-            <Box>
-              <Typography variant="h6" component="h6" py={1}>
-                {resource_name}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={4}>
-            <Link href={url} style={{ textDecoration: "none" }} target="_blank">
-              <Button
-                color="primary"
-                variant="outlined"
-                endIcon={<OpenInNewIcon />}
-              >
-                Go to resource
-              </Button>
-            </Link>
-          </Grid>
-        </Grid>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+        >
+          <Typography variant="h6" component="h6" py={1}>
+            {resource_name}
+          </Typography>
+          <Link href={url} style={{ textDecoration: "none" }} target="_blank">
+            <Button
+              color="primary"
+              variant="outlined"
+              endIcon={<OpenInNewIcon />}
+            >
+              Go to resource
+            </Button>
+          </Link>
+        </Stack>
       </DialogTitle>
-      <DialogContent style={{ height: "450px" }}>
+      <DialogContent dividers={true}>
         <Grid container>
           <Grid item xs={4}>
             <Typography variant="body1" component="h6">
@@ -83,62 +83,48 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
         </Grid>
         <Grid container>
           <Grid item xs={4}>
-            <Typography variant="body1" component="h6">
-              Content Type:
-            </Typography>
+            <Typography variant="body1">Content Type:</Typography>
           </Grid>
           <Grid item xs={8}>
-            <Typography variant="body1" component="h6">
+            <Typography variant="body1">
               {formatContentType(content_type)}
             </Typography>
           </Grid>
         </Grid>
         <Grid container>
           <Grid item xs={4}>
-            <Typography variant="body1" component="h6">
-              Description:
-            </Typography>
+            <Typography variant="body1">Description:</Typography>
           </Grid>
           <Grid item xs={8}>
-            <Typography variant="body1" component="h6">
-              {description}
-            </Typography>
+            <Typography variant="body1">{description}</Typography>
           </Grid>
         </Grid>
         <Grid container>
           <Grid item xs={4}>
-            <Typography variant="body1" component="h6">
-              Tags:
-            </Typography>
+            <Typography variant="body1">Tags:</Typography>
           </Grid>
           <Grid item xs={8}>
-            <Typography variant="body1" component="h6">
+            <Typography variant="body1">
               {!tags ? "No tags added" : tags}
             </Typography>
           </Grid>
         </Grid>
         <Grid container>
           <Grid item xs={4}>
-            <Typography variant="body1" component="h6">
-              Added:
-            </Typography>
+            <Typography variant="body1">Added:</Typography>
           </Grid>
           <Grid item xs={8}>
-            <Typography variant="body1" component="h6">
+            <Typography variant="body1">
               {timestampConverter(created_at)}
             </Typography>
           </Grid>
         </Grid>
         <Grid container>
           <Grid item xs={6}>
-            <Typography variant="body1" component="h6">
-              {recommendation_type}:
-            </Typography>
+            <Typography variant="body1">{recommendation_type}</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="body1" component="h6">
-              {recommendation_reason}
-            </Typography>
+            <Typography variant="body1">{recommendation_reason}</Typography>
           </Grid>
         </Grid>
 
