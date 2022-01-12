@@ -11,8 +11,9 @@ interface ResourceListProps {
 export default function ResourceList(props: ResourceListProps): JSX.Element {
   const { searchTerm } = props;
   const [resources, setResources] = useState<IResource[]>([]);
+
   const [itemsInStudyList, setItemsInStudyList] = useState<number[]>([]);
-  const [refetch, setRefetch] = useState<number>(1);
+  const [refetchValue, setRefetchValue] = useState<number>(1);
 
   useEffect(() => {
     const fetchResources = async () => {
@@ -34,7 +35,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
       }
     };
     fetchResources();
-  }, [refetch, searchTerm]);
+  }, [refetchValue, searchTerm]);
 
   const filteredResources = resources
     .filter((resource) => {
@@ -56,7 +57,8 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
         <ResourceCard
           resource={resource}
           isOnStudyList={itemsInStudyList.includes(resource.id)}
-          setRefetch={() => setRefetch((prev) => -prev)}
+          refetchValue={refetchValue}
+          toggleRefetch={setRefetchValue}
         />
       </div>
     ));
