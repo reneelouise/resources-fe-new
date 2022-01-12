@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { timestampConverter } from "../utils/timestampConverter";
+import { getInitialsFromName } from "../utils/getInitialsFromName";
 
 interface CommentListProps {
   resourceId: number;
@@ -55,7 +56,7 @@ export default function CommentList(props: CommentListProps): JSX.Element {
               <Paper sx={{ padding: "12px", width: "100%" }} elevation={2}>
                 <Grid container wrap="nowrap" spacing={2}>
                   <Grid item>
-                    <Avatar alt={comment.name} src="#" />
+                    <Avatar>{getInitialsFromName(comment.name)}</Avatar>
                   </Grid>
 
                   <Grid justifyContent="left" item xs zeroMinWidth>

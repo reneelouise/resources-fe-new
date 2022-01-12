@@ -34,8 +34,6 @@ export default function SubmitComment(props: SubmitCommentProps): JSX.Element {
           text: commentInput,
         }
       )
-
-      // .then(() => setRefetch((prev) => -prev)
       .then(() => setCommentInput(""))
       .then(() => setIsLike(undefined))
       .then(() => props.toggleRefetch((prev) => -prev))

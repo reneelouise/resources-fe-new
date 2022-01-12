@@ -2,7 +2,22 @@ import { useState } from "react";
 import axios from "axios";
 import { IResource } from "../utils/interfaces";
 import ResourcePopUp from "./ResourcePopUp";
-import { Button, Card, Grid, Link, Typography, Box } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Chip,
+  Divider,
+  Grid,
+  Link,
+  Stack,
+  Typography,
+} from "@mui/material";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import CommentIcon from "@mui/icons-material/Comment";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { timestampConverter } from "../utils/timestampConverter";
 import { formatContentType } from "../utils/formatContentType";
@@ -59,94 +74,91 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
   // };
 
   return (
-    <>
-      <Card sx={{ minWidth: "100%", mb: 2, p: 2 }}>
-        <Grid container direction="row" justifyContent="space-between">
-          <Grid item xs={9}>
-            <Box>
-              <Typography variant="h6" component="h6" py={1}>
-                {resource_name}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={3}>
-            <Link href={url} style={{ textDecoration: "none" }} target="_blank">
-              <Button
-                color="primary"
-                variant="outlined"
-                endIcon={<OpenInNewIcon />}
-              >
-                Go to resource
-              </Button>
-            </Link>
+    <Card variant="outlined" sx={{ minWidth: "100%", mb: 2, p: 2 }}>
+      <CardContent>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+        >
+          <Box>
+            <Typography variant="h5">{resource_name}</Typography>
+            <Typography
+              sx={{ fontSize: 14 }}
+              color="text.secondary"
+              gutterBottom
+            >
+              Posted {timestampConverter(created_at)}
+            </Typography>
+          </Box>
+          <Link href={url} style={{ textDecoration: "none" }} target="_blank">
+            <Button
+              color="primary"
+              variant="outlined"
+              endIcon={<OpenInNewIcon />}
+            >
+              Go to resource
+            </Button>
+          </Link>
+        </Stack>
+      </CardContent>
+      <CardContent>
+        <Grid container>
+          <Grid item>
+            <Typography variant="body1">
+              <strong>{user_name}</strong>
+              {is_faculty ? " (Academy Faculty)" : ""} says{" "}
+              <em>"{recommendation_type}"</em>
+            </Typography>
           </Grid>
         </Grid>
         <Grid container>
           <Grid item xs={3}>
-            <Typography variant="body1" component="h6">
-              Recommended By:
-            </Typography>
+            <Typography variant="body1">Content Type:</Typography>
           </Grid>
           <Grid item xs={9}>
-            <Typography variant="body1" component="h6">
-              {user_name}
-              {is_faculty ? " (Academy Faculty)" : ""}
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={3}>
-            <Typography variant="body1" component="h6">
-              Content Type:
-            </Typography>
-          </Grid>
-          <Grid item xs={9}>
-            <Typography variant="body1" component="h6">
+            <Typography variant="body1">
               {formatContentType(content_type)}
             </Typography>
           </Grid>
         </Grid>
         <Grid container>
           <Grid item xs={3}>
-            <Typography variant="body1" component="h6">
-              Description:
-            </Typography>
+            <Typography variant="body1">Description:</Typography>
           </Grid>
           <Grid item xs={9}>
-            <Typography variant="body1" component="h6">
-              {description}
-            </Typography>
+            <Typography variant="body1">{description}</Typography>
           </Grid>
         </Grid>
         <Grid container>
           <Grid item xs={3}>
-            <Typography variant="body1" component="h6">
-              Tags:
-            </Typography>
+            <Typography variant="body1">Tags:</Typography>
           </Grid>
           <Grid item xs={9}>
-            <Typography variant="body1" component="h6">
-              {!tags ? "No tags added" : tags}
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={3}>
-            <Typography variant="body1" component="h6">
-              Added:
-            </Typography>
-          </Grid>
-          <Grid item xs={9}>
-            <Typography variant="body1" component="h6">
-              {timestampConverter(created_at)}
-            </Typography>
+            <Stack direction="row" spacing={1}>
+              {tags !== null ? (
+                tags?.split(", ").map((tag, i) => {
+                  return (
+                    <Chip
+                      key={i + 1}
+                      id="tag"
+                      variant="outlined"
+                      color="default"
+                      clickable={true}
+                      label={tag}
+                    />
+                  );
+                })
+              ) : (
+                <Typography variant="body1">No tags</Typography>
+              )}
+            </Stack>
           </Grid>
         </Grid>
         <Grid container>
           <Grid item xs={6}>
-            <Typography variant="body1" component="h6">
-              {recommendation_type}:
-            </Typography>
+            <Typography variant="body1" component="h6"></Typography>
           </Grid>
           <Grid item xs={6}>
             <Typography variant="body1" component="h6">
@@ -154,20 +166,27 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
             </Typography>
           </Grid>
         </Grid>
-
-        <Grid container>
-          <Grid item xs={3}>
-            <Typography variant="body1" component="h6">
-              Likes: {count_of_likes}
-            </Typography>
-            <Typography variant="body1" component="h6">
-              Dislikes: {count_of_dislikes}
-            </Typography>
-            <Typography variant="body1" component="h6">
-              {number_of_comments} comments
-            </Typography>
-          </Grid>
-        </Grid>
+      </CardContent>
+      <CardActions>
+        <Stack
+          direction="row"
+          spacing={2}
+          px={2}
+          divider={<Divider orientation="vertical" flexItem />}
+        >
+          <Stack direction="row" spacing={1}>
+            <ThumbUpIcon color="success" />
+            <Typography variant="body1">{count_of_likes}</Typography>
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <ThumbDownIcon color="error" />
+            <Typography variant="body1">{count_of_dislikes}</Typography>
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <CommentIcon color="primary" />
+            <Typography variant="body1">{number_of_comments}</Typography>
+          </Stack>
+        </Stack>
         <Grid container direction="row" justifyContent="flex-end" p={2}>
           {isLoggedIn && !props.isOnStudyList ? (
             <Button
@@ -204,14 +223,14 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
             Delete
           </Button>
         </Grid>
-        <ResourcePopUp
-          resource={props.resource}
-          open={open}
-          refetchValue={props.refetchValue}
-          toggleRefetch={props.toggleRefetch}
-          handleOpen={(newValue) => setOpen(newValue)}
-        />
-      </Card>
-    </>
+      </CardActions>
+      <ResourcePopUp
+        resource={props.resource}
+        open={open}
+        refetchValue={props.refetchValue}
+        toggleRefetch={props.toggleRefetch}
+        handleOpen={(newValue) => setOpen(newValue)}
+      />
+    </Card>
   );
 }
