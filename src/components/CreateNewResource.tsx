@@ -17,7 +17,70 @@ import {
   Radio,
   Typography,
   Alert,
+  Fab,
 } from "@mui/material";
+
+const content_type = [
+  "magazine",
+  "book",
+  "documentary",
+  "events",
+  "podcast",
+  "video",
+  "article",
+  "blog",
+  "course",
+  "eBook",
+  "exercise",
+  "software tool",
+  "documentation",
+  "cheatsheet",
+  "diagram",
+  "reference",
+  "youtube channel",
+  "organisation",
+  "other",
+];
+
+const mark_stage = [
+  "Week 1: Workflows",
+  "Week 2: Typescript and code quality",
+  "Week 3: React, HTML and CSS",
+  "Week 4: React and event handlers",
+  "Week 5: React and useEffect",
+  "Week 7: NodeJs and Express",
+  "Week 8: SQL and persistence",
+  "Week 10+: Full stack projects",
+];
+
+const recommendation_type = [
+  "I recommend this resource after having used it",
+  "I do not recommend this resource, having used it",
+  "I haven't used this resource but it looks promising",
+];
+
+const tags = [
+  "React",
+  "Javascript",
+  "Typescript",
+  "MERN",
+  "Express",
+  "Git",
+  "PERN",
+  "CSS",
+  "HTML",
+  "Deploying",
+  "Heroku",
+  "Jest",
+  "Testing",
+  "Cypress",
+  "Event Handlers",
+  "useState",
+  "useEffect",
+  "Databases",
+  "SQL",
+  "Projects",
+];
 
 export default function CreateNewResource(): JSX.Element {
   const [resourceName, setResourceName] = useState<string>(" ");
@@ -30,45 +93,10 @@ export default function CreateNewResource(): JSX.Element {
   const [errorAlert, setErrorAlert] = useState<boolean>(false);
   const [submittedAlert, setSubmittedAlert] = useState<boolean>(false);
   const [alreadyExistsAlert, setAlreadyExistsAlert] = useState<boolean>(false);
-
-  const content_type = [
-    "magazine",
-    "book",
-    "documentary",
-    "events",
-    "podcast",
-    "video",
-    "article",
-    "blog",
-    "course",
-    "eBook",
-    "exercise",
-    "software tool",
-    "documentation",
-    "cheatsheet",
-    "diagram",
-    "reference",
-    "youtube channel",
-    "organisation",
-    "other",
-  ];
-
-  const mark_stage = [
-    "Week 1: Workflows",
-    "Week 2: Typescript and code quality",
-    "Week 3: React, HTML and CSS",
-    "Week 4: React and event handlers",
-    "Week 5: React and useEffect",
-    "Week 7: NodeJs and Express",
-    "Week 8: SQL and persistence",
-    "Week 10+: Full stack projects",
-  ];
-
-  const recommendation_type = [
-    "I recommend this resource after having used it",
-    "I do not recommend this resource, having used it",
-    "I haven't used this resource but it looks promising",
-  ];
+  const [tagSelection, setTagSelection] = useState<string[]>([]);
+  const [tagColour, setTagColour] = useState<
+    ("inherit" | "default" | "primary" | "secondary" | undefined)[]
+  >(Array(tags.length).fill("primary"));
 
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
@@ -103,6 +131,7 @@ export default function CreateNewResource(): JSX.Element {
             mark_stage: markStage,
             recommendation_type: recommendationType,
             recommendation_reason: recommendationReason,
+            tags: tagSelection,
           })
           .then(() => setSubmittedAlert(true));
         delay(3000).then(() => setSubmittedAlert(false));
@@ -113,6 +142,7 @@ export default function CreateNewResource(): JSX.Element {
         setMarkStage(" ");
         setRecommendationType(" ");
         setRecommendationReason(" ");
+        setTagSelection([]);
       } catch (error) {
         console.error(error);
         if (isBadRequestError(error)) {
@@ -175,6 +205,22 @@ export default function CreateNewResource(): JSX.Element {
               placeholder="Please enter a description for the resource"
             />
           </Grid>
+          {tags.map((tag, i) => (
+            <Fab
+              key={i}
+              variant="extended"
+              size="small"
+              color={tagColour[i]}
+              aria-label="add"
+              onClick={() => {
+                setTagSelection([...tagSelection, tag]);
+                tagColour[i] = "secondary";
+                setTagColour(tagColour);
+              }}
+            >
+              {tag}
+            </Fab>
+          ))}
           <Grid item xs={12}>
             {url ? (
               <TextField
