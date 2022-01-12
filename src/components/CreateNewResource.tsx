@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { BadRequestError } from "../utils/interfaces";
 import {
   Container,
   Box,
@@ -26,8 +27,9 @@ export default function CreateNewResource(): JSX.Element {
   const [markStage, setMarkStage] = useState<string>(" ");
   const [recommendationType, setRecommendationType] = useState<string>(" ");
   const [recommendationReason, setRecommendationReason] = useState<string>(" ");
-  const [openAlert, setOpenAlert] = useState<boolean>(false);
-  const [openSubmit, setOpenSubmit] = useState<boolean>(false);
+  const [errorAlert, setErrorAlert] = useState<boolean>(false);
+  const [submittedAlert, setSubmittedAlert] = useState<boolean>(false);
+  const [alreadyExistsAlert, setAlreadyExistsAlert] = useState<boolean>(false);
 
   const content_type = [
     "magazine",
@@ -70,6 +72,11 @@ export default function CreateNewResource(): JSX.Element {
 
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
+  // eslint-disable-next-line
+  const isBadRequestError = (x: any): x is BadRequestError => {
+    return x.response.status === 400;
+  };
+
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -85,7 +92,7 @@ export default function CreateNewResource(): JSX.Element {
     const authorId = author ? Number(author) : null;
     const postToDb = async () => {
       try {
-        setOpenAlert(false);
+        setErrorAlert(false);
         await axios
           .post(`${baseUrl}/resources`, {
             name: resourceName,
@@ -97,8 +104,8 @@ export default function CreateNewResource(): JSX.Element {
             recommendation_type: recommendationType,
             recommendation_reason: recommendationReason,
           })
-          .then(() => setOpenSubmit(true));
-        delay(3000).then(() => setOpenSubmit(false));
+          .then(() => setSubmittedAlert(true));
+        delay(3000).then(() => setSubmittedAlert(false));
         setResourceName(" ");
         setDescription(" ");
         setUrl(" ");
@@ -108,6 +115,10 @@ export default function CreateNewResource(): JSX.Element {
         setRecommendationReason(" ");
       } catch (error) {
         console.error(error);
+        if (isBadRequestError(error)) {
+          setAlreadyExistsAlert(true);
+          delay(3000).then(() => setAlreadyExistsAlert(false));
+        }
       }
     };
     return authorId &&
@@ -117,7 +128,7 @@ export default function CreateNewResource(): JSX.Element {
       markStage.trim() &&
       recommendationType.trim()
       ? postToDb()
-      : (setOpenAlert(true), delay(3000).then(() => setOpenAlert(false)));
+      : (setErrorAlert(true), delay(3000).then(() => setErrorAlert(false)));
   };
   return (
     <Container>
@@ -133,8 +144,8 @@ export default function CreateNewResource(): JSX.Element {
                 required
                 fullWidth
                 id="resourceName"
-                value={resourceName.trim()}
-                onChange={(e) => setResourceName(e.target.value.trim())}
+                value={resourceName}
+                onChange={(e) => setResourceName(e.target.value)}
                 label="Resource Name"
                 autoFocus
               />
@@ -145,8 +156,8 @@ export default function CreateNewResource(): JSX.Element {
                 required
                 fullWidth
                 id="resourceName"
-                value={resourceName.trim()}
-                onChange={(e) => setResourceName(e.target.value.trim())}
+                value={resourceName}
+                onChange={(e) => setResourceName(e.target.value)}
                 label="Resource Name"
                 autoFocus
               />
@@ -159,8 +170,8 @@ export default function CreateNewResource(): JSX.Element {
               multiline
               rows={4}
               fullWidth
-              value={description.trim()}
-              onChange={(e) => setDescription(e.target.value.trim())}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Please enter a description for the resource"
             />
           </Grid>
@@ -172,8 +183,8 @@ export default function CreateNewResource(): JSX.Element {
                 fullWidth
                 id="resourceURL"
                 label="Resource URL"
-                value={url.trim()}
-                onChange={(e) => setUrl(e.target.value.trim())}
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
               />
             ) : (
               <TextField
@@ -183,8 +194,8 @@ export default function CreateNewResource(): JSX.Element {
                 fullWidth
                 id="resourceURL"
                 label="Resource URL"
-                value={url.trim()}
-                onChange={(e) => setUrl(e.target.value.trim())}
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
               />
             )}
           </Grid>
@@ -196,8 +207,8 @@ export default function CreateNewResource(): JSX.Element {
                   labelId="content_type"
                   id="select_content_type"
                   required
-                  value={contentType.trim()}
-                  onChange={(e) => setContentType(e.target.value.trim())}
+                  value={contentType}
+                  onChange={(e) => setContentType(e.target.value)}
                   label="Age"
                 >
                   {content_type.map((el, i) => {
@@ -214,8 +225,8 @@ export default function CreateNewResource(): JSX.Element {
                   labelId="content_type"
                   id="select_content_type"
                   required
-                  value={contentType.trim()}
-                  onChange={(e) => setContentType(e.target.value.trim())}
+                  value={contentType}
+                  onChange={(e) => setContentType(e.target.value)}
                   label="Age"
                 >
                   {content_type.map((el, i) => {
@@ -237,8 +248,8 @@ export default function CreateNewResource(): JSX.Element {
                   labelId="mark_stage"
                   id="select_mark_stage"
                   required
-                  value={markStage.trim()}
-                  onChange={(e) => setMarkStage(e.target.value.trim())}
+                  value={markStage}
+                  onChange={(e) => setMarkStage(e.target.value)}
                   label="Mark Stage"
                 >
                   {mark_stage.map((el, i) => {
@@ -255,8 +266,8 @@ export default function CreateNewResource(): JSX.Element {
                   labelId="mark_stage"
                   id="select_mark_stage"
                   required
-                  value={markStage.trim()}
-                  onChange={(e) => setMarkStage(e.target.value.trim())}
+                  value={markStage}
+                  onChange={(e) => setMarkStage(e.target.value)}
                   label="Mark Stage"
                 >
                   {mark_stage.map((el, i) => {
@@ -277,7 +288,7 @@ export default function CreateNewResource(): JSX.Element {
                 <RadioGroup
                   aria-label="recommendation_type"
                   name="recommendation_type"
-                  onChange={(e) => setRecommendationType(e.target.value.trim())}
+                  onChange={(e) => setRecommendationType(e.target.value)}
                 >
                   {recommendation_type.map((el, i) => {
                     return (
@@ -297,7 +308,7 @@ export default function CreateNewResource(): JSX.Element {
                 <RadioGroup
                   aria-label="recommendation_type"
                   name="recommendation_type"
-                  onChange={(e) => setRecommendationType(e.target.value.trim())}
+                  onChange={(e) => setRecommendationType(e.target.value)}
                 >
                   {recommendation_type.map((el, i) => {
                     return (
@@ -321,7 +332,7 @@ export default function CreateNewResource(): JSX.Element {
               rows={2}
               fullWidth
               placeholder="Please enter a reason for the recommendation"
-              onChange={(e) => setRecommendationReason(e.target.value.trim())}
+              onChange={(e) => setRecommendationReason(e.target.value)}
             />
           </Grid>
         </Grid>
@@ -333,11 +344,14 @@ export default function CreateNewResource(): JSX.Element {
         >
           Create Resource
         </Button>
-        {openAlert && (
+        {errorAlert && (
           <Alert severity="error">Please complete all required fields</Alert>
         )}
-        {openSubmit && (
+        {submittedAlert && (
           <Alert severity="success">Resource successfully submitted</Alert>
+        )}
+        {alreadyExistsAlert && (
+          <Alert severity="error">Resource already exists</Alert>
         )}
       </Box>
     </Container>
