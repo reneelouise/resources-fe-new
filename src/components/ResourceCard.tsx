@@ -47,7 +47,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     const loggedInUser = localStorage.getItem("loggedInUser");
     axios
       .post(`${baseUrl}/users/${loggedInUser}/study_list`, { resource_id: id })
-      .then(() => props.setRefetch((prev) => -prev));
+      .then(() => props.toggleRefetch((prev) => -prev));
   };
 
   // const removeFromStudyList = () => {
