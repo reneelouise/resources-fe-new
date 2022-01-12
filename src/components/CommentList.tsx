@@ -13,7 +13,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import timestampConverter from "../utils/timestampConverter";
+import { timestampConverter } from "../utils/timestampConverter";
 
 interface CommentListProps {
   resourceId: number;

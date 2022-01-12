@@ -12,7 +12,8 @@ import {
   Typography,
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import timestampConverter from "../utils/timestampConverter";
+import { timestampConverter } from "../utils/timestampConverter";
+import { formatContentType } from "../utils/formatContentType";
 
 interface ResourcePopUpProps {
   resource: IResource;
@@ -23,9 +24,6 @@ interface ResourcePopUpProps {
 }
 
 export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
-  const formatContentType = (word: string): string => {
-    return word[0].toUpperCase() + word.slice(1);
-  };
   const {
     resource_name,
     user_name,
