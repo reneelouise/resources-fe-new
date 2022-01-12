@@ -1,5 +1,8 @@
 import moment from "moment";
-export default function timestampConverter(timestamp: string): string {
+export const timestampConverter = (timestamp: string): string => {
+  if (typeof timestamp !== "string" || timestamp.length < 15) {
+    return "Not a valid timestamp";
+  }
   const array = timestamp.split(/-|:|\.|T/g);
   const numArr = array.map((num) => parseInt(num));
   const result = moment([
@@ -10,4 +13,4 @@ export default function timestampConverter(timestamp: string): string {
     numArr[4],
   ]).fromNow();
   return result;
-}
+};

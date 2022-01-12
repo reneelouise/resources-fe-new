@@ -4,7 +4,7 @@ import { IResource } from "../utils/interfaces";
 import ResourcePopUp from "./ResourcePopUp";
 import { Button, Card, Grid, Link, Typography, Box } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import timestampConverter from "../utils/timestampConverter";
+import { timestampConverter } from "../utils/timestampConverter";
 
 interface ResourceCardProps {
   resource: IResource;
