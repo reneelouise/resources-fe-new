@@ -4,10 +4,12 @@ import { IResource } from "../utils/interfaces";
 import ResourcePopUp from "./ResourcePopUp";
 import { Button, Card, Grid, Link, Typography, Box } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import timestampConverter from "../utils/timestampConverter";
 
 interface ResourceCardProps {
   resource: IResource;
-  setRefetch: React.Dispatch<React.SetStateAction<number>>;
+  refetchValue: number;
+  toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function ResourceCard(props: ResourceCardProps): JSX.Element {
@@ -35,7 +37,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
   const handleDeleteResource = () => {
     axios
       .delete(`${baseUrl}/resources/${id}`)
-      .then(() => props.setRefetch((prev) => -prev));
+      .then(() => props.toggleRefetch((prev) => -prev));
   };
 
   const formatContentType = (word: string): string => {
@@ -122,7 +124,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           </Grid>
           <Grid item xs={9}>
             <Typography variant="body1" component="h6">
-              {created_at}
+              {timestampConverter(created_at)}
             </Typography>
           </Grid>
         </Grid>
@@ -172,6 +174,8 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
         <ResourcePopUp
           resource={props.resource}
           open={open}
+          refetchValue={props.refetchValue}
+          toggleRefetch={props.toggleRefetch}
           handleOpen={(newValue) => setOpen(newValue)}
         />
       </Card>
