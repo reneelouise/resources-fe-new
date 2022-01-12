@@ -5,10 +5,12 @@ import ResourcePopUp from "./ResourcePopUp";
 import { Button, Card, Grid, Link, Typography, Box } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { timestampConverter } from "../utils/timestampConverter";
+import { formatContentType } from "../utils/formatContentType";
 
 interface ResourceCardProps {
   resource: IResource;
   refetchValue: number;
+  isOnStudyList: boolean;
   toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -32,6 +34,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
 
   const [open, setOpen] = useState<boolean>(false);
 
+  const isLoggedIn = !!localStorage.getItem("loggedInUser");
   const baseUrl = process.env.REACT_APP_API_URL;
 
   const handleDeleteResource = () => {
@@ -40,9 +43,20 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
       .then(() => props.toggleRefetch((prev) => -prev));
   };
 
-  const formatContentType = (word: string): string => {
-    return word[0].toUpperCase() + word.slice(1);
+  const addToStudyList = () => {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    axios
+      .post(`${baseUrl}/users/${loggedInUser}/study_list`, { resource_id: id })
+      .then(() => props.toggleRefetch((prev) => -prev));
   };
+
+  // const removeFromStudyList = () => {
+  //   const loggedInUser = localStorage.getItem("loggedInUser");
+  //   axios
+  //     .delete(`${baseUrl}//users/${loggedInUser}/study_list/${id}`)
+  //     .then(() => props.setRefetch((prev) => -prev));
+
+  // };
 
   return (
     <>
@@ -155,6 +169,25 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           </Grid>
         </Grid>
         <Grid container direction="row" justifyContent="flex-end" p={2}>
+          {isLoggedIn && !props.isOnStudyList ? (
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => addToStudyList()}
+              sx={{ mr: 1 }}
+            >
+              Add to study list
+            </Button>
+          ) : (
+            <Button
+              color="error"
+              variant="outlined"
+              onClick={() => addToStudyList()}
+              sx={{ mr: 1 }}
+            >
+              Remove from study list
+            </Button>
+          )}
           <Button
             color="primary"
             variant="outlined"
