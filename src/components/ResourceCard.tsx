@@ -3,6 +3,7 @@ import axios from "axios";
 import { IResource } from "../utils/interfaces";
 import ResourcePopUp from "./ResourcePopUp";
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -81,7 +82,16 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           alignItems="center"
           spacing={2}
         >
-          <Typography variant="h5">{resource_name}</Typography>
+          <Box>
+            <Typography variant="h5">{resource_name}</Typography>
+            <Typography
+              sx={{ fontSize: 14 }}
+              color="text.secondary"
+              gutterBottom
+            >
+              Posted {timestampConverter(created_at)}
+            </Typography>
+          </Box>
           <Link href={url} style={{ textDecoration: "none" }} target="_blank">
             <Button
               color="primary"
@@ -98,10 +108,8 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           <Grid item>
             <Typography variant="body1">
               <strong>{user_name}</strong>
-              {is_faculty ? " (Academy Faculty)" : ""}: {recommendation_type}
-            </Typography>
-            <Typography variant="body1">
-              Posted {timestampConverter(created_at)}
+              {is_faculty ? " (Academy Faculty)" : ""} says{" "}
+              <em>"{recommendation_type}"</em>
             </Typography>
           </Grid>
         </Grid>

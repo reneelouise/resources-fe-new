@@ -1,7 +1,6 @@
 import { IResource } from "../utils/interfaces";
 import CommentsSection from "./CommentsSection";
 import {
-  Box,
   Button,
   Dialog,
   DialogTitle,
