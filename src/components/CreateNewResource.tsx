@@ -215,17 +215,13 @@ export default function CreateNewResource(): JSX.Element {
               color={tagColour[i]}
               aria-label="add"
               onClick={() =>
-                tagColour[i] === 'primary'
-                  ? (
-                    setTagSelection([...tagSelection, tag]),
-                    tagColour[i] = "secondary",
-                    setTagColour(tagColour)
-                  )
-                  : (
-                    setTagSelection(tagSelection.filter(el => el !== tag)),
-                    tagColour[i] = "primary",
-                    setTagColour(tagColour)
-                  )
+                tagColour[i] === "primary"
+                  ? (setTagSelection([...tagSelection, tag]),
+                    (tagColour[i] = "secondary"),
+                    setTagColour(tagColour))
+                  : (setTagSelection(tagSelection.filter((el) => el !== tag)),
+                    (tagColour[i] = "primary"),
+                    setTagColour(tagColour))
               }
             >
               {tag}
@@ -410,6 +406,6 @@ export default function CreateNewResource(): JSX.Element {
           <Alert severity="error">Resource already exists</Alert>
         )}
       </Box>
-    </Container >
+    </Container>
   );
 }
