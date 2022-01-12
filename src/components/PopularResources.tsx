@@ -9,6 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
+import { Typography } from "@mui/material";
 
 const PopularResources = (): JSX.Element => {
   const [popularResources, setPopularResources] = useState<IPopularResource[]>(
@@ -34,6 +35,9 @@ const PopularResources = (): JSX.Element => {
 
   return (
     <Container>
+      <Typography variant="h5" my={2}>
+        Popular Resources
+      </Typography>
       <TableContainer component={Paper}>
         <Table
           sx={{ minWidth: "100%" }}

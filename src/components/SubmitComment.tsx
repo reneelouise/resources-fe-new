@@ -11,7 +11,7 @@ interface SubmitCommentProps {
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export function SubmitComment({
+export default function SubmitComment({
   resource_id,
   user_id,
   setRefetchComments,
