@@ -32,7 +32,11 @@ const StudyList = (): JSX.Element => {
           return (
             <>
               <div key={resource.id}>
-                <ResourceCard resource={resource} setRefetch={setRefetch} isOnStudyList={true} />
+                <ResourceCard
+                  resource={resource}
+                  setRefetch={setRefetch}
+                  isOnStudyList={true}
+                />
               </div>
             </>
           );

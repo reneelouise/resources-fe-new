@@ -11,7 +11,6 @@ interface ResourceCardProps {
   setRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
-
 export default function ResourceCard(props: ResourceCardProps): JSX.Element {
   const {
     id,
@@ -28,14 +27,11 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     recommendation_type,
     recommendation_reason,
     url,
-
   } = props.resource;
 
   const [open, setOpen] = useState<boolean>(false);
 
-
   const isLoggedIn = !!localStorage.getItem("loggedInUser");
-
 
   const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -45,14 +41,11 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
       .then(() => props.setRefetch((prev) => -prev));
   };
 
-
-
   const addToStudyList = () => {
     const loggedInUser = localStorage.getItem("loggedInUser");
     axios
       .post(`${baseUrl}/users/${loggedInUser}/study_list`, { resource_id: id })
       .then(() => props.setRefetch((prev) => -prev));
-
   };
 
   // const removeFromStudyList = () => {
@@ -66,8 +59,6 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
   const formatContentType = (word: string): string => {
     return word[0].toUpperCase() + word.slice(1);
   };
-
-
 
   return (
     <>
@@ -180,8 +171,8 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           </Grid>
         </Grid>
         <Grid container direction="row" justifyContent="flex-end" p={2}>
-          {(isLoggedIn && !props.isOnStudyList)
-            ? <Button
+          {isLoggedIn && !props.isOnStudyList ? (
+            <Button
               color="primary"
               variant="outlined"
               onClick={() => addToStudyList()}
@@ -189,16 +180,16 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
             >
               Add to study list
             </Button>
-            : <Button
-            color="error"
-            variant="outlined"
-            // onClick={() => addToStudyList()}
-            sx={{ mr: 1 }}
-          >
-            Remove from study list
-          </Button>
-
-          }
+          ) : (
+            <Button
+              color="error"
+              variant="outlined"
+              // onClick={() => addToStudyList()}
+              sx={{ mr: 1 }}
+            >
+              Remove from study list
+            </Button>
+          )}
           <Button
             color="primary"
             variant="outlined"
@@ -215,7 +206,6 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           >
             Delete
           </Button>
-
         </Grid>
         <ResourcePopUp
           resource={props.resource}
