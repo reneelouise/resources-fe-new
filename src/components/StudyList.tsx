@@ -1,59 +1,47 @@
-import React from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { IResource } from "../utils/interfaces";
+import ResourceCard from "./ResourceCard";
 
-/* interface StudyList{
+const StudyList = (): JSX.Element => {
+  const [studyListResources, setStudyListResources] = useState<IResource[]>([]);
+  const [refetch, setRefetch] = useState<number>(1);
 
-}*/
+  const isLoggedIn = !!localStorage.getItem("loggedInUser");
 
-export default function StudyList(): JSX.Element {
+  useEffect(() => {
+    const fetchStudyList = async () => {
+      const loggedInUser = localStorage.getItem("loggedInUser");
+      const baseUrl = process.env.REACT_APP_API_URL;
+      try {
+        const res = await axios.get(
+          `${baseUrl}/users/${loggedInUser}/study_list`
+        );
+        setStudyListResources(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchStudyList();
+  }, [refetch]);
+
   return (
-    <h1> studylist</h1>
-
-    /*
-   //     const [resources, setResources] = useState<IResource[]>([]);
-     //   const [refetch, setRefetch] = useState<number>(1);
-    
-     //   const baseUrl = "https://bibliotech-project.herokuapp.com";
-    
-     //   const fetchResources = async () => {
-     //     try {
-     //       const res = await axios.get(`${baseUrl}/resources`);
-     //       setResources(res.data.data);
-     //     } catch (error) {
-     //       console.error(error);
-     //     }
-     //   };
-    
-     //   useEffect(() => {
-     //     fetchResources();
-     //   }, [refetch]);
-    
-     //   return (
-     //     <Container maxWidth="xl">
-     //       <Grid container spacing={2}>
-     //         <Grid item xs={12}>
-     //           <Box>
-     //             <Search />
-     //           </Box>
-     //         </Grid>
-     //         <Grid item xs={8}>
-     //           <Box>
-     //             {resources.map((resource) => (
-     //               <div key={resource.id}>
-     //                 <Resource {...resource} setRefetch={setRefetch} />
-     //               </div>
-     //             ))}
-     //           </Box>
-     //         </Grid>
-     //         <Grid item xs={4}>
-     //           <Box>
-     //             <PopularResources />
-     //           </Box>
-     //         </Grid>
-     //       </Grid>
-     //     </Container>
-     //   );
-     // };
-    */
-    // export default ResourceList;
+    <>
+      {isLoggedIn ? (
+        studyListResources.map((resource) => {
+          return (
+            <>
+              <div key={resource.id}>
+                <ResourceCard resource={resource} setRefetch={setRefetch} />
+              </div>
+            </>
+          );
+        })
+      ) : (
+        <></>
+      )}
+    </>
   );
-}
+};
+
+export default StudyList;
