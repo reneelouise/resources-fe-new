@@ -62,7 +62,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     axios.post(`${baseUrl}/users/${userId}/study_list`, { resource_id: id });
     setTimeout(function delay() {
       setLoading(false);
-    }, 2000);
+    }, 2001);
   };
 
   const removeFromStudyList = () => {
