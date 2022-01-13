@@ -1,33 +1,30 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 import { IResource } from "../utils/interfaces";
 import ResourceCard from "./ResourceCard";
 
 const StudyList = (): JSX.Element => {
+  const { userId } = useContext(UserContext);
   const [studyListResources, setStudyListResources] = useState<IResource[]>([]);
   const [refetch, setRefetch] = useState<number>(1);
 
-  const isLoggedIn = !!localStorage.getItem("loggedInUser");
-
   useEffect(() => {
     const fetchStudyList = async () => {
-      const loggedInUser = localStorage.getItem("loggedInUser");
       const baseUrl = process.env.REACT_APP_API_URL;
       try {
-        const res = await axios.get(
-          `${baseUrl}/users/${loggedInUser}/study_list`
-        );
+        const res = await axios.get(`${baseUrl}/users/${userId}/study_list`);
         setStudyListResources(res.data.data);
       } catch (error) {
         console.error(error);
       }
     };
     fetchStudyList();
-  }, [refetch]);
+  }, [refetch, userId]);
 
   return (
     <>
-      {isLoggedIn ? (
+      {userId ? (
         studyListResources.map((resource) => {
           return (
             <>
@@ -43,7 +40,9 @@ const StudyList = (): JSX.Element => {
           );
         })
       ) : (
-        <></>
+        <>
+          <h3>No items in study list</h3>
+        </>
       )}
     </>
   );

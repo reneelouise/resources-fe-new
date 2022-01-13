@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
 import { IResource } from "../utils/interfaces";
 import ResourcePopUp from "./ResourcePopUp";
@@ -30,6 +31,10 @@ interface ResourceCardProps {
 }
 
 export default function ResourceCard(props: ResourceCardProps): JSX.Element {
+  const { userId } = useContext(UserContext);
+  const [open, setOpen] = useState<boolean>(false);
+  const baseUrl = process.env.REACT_APP_API_URL;
+
   const {
     id,
     resource_name,
@@ -47,11 +52,6 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     url,
   } = props.resource;
 
-  const [open, setOpen] = useState<boolean>(false);
-
-  const isLoggedIn = !!localStorage.getItem("loggedInUser");
-  const baseUrl = process.env.REACT_APP_API_URL;
-
   const handleDeleteResource = () => {
     axios
       .delete(`${baseUrl}/resources/${id}`)
@@ -59,16 +59,14 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
   };
 
   const addToStudyList = () => {
-    const loggedInUser = localStorage.getItem("loggedInUser");
     axios
-      .post(`${baseUrl}/users/${loggedInUser}/study_list`, { resource_id: id })
+      .post(`${baseUrl}/users/${userId}/study_list`, { resource_id: id })
       .then(() => props.toggleRefetch((prev) => -prev));
   };
 
   const removeFromStudyList = () => {
-    const loggedInUser = localStorage.getItem("loggedInUser");
     axios
-      .delete(`${baseUrl}/users/${loggedInUser}/study_list/${id}`)
+      .delete(`${baseUrl}/users/${userId}/study_list/${id}`)
       .then(() => props.toggleRefetch((prev) => -prev));
   };
 
@@ -191,7 +189,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           </Stack>
         </Stack>
         <Grid container direction="row" justifyContent="flex-end" p={2}>
-          {isLoggedIn ? (
+          {userId ? (
             <>
               {!props.isOnStudyList ? (
                 <Button
