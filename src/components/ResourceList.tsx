@@ -10,11 +10,9 @@ interface ResourceListProps {
 }
 
 export default function ResourceList(props: ResourceListProps): JSX.Element {
-  const { userId } = useContext(UserContext);
+  const { userId, itemsInStudyList } = useContext(UserContext);
   const { searchTerm } = props;
   const [resources, setResources] = useState<IResource[]>([]);
-  const [refetchValue, setRefetchValue] = useState<number>(1);
-  const [itemsInStudyList, setItemsInStudyList] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchResources = async () => {
@@ -22,22 +20,12 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
       try {
         const res = await axios.get(`${baseUrl}/resources`);
         setResources(res.data.data);
-
-        if (userId) {
-          const studylist = await axios.get(
-            `${baseUrl}/users/${userId}/study_list`
-          );
-
-          setItemsInStudyList(
-            studylist.data.data.map((resource: IResource) => resource.id)
-          );
-        }
       } catch (error) {
         console.error(error);
       }
     };
     fetchResources();
-  }, [refetchValue, searchTerm, userId]);
+  }, [searchTerm, userId, itemsInStudyList]);
 
   const filteredResources = resources
     .filter((resource) => {
@@ -56,12 +44,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
     })
     .map((resource) => (
       <div key={resource.id}>
-        <ResourceCard
-          isOnStudyList={itemsInStudyList.includes(resource.id)}
-          resource={resource}
-          refetchValue={refetchValue}
-          toggleRefetch={setRefetchValue}
-        />
+        <ResourceCard resource={resource} />
       </div>
     ));
 

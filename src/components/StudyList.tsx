@@ -7,7 +7,6 @@ import ResourceCard from "./ResourceCard";
 export default function StudyList(): JSX.Element {
   const { userId } = useContext(UserContext);
   const [studyListResources, setStudyListResources] = useState<IResource[]>([]);
-  const [refetch, setRefetch] = useState<number>(1);
 
   useEffect(() => {
     const fetchStudyList = async () => {
@@ -20,7 +19,7 @@ export default function StudyList(): JSX.Element {
       }
     };
     fetchStudyList();
-  }, [refetch, userId]);
+  }, [userId]);
 
   return (
     <>
@@ -29,12 +28,7 @@ export default function StudyList(): JSX.Element {
           return (
             <>
               <div key={resource.id}>
-                <ResourceCard
-                  resource={resource}
-                  refetchValue={refetch}
-                  toggleRefetch={setRefetch}
-                  isOnStudyList={true}
-                />
+                <ResourceCard resource={resource} />
               </div>
             </>
           );

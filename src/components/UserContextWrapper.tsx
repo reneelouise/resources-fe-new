@@ -9,8 +9,13 @@ export default function UserContextWrapper(
   props: UserContextWrapperProps
 ): JSX.Element {
   const [userId, setUserId] = useState<number | null>(null);
+  const [itemsInStudyList, setItemsInStudyList] = useState<number[]>([]);
 
-  const value = useMemo(() => ({ userId, setUserId }), [userId, setUserId]);
+  const value = useMemo(
+    () => ({ userId, setUserId, itemsInStudyList, setItemsInStudyList }),
+    [userId, setUserId, itemsInStudyList, setItemsInStudyList]
+  );
+
   return (
     <UserContext.Provider value={value}>{props.children}</UserContext.Provider>
   );

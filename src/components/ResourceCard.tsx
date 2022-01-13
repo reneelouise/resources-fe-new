@@ -10,6 +10,7 @@ import {
   CardActions,
   CardContent,
   Chip,
+  CircularProgress,
   Divider,
   Grid,
   Link,
@@ -25,14 +26,13 @@ import { formatContentType } from "../utils/formatContentType";
 
 interface ResourceCardProps {
   resource: IResource;
-  refetchValue: number;
-  isOnStudyList: boolean;
-  toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function ResourceCard(props: ResourceCardProps): JSX.Element {
-  const { userId } = useContext(UserContext);
+  const { userId, itemsInStudyList, setItemsInStudyList } =
+    useContext(UserContext);
   const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const baseUrl = process.env.REACT_APP_API_URL;
 
   const {
@@ -53,21 +53,27 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
   } = props.resource;
 
   const handleDeleteResource = () => {
-    axios
-      .delete(`${baseUrl}/resources/${id}`)
-      .then(() => props.toggleRefetch((prev) => -prev));
+    axios.delete(`${baseUrl}/resources/${id}`);
   };
 
   const addToStudyList = () => {
-    axios
-      .post(`${baseUrl}/users/${userId}/study_list`, { resource_id: id })
-      .then(() => props.toggleRefetch((prev) => -prev));
+    setLoading(true);
+    setItemsInStudyList([...itemsInStudyList, id]);
+    axios.post(`${baseUrl}/users/${userId}/study_list`, { resource_id: id });
+    setTimeout(function delay() {
+      setLoading(false);
+    }, 2000);
   };
 
   const removeFromStudyList = () => {
-    axios
-      .delete(`${baseUrl}/users/${userId}/study_list/${id}`)
-      .then(() => props.toggleRefetch((prev) => -prev));
+    setLoading(true);
+    setItemsInStudyList(
+      itemsInStudyList.filter((studyListItemId) => studyListItemId !== id)
+    );
+    axios.delete(`${baseUrl}/users/${userId}/study_list/${id}`);
+    setTimeout(function delay() {
+      setLoading(false);
+    }, 2000);
   };
 
   return (
@@ -169,73 +175,101 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
         </Grid>
       </CardContent>
       <CardActions>
-        <Stack
-          direction="row"
-          spacing={2}
-          px={2}
-          divider={<Divider orientation="vertical" flexItem />}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
         >
-          <Stack direction="row" spacing={1}>
-            <ThumbUpIcon color="success" />
-            <Typography variant="body1">{count_of_likes}</Typography>
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <ThumbDownIcon color="error" />
-            <Typography variant="body1">{count_of_dislikes}</Typography>
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <CommentIcon color="primary" />
-            <Typography variant="body1">{number_of_comments}</Typography>
-          </Stack>
-        </Stack>
-        <Grid container direction="row" justifyContent="flex-end" p={2}>
-          {userId ? (
-            <>
-              {!props.isOnStudyList ? (
-                <Button
-                  color="primary"
-                  variant="outlined"
-                  onClick={() => addToStudyList()}
-                  sx={{ mr: 1 }}
-                >
-                  Add to study list
-                </Button>
-              ) : (
-                <Button
-                  color="error"
-                  variant="outlined"
-                  onClick={() => removeFromStudyList()}
-                  sx={{ mr: 1 }}
-                >
-                  Remove from study list
-                </Button>
-              )}
-            </>
-          ) : (
-            <></>
-          )}
-          <Button
-            color="primary"
-            variant="outlined"
-            onClick={() => setOpen(true)}
-            sx={{ mr: 1 }}
+          <Stack
+            direction="row"
+            spacing={2}
+            px={2}
+            divider={<Divider orientation="vertical" flexItem />}
           >
-            Open
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={handleDeleteResource}
+            <Stack direction="row" spacing={1}>
+              <ThumbUpIcon color="success" />
+              <Typography variant="body1">{count_of_likes}</Typography>
+            </Stack>
+            <Stack direction="row" spacing={1}>
+              <ThumbDownIcon color="error" />
+              <Typography variant="body1">{count_of_dislikes}</Typography>
+            </Stack>
+            <Stack direction="row" spacing={1}>
+              <CommentIcon color="primary" />
+              <Typography variant="body1">{number_of_comments}</Typography>
+            </Stack>
+          </Stack>
+          <Stack
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="center"
+            spacing={2}
           >
-            Delete
-          </Button>
-        </Grid>
+            {userId ? (
+              <>
+                {!itemsInStudyList.includes(id) ? (
+                  <>
+                    {loading === true ? (
+                      <Box pr={3}>
+                        <CircularProgress size={20} />
+                      </Box>
+                    ) : (
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        onClick={() => addToStudyList()}
+                        sx={{ mr: 1 }}
+                      >
+                        Add to study list
+                      </Button>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {loading === true ? (
+                      <Box pr={3}>
+                        <CircularProgress size={20} />
+                      </Box>
+                    ) : (
+                      <Button
+                        color="error"
+                        variant="outlined"
+                        onClick={() => removeFromStudyList()}
+                        sx={{ mr: 1 }}
+                      >
+                        Remove from study list
+                      </Button>
+                    )}
+                  </>
+                )}
+              </>
+            ) : (
+              <></>
+            )}
+
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => setOpen(true)}
+              sx={{ mr: 1 }}
+            >
+              Open
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={handleDeleteResource}
+            >
+              Delete
+            </Button>
+          </Stack>
+        </div>
       </CardActions>
       <ResourcePopUp
         resource={props.resource}
         open={open}
-        refetchValue={props.refetchValue}
-        toggleRefetch={props.toggleRefetch}
         handleOpen={(newValue) => setOpen(newValue)}
       />
     </Card>

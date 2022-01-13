@@ -2,9 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import "../styles/App.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { IUser } from "../utils/interfaces";
+import { IUser, IResource } from "../utils/interfaces";
 import { UserContext } from "../contexts/UserContext";
-
 import {
   AppBar,
   Box,
@@ -19,12 +18,16 @@ import {
 } from "@mui/material/";
 
 export default function Header(): JSX.Element {
-  const { userId, setUserId } = useContext(UserContext);
+  const { userId, setUserId, setItemsInStudyList } = useContext(UserContext);
   const [users, setUsers] = useState<IUser[]>([]);
   const [selectedUser, setSelectedUser] = useState<string>("");
   const [showLogInForm, setShowLogInForm] = useState<boolean>(false);
 
   useEffect(() => {
+    const userInLocalStorage = localStorage.getItem("loggedInUser");
+    if (userInLocalStorage) {
+      setUserId(Number(userInLocalStorage));
+    }
     const baseUrl = process.env.REACT_APP_API_URL;
     const fetchUsers = async () => {
       try {
@@ -35,17 +38,36 @@ export default function Header(): JSX.Element {
       }
     };
     fetchUsers();
-  }, []);
+  }, [setUserId]);
+
+  useEffect(() => {
+    const fetchStudyList = async () => {
+      const baseUrl = process.env.REACT_APP_API_URL;
+      try {
+        if (userId) {
+          const studylist = await axios.get(
+            `${baseUrl}/users/${userId}/study_list`
+          );
+          setItemsInStudyList(
+            studylist.data.data.map((resource: IResource) => resource.id)
+          );
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchStudyList();
+  }, [userId, setItemsInStudyList]);
 
   const handleLogout = () => {
-    // localStorage.removeItem("loggedInUser");
+    localStorage.removeItem("loggedInUser");
     setSelectedUser("");
     setShowLogInForm(false);
     setUserId(null);
   };
 
   const handleLogin = () => {
-    // localStorage.setItem("loggedInUser", selectedUser);
+    localStorage.setItem("loggedInUser", selectedUser);
     setShowLogInForm(false);
     setUserId(Number(selectedUser));
   };
