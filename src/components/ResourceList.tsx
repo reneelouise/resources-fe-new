@@ -21,13 +21,15 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
         const res = await axios.get(`${baseUrl}/resources`);
         setResources(res.data.data);
         const loggedInUser = localStorage.getItem("loggedInUser");
-        const studylist = await axios.get(
-          `${baseUrl}/users/${loggedInUser}/study_list`
-        );
+        if (loggedInUser) {
+          const studylist = await axios.get(
+            `${baseUrl}/users/${loggedInUser}/study_list`
+          );
 
-        setItemsInStudyList(
-          studylist.data.data.map((resource: IResource) => resource.id)
-        );
+          setItemsInStudyList(
+            studylist.data.data.map((resource: IResource) => resource.id)
+          );
+        }
       } catch (error) {
         console.error(error);
       }

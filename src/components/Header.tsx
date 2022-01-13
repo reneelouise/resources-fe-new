@@ -104,6 +104,7 @@ export default function Header(): JSX.Element {
           {!showLogInForm && !userIdInLocalStorage && (
             <Paper sx={{ display: { xs: "flex" } }}>
               <Button
+                className="Login-Button"
                 variant="outlined"
                 color="primary"
                 onClick={() => setShowLogInForm(true)}
@@ -120,7 +121,7 @@ export default function Header(): JSX.Element {
               }}
             >
               <Paper sx={{ px: 1.5, py: 0.5 }}>
-                <FormControl variant="outlined">
+                <FormControl className="Login-Form" variant="outlined">
                   <Stack direction="row" spacing={2}>
                     <div
                       style={{
@@ -131,6 +132,7 @@ export default function Header(): JSX.Element {
                       }}
                     >
                       <Select
+                        className="User-Dropdown-Menu"
                         displayEmpty
                         sx={{ width: 200, height: "2.5rem" }}
                         value={selectedUser}
@@ -140,7 +142,11 @@ export default function Header(): JSX.Element {
                           <em>Select a user</em>
                         </MenuItem>
                         {users.map((user) => (
-                          <MenuItem key={user.id} value={user.id}>
+                          <MenuItem
+                            className="Users-In-Dropdown"
+                            key={user.id}
+                            value={user.id}
+                          >
                             {user.name}
                           </MenuItem>
                         ))}
