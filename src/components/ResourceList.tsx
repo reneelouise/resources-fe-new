@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Box } from "@mui/material";
 import ResourceCard from "./ResourceCard";
 import { IResource } from "../utils/interfaces";
+import { UserContext } from "../contexts/UserContext";
 
 interface ResourceListProps {
   searchTerm: string;
 }
 
 export default function ResourceList(props: ResourceListProps): JSX.Element {
+  const { userId } = useContext(UserContext);
   const { searchTerm } = props;
   const [resources, setResources] = useState<IResource[]>([]);
   const [refetchValue, setRefetchValue] = useState<number>(1);
@@ -20,10 +22,10 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
       try {
         const res = await axios.get(`${baseUrl}/resources`);
         setResources(res.data.data);
-        const loggedInUser = localStorage.getItem("loggedInUser");
-        if (loggedInUser) {
+
+        if (userId) {
           const studylist = await axios.get(
-            `${baseUrl}/users/${loggedInUser}/study_list`
+            `${baseUrl}/users/${userId}/study_list`
           );
 
           setItemsInStudyList(
@@ -35,7 +37,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
       }
     };
     fetchResources();
-  }, [refetchValue, searchTerm]);
+  }, [refetchValue, searchTerm, userId]);
 
   const filteredResources = resources
     .filter((resource) => {
