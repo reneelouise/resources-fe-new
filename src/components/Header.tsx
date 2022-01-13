@@ -74,19 +74,28 @@ export default function Header(): JSX.Element {
             sx={{ flexGrow: 1, display: { xs: "flex" } }}
           >
             <Link to="resources" style={{ textDecoration: "none" }}>
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
+              <Button
+                className="links"
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
                 Resources
               </Button>
             </Link>
             {userIdInLocalStorage && (
               <>
                 <Link to="studylist" style={{ textDecoration: "none" }}>
-                  <Button sx={{ my: 2, color: "white", display: "block" }}>
+                  <Button
+                    className="links"
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
                     Study List
                   </Button>
                 </Link>
                 <Link to="new" style={{ textDecoration: "none" }}>
-                  <Button sx={{ my: 2, color: "white", display: "block" }}>
+                  <Button
+                    className="links"
+                    sx={{ my: 2, color: "white", display: "block" }}
+                  >
                     Create New Resource
                   </Button>
                 </Link>
@@ -153,6 +162,7 @@ export default function Header(): JSX.Element {
                       </Select>
                     </div>
                     <Button
+                      className="user-selected-login-btn"
                       color="primary"
                       variant="contained"
                       onClick={handleLogin}
@@ -160,6 +170,7 @@ export default function Header(): JSX.Element {
                       Login
                     </Button>
                     <Button
+                      className="cancel-btn"
                       color="error"
                       variant="outlined"
                       onClick={handleCancel}
@@ -173,7 +184,11 @@ export default function Header(): JSX.Element {
           )}
           {userIdInLocalStorage && (
             <Paper sx={{ p: 0.5, display: { xs: "flex" } }}>
-              <Stack direction="row" spacing={2}>
+              <Stack
+                className="logged-user-text-and-logout"
+                direction="row"
+                spacing={2}
+              >
                 <Typography variant="body1" display="block" mx={2} py={1}>
                   You are logged in as:{" "}
                   <strong>
@@ -182,6 +197,7 @@ export default function Header(): JSX.Element {
                 </Typography>
 
                 <Button
+                  className="logout-btn"
                   variant="outlined"
                   color="primary"
                   onClick={handleLogout}
