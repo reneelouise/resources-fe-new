@@ -4,7 +4,7 @@ import { UserContext } from "../contexts/UserContext";
 import { IResource } from "../utils/interfaces";
 import ResourceCard from "./ResourceCard";
 
-const StudyList = (): JSX.Element => {
+export default function StudyList(): JSX.Element {
   const { userId } = useContext(UserContext);
   const [studyListResources, setStudyListResources] = useState<IResource[]>([]);
   const [refetch, setRefetch] = useState<number>(1);
@@ -46,6 +46,4 @@ const StudyList = (): JSX.Element => {
       )}
     </>
   );
-};
-
-export default StudyList;
+}
