@@ -17,18 +17,28 @@ export default function CommentsSection(
 ): JSX.Element {
   const [refetchValue, toggleRefetch] = useState<number>(1);
   const { userId } = useContext(UserContext);
-  const { id, count_of_likes, count_of_dislikes, number_of_comments } =
-    props.resource;
+  const {
+    id,
+    user_id,
+    count_of_likes,
+    count_of_dislikes,
+    number_of_comments,
+    recommendation_type,
+  } = props.resource;
 
   return (
     <>
       <Grid container py={3}>
-        <SubmitComment
-          resource_id={id}
-          user_id={userId}
-          refetchValue={refetchValue}
-          toggleRefetch={toggleRefetch}
-        />
+        {userId && userId === parseInt(user_id) ? (
+          <Typography>You said: {recommendation_type}</Typography>
+        ) : (
+          <SubmitComment
+            resource_id={id}
+            user_id={userId}
+            refetchValue={refetchValue}
+            toggleRefetch={toggleRefetch}
+          />
+        )}
       </Grid>
       <Grid container py={3}>
         <Grid item xs={12}>
@@ -38,7 +48,7 @@ export default function CommentsSection(
             alignItems="center"
             spacing={2}
           >
-            <Typography variant="h6">Comments:</Typography>
+            <Typography variant="h6">Comments</Typography>
             <Stack
               direction="row"
               spacing={2}

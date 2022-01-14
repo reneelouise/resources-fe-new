@@ -1,6 +1,7 @@
 import { IResource } from "../utils/interfaces";
 import CommentsSection from "./CommentsSection";
 import {
+  Box,
   Button,
   Dialog,
   DialogTitle,
@@ -51,9 +52,16 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
           alignItems="center"
           spacing={2}
         >
-          <Typography variant="h6" component="h6" py={1}>
-            {resource_name}
-          </Typography>
+          <Box>
+            <Typography variant="h6">{resource_name}</Typography>
+            <Typography
+              sx={{ fontSize: 14 }}
+              color="text.secondary"
+              gutterBottom
+            >
+              Posted {timestampConverter(created_at)}
+            </Typography>
+          </Box>
           <Link href={url} style={{ textDecoration: "none" }} target="_blank">
             <Button
               color="primary"
@@ -85,7 +93,7 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
           </Grid>
           <Grid item xs={9}>
             <Typography variant="body1">
-              {formatContentType(content_type)}
+              {content_type ? formatContentType(content_type) : "Not found"}
             </Typography>
           </Grid>
         </Grid>
@@ -94,7 +102,11 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
             <Typography variant="body1">Description:</Typography>
           </Grid>
           <Grid item xs={9}>
-            <Typography variant="body1">{description}</Typography>
+            {description !== " " ? (
+              <Typography variant="body1">{description}</Typography>
+            ) : (
+              <Typography variant="body1">No description</Typography>
+            )}
           </Grid>
         </Grid>
         <Grid container>

@@ -50,48 +50,50 @@ export default function CommentList(props: CommentListProps): JSX.Element {
 
   return (
     <List>
-      {comments
-        ? comments.map((comment) => (
-            <ListItem key={comment.id}>
-              <Paper sx={{ padding: "12px", width: "100%" }} elevation={2}>
-                <Grid container wrap="nowrap" spacing={2}>
-                  <Grid item>
-                    <Avatar>{getInitialsFromName(comment.name)}</Avatar>
-                  </Grid>
-
-                  <Grid justifyContent="left" item xs zeroMinWidth>
-                    <Stack
-                      direction="row"
-                      justifyContent="space-between"
-                      alignItems="center"
-                      spacing={2}
-                    >
-                      <Typography variant="h6" gutterBottom>
-                        {comment.name}{" "}
-                        {comment.is_faculty ? " (Academy Faculty)" : ""}
-                      </Typography>
-                      <Box>
-                        {comment.is_like ? (
-                          <ThumbUpIcon color="success" />
-                        ) : (
-                          <ThumbDownIcon color="error" />
-                        )}
-                      </Box>
-                    </Stack>
-
-                    <Typography variant="body1" gutterBottom>
-                      {comment.text}
-                    </Typography>
-
-                    <Typography variant="caption">
-                      Posted {timestampConverter(comment.created_at)}
-                    </Typography>
-                  </Grid>
+      {comments.length > 0 ? (
+        comments.map((comment) => (
+          <ListItem key={comment.id}>
+            <Paper sx={{ padding: "12px", width: "100%" }} elevation={2}>
+              <Grid container wrap="nowrap" spacing={2}>
+                <Grid item>
+                  <Avatar>{getInitialsFromName(comment.name)}</Avatar>
                 </Grid>
-              </Paper>
-            </ListItem>
-          ))
-        : "No comments"}
+
+                <Grid justifyContent="left" item xs zeroMinWidth>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    spacing={2}
+                  >
+                    <Typography variant="h6" gutterBottom>
+                      {comment.name}{" "}
+                      {comment.is_faculty ? " (Academy Faculty)" : ""}
+                    </Typography>
+                    <Box>
+                      {comment.is_like ? (
+                        <ThumbUpIcon color="success" />
+                      ) : (
+                        <ThumbDownIcon color="error" />
+                      )}
+                    </Box>
+                  </Stack>
+
+                  <Typography variant="body1" gutterBottom>
+                    {comment.text}
+                  </Typography>
+
+                  <Typography variant="caption">
+                    Posted {timestampConverter(comment.created_at)}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Paper>
+          </ListItem>
+        ))
+      ) : (
+        <Typography variant="body1">No comments to show</Typography>
+      )}
     </List>
   );
 }
