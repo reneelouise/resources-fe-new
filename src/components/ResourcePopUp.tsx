@@ -19,11 +19,10 @@ interface ResourcePopUpProps {
   resource: IResource;
   handleOpen: (newValue: boolean) => void;
   open: boolean;
-  refetchValue: number;
-  toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
+  const { resource } = props;
   const {
     resource_name,
     user_name,
@@ -127,11 +126,7 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
           </Grid>
         </Grid>
 
-        <CommentsSection
-          resource={props.resource}
-          refetchValue={props.refetchValue}
-          toggleRefetch={props.toggleRefetch}
-        />
+        <CommentsSection resource={resource} />
       </DialogContent>
       <DialogActions>
         <Button onClick={() => props.handleOpen(false)}>Close</Button>

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
 import { IResource } from "../utils/interfaces";
 import ResourcePopUp from "./ResourcePopUp";
@@ -9,6 +10,7 @@ import {
   CardActions,
   CardContent,
   Chip,
+  CircularProgress,
   Divider,
   Grid,
   Link,
@@ -24,12 +26,15 @@ import { formatContentType } from "../utils/formatContentType";
 
 interface ResourceCardProps {
   resource: IResource;
-  refetchValue: number;
-  isOnStudyList: boolean;
-  toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function ResourceCard(props: ResourceCardProps): JSX.Element {
+  const { userId, itemsInStudyList, setItemsInStudyList } =
+    useContext(UserContext);
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const baseUrl = process.env.REACT_APP_API_URL;
+
   const {
     id,
     resource_name,
@@ -47,34 +52,32 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     url,
   } = props.resource;
 
-  const [open, setOpen] = useState<boolean>(false);
-
-  const isLoggedIn = !!localStorage.getItem("loggedInUser");
-  const baseUrl = process.env.REACT_APP_API_URL;
-
   const handleDeleteResource = () => {
-    axios
-      .delete(`${baseUrl}/resources/${id}`)
-      .then(() => props.toggleRefetch((prev) => -prev));
+    axios.delete(`${baseUrl}/resources/${id}`);
   };
 
   const addToStudyList = () => {
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    axios
-      .post(`${baseUrl}/users/${loggedInUser}/study_list`, { resource_id: id })
-      .then(() => props.toggleRefetch((prev) => -prev));
+    setLoading(true);
+    setItemsInStudyList([...itemsInStudyList, id]);
+    axios.post(`${baseUrl}/users/${userId}/study_list`, { resource_id: id });
+    setTimeout(function delay() {
+      setLoading(false);
+    }, 2000);
   };
 
-  // const removeFromStudyList = () => {
-  //   const loggedInUser = localStorage.getItem("loggedInUser");
-  //   axios
-  //     .delete(`${baseUrl}//users/${loggedInUser}/study_list/${id}`)
-  //     .then(() => props.setRefetch((prev) => -prev));
-
-  // };
+  const removeFromStudyList = () => {
+    setLoading(true);
+    setItemsInStudyList(
+      itemsInStudyList.filter((studyListItemId) => studyListItemId !== id)
+    );
+    axios.delete(`${baseUrl}/users/${userId}/study_list/${id}`);
+    setTimeout(function delay() {
+      setLoading(false);
+    }, 2000);
+  };
 
   return (
-    <Card variant="outlined" sx={{ minWidth: "100%", mb: 2, p: 2 }}>
+    <Card variant="outlined" sx={{ minWidth: "100%", mb: 2 }}>
       <CardContent>
         <Stack
           direction="row"
@@ -128,7 +131,11 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
             <Typography variant="body1">Description:</Typography>
           </Grid>
           <Grid item xs={9}>
-            <Typography variant="body1">{description}</Typography>
+            {description !== " " ? (
+              <Typography variant="body1">{description}</Typography>
+            ) : (
+              <Typography variant="body1">No description</Typography>
+            )}
           </Grid>
         </Grid>
         <Grid container>
@@ -168,67 +175,101 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
         </Grid>
       </CardContent>
       <CardActions>
-        <Stack
-          direction="row"
-          spacing={2}
-          px={2}
-          divider={<Divider orientation="vertical" flexItem />}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
         >
-          <Stack direction="row" spacing={1}>
-            <ThumbUpIcon color="success" />
-            <Typography variant="body1">{count_of_likes}</Typography>
+          <Stack
+            direction="row"
+            spacing={2}
+            px={2}
+            divider={<Divider orientation="vertical" flexItem />}
+          >
+            <Stack direction="row" spacing={1}>
+              <ThumbUpIcon color="success" />
+              <Typography variant="body1">{count_of_likes}</Typography>
+            </Stack>
+            <Stack direction="row" spacing={1}>
+              <ThumbDownIcon color="error" />
+              <Typography variant="body1">{count_of_dislikes}</Typography>
+            </Stack>
+            <Stack direction="row" spacing={1}>
+              <CommentIcon color="primary" />
+              <Typography variant="body1">{number_of_comments}</Typography>
+            </Stack>
           </Stack>
-          <Stack direction="row" spacing={1}>
-            <ThumbDownIcon color="error" />
-            <Typography variant="body1">{count_of_dislikes}</Typography>
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <CommentIcon color="primary" />
-            <Typography variant="body1">{number_of_comments}</Typography>
-          </Stack>
-        </Stack>
-        <Grid container direction="row" justifyContent="flex-end" p={2}>
-          {isLoggedIn && !props.isOnStudyList ? (
+          <Stack
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="center"
+            spacing={2}
+          >
+            {userId ? (
+              <>
+                {!itemsInStudyList.includes(id) ? (
+                  <>
+                    {loading === true ? (
+                      <Box pr={3}>
+                        <CircularProgress size={20} />
+                      </Box>
+                    ) : (
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        onClick={() => addToStudyList()}
+                        sx={{ mr: 1 }}
+                      >
+                        Add to study list
+                      </Button>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {loading === true ? (
+                      <Box pr={3}>
+                        <CircularProgress size={20} />
+                      </Box>
+                    ) : (
+                      <Button
+                        color="error"
+                        variant="outlined"
+                        onClick={() => removeFromStudyList()}
+                        sx={{ mr: 1 }}
+                      >
+                        Remove from study list
+                      </Button>
+                    )}
+                  </>
+                )}
+              </>
+            ) : (
+              <></>
+            )}
+
             <Button
               color="primary"
               variant="outlined"
-              onClick={() => addToStudyList()}
+              onClick={() => setOpen(true)}
               sx={{ mr: 1 }}
             >
-              Add to study list
+              Open
             </Button>
-          ) : (
             <Button
-              color="error"
               variant="outlined"
-              onClick={() => addToStudyList()}
-              sx={{ mr: 1 }}
+              color="error"
+              onClick={handleDeleteResource}
             >
-              Remove from study list
+              Delete
             </Button>
-          )}
-          <Button
-            color="primary"
-            variant="outlined"
-            onClick={() => setOpen(true)}
-            sx={{ mr: 1 }}
-          >
-            Open
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={handleDeleteResource}
-          >
-            Delete
-          </Button>
-        </Grid>
+          </Stack>
+        </div>
       </CardActions>
       <ResourcePopUp
         resource={props.resource}
         open={open}
-        refetchValue={props.refetchValue}
-        toggleRefetch={props.toggleRefetch}
         handleOpen={(newValue) => setOpen(newValue)}
       />
     </Card>
