@@ -41,63 +41,54 @@ export default function SubmitComment(props: SubmitCommentProps): JSX.Element {
   };
 
   return (
-    <Paper
-      sx={{
-        padding: "12px",
-        width: "60%",
-      }}
-      elevation={2}
-    >
-      <Grid container justifyContent="center">
-        <Grid item xs>
-          <Typography variant="h6" pb={2}>
-            Would you recommend this resource?
-          </Typography>
-          <Stack direction="row" spacing={2}>
-            <Button
-              color="success"
-              variant={isLike === true ? "contained" : "outlined"}
-              sx={{ width: "50%" }}
-              onClick={() => setIsLike(true)}
-              startIcon={<ThumbUpIcon />}
-            >
-              Yes
-            </Button>
-            <Button
-              color="error"
-              variant={isLike === false ? "contained" : "outlined"}
-              sx={{ width: "50%" }}
-              onClick={() => setIsLike(false)}
-              startIcon={<ThumbDownIcon />}
-            >
-              No
-            </Button>
-          </Stack>
-        </Grid>
-        {isLike !== undefined && (
-          <Stack direction="row" py={2} spacing={2} sx={{ width: "100%" }}>
-            <TextField
-              fullWidth
-              onChange={(e) => setCommentInput(e.target.value)}
-              id="standard-required"
-              label="Add a comment..."
-              variant="outlined"
-              value={commentInput}
-            />
+    <>
+      <Typography variant="h6" pb={2}>
+        Would you recommend this resource?
+      </Typography>
+      <Stack direction="row" spacing={2} sx={{ width: "80%" }}>
+        <Button
+          color="success"
+          variant={isLike === true ? "contained" : "outlined"}
+          sx={{ width: "50%" }}
+          onClick={() => setIsLike(true)}
+          startIcon={<ThumbUpIcon />}
+        >
+          Yes
+        </Button>
+        <Button
+          color="error"
+          variant={isLike === false ? "contained" : "outlined"}
+          sx={{ width: "50%" }}
+          onClick={() => setIsLike(false)}
+          startIcon={<ThumbDownIcon />}
+        >
+          No
+        </Button>
+      </Stack>
 
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={() => setIsLike(undefined)}
-            >
-              Cancel
-            </Button>
-            <Button variant="contained" onClick={handleCommentSubmit}>
-              Submit
-            </Button>
-          </Stack>
-        )}
-      </Grid>
-    </Paper>
+      {isLike !== undefined && (
+        <Stack direction="row" py={2} spacing={2} sx={{ width: "100%" }}>
+          <TextField
+            fullWidth
+            onChange={(e) => setCommentInput(e.target.value)}
+            id="standard-required"
+            label="Add a comment..."
+            variant="outlined"
+            value={commentInput}
+          />
+
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => setIsLike(undefined)}
+          >
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={handleCommentSubmit}>
+            Submit
+          </Button>
+        </Stack>
+      )}
+    </>
   );
 }

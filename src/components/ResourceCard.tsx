@@ -85,7 +85,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
       sx={{
         minWidth: "100%",
         mb: 2,
-        boxShadow: "1.5px 1.5px 1.5px 0 rgba(0,0,0,0.4)",
+        boxShadow: 2,
       }}
     >
       <CardHeader

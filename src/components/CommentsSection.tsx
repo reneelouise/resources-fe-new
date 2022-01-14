@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { Divider, Grid, Stack, Typography } from "@mui/material";
+import { Box, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import CommentIcon from "@mui/icons-material/Comment";
@@ -28,18 +28,30 @@ export default function CommentsSection(
 
   return (
     <>
-      <Grid container py={3}>
-        {userId && userId === parseInt(user_id) ? (
-          <Typography>You said: {recommendation_type}</Typography>
-        ) : (
-          <SubmitComment
-            resource_id={id}
-            user_id={userId}
-            refetchValue={refetchValue}
-            toggleRefetch={toggleRefetch}
-          />
-        )}
-      </Grid>
+      <Box p={2} sx={{ display: "flex", justifyContent: "center" }}>
+        <Paper
+          sx={{
+            padding: "16px",
+            width: "60%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          elevation={2}
+        >
+          {userId && userId === parseInt(user_id) ? (
+            <Typography>You said: {recommendation_type}</Typography>
+          ) : (
+            <SubmitComment
+              resource_id={id}
+              user_id={userId}
+              refetchValue={refetchValue}
+              toggleRefetch={toggleRefetch}
+            />
+          )}
+        </Paper>
+      </Box>
       <Grid container py={3}>
         <Grid item xs={12}>
           <Stack
