@@ -9,7 +9,6 @@ export default function StudyList(): JSX.Element {
   const { userId } = useContext(UserContext);
   const [studyListResources, setStudyListResources] = useState<IResource[]>([]);
 
-  console.log(studyListResources);
   useEffect(() => {
     const fetchStudyList = async () => {
       const baseUrl = process.env.REACT_APP_API_URL;
