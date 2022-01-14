@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { Comment } from "../utils/interfaces";
@@ -24,7 +22,7 @@ interface CommentListProps {
 }
 
 export default function CommentList(props: CommentListProps): JSX.Element {
-  const { resourceId, refetchValue, comments } = props;
+  const { comments } = props;
 
   //   const handleCommentDelete = () => {
   //    const baseUrl = process.env.REACT_APP_API_URL;

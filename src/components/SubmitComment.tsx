@@ -1,11 +1,4 @@
-import {
-  Button,
-  Grid,
-  Paper,
-  TextField,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Button, TextField, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";

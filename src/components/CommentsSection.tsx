@@ -39,7 +39,13 @@ export default function CommentsSection(
       }
     };
     fetchComments();
-  }, [refetchValue]);
+  }, [refetchValue, id]);
+
+  const checkCommentsForUserRecommendation = (): boolean => {
+    return comments.map((comment) => comment.author_id === userId).length > 0
+      ? true
+      : false;
+  };
 
   return (
     <>
@@ -58,12 +64,20 @@ export default function CommentsSection(
           {userId && userId === parseInt(user_id) ? (
             <Typography>You said: {recommendation_type}</Typography>
           ) : (
-            <SubmitComment
-              resource_id={id}
-              user_id={userId}
-              refetchValue={refetchValue}
-              toggleRefetch={toggleRefetch}
-            />
+            <>
+              {checkCommentsForUserRecommendation() ? (
+                <Typography>
+                  You have already added a comment to this resource
+                </Typography>
+              ) : (
+                <SubmitComment
+                  resource_id={id}
+                  user_id={userId}
+                  refetchValue={refetchValue}
+                  toggleRefetch={toggleRefetch}
+                />
+              )}
+            </>
           )}
         </Paper>
       </Box>
