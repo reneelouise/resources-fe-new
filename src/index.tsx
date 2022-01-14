@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import App from "./App";
 import StudyListPage from "./components/StudyListPage";
 import ResourceListPage from "./components/ResourceListPage";
@@ -11,7 +11,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="" element={<ResourceListPage />} />
+          <Route path="" element={<Navigate replace to="resources" />} />
           <Route path="resources" element={<ResourceListPage />} />
           <Route path="studylist" element={<StudyListPage />} />
           <Route path="new" element={<CreateNewResource />} />
