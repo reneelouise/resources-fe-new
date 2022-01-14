@@ -44,37 +44,43 @@ export default function YourSubmittedResources(): JSX.Element {
       <Typography variant="h5" my={2}>
         Your Submitted Resources
       </Typography>
-      <TableContainer component={Paper}>
-        <Table
-          sx={{ minWidth: "100%" }}
-          size="small"
-          aria-label="most popular resources"
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell align="left">Rank</TableCell>
-              <TableCell align="left">Resource</TableCell>
-              <TableCell align="left">Shared By</TableCell>
-              <TableCell align="right">Score</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {listOfResourcesSubmitted.map((resource, i) => (
-              <TableRow
-                key={resource.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {i + 1}
-                </TableCell>
-                <TableCell>{resource.resource_name}</TableCell>
-                <TableCell>{fetchUserInitials(resource.user_name)}</TableCell>
-                <TableCell align="right">{resource.popularity}</TableCell>
+      {listOfResourcesSubmitted.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table
+            sx={{ minWidth: "100%" }}
+            size="small"
+            aria-label="most popular resources"
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">Rank</TableCell>
+                <TableCell align="left">Resource</TableCell>
+                <TableCell align="left">Shared By</TableCell>
+                <TableCell align="right">Score</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {listOfResourcesSubmitted.map((resource, i) => (
+                <TableRow
+                  key={resource.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {i + 1}
+                  </TableCell>
+                  <TableCell>{resource.resource_name}</TableCell>
+                  <TableCell>{fetchUserInitials(resource.user_name)}</TableCell>
+                  <TableCell align="right">{resource.popularity}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography variant="body1">
+          You haven't submitted any resources!
+        </Typography>
+      )}
     </Container>
   );
 }
