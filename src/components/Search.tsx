@@ -44,6 +44,7 @@ export default function Search(props: SearchProps): JSX.Element {
         <Grid item xs={6}>
           <Stack direction="row" spacing={2}>
             <TextField
+              autoComplete="off"
               fullWidth
               id="search"
               label="Search resources"
