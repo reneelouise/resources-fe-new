@@ -144,6 +144,7 @@ export default function CreateNewResource(): JSX.Element {
         setRecommendationType(" ");
         setRecommendationReason(" ");
         setTagSelection([]);
+        setTagColour(Array(tags.length).fill("primary"));
       } catch (error) {
         console.error(error);
         if (isBadRequestError(error)) {
