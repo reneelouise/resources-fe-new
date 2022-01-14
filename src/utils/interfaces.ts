@@ -1,5 +1,6 @@
 export interface IResource {
   id: number;
+  resource_id: number;
   resource_name: string;
   user_name: string;
   user_id: string;

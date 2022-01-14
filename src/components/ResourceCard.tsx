@@ -60,11 +60,15 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
 
   const addToStudyList = () => {
     setLoading(true);
+    console.log(id);
     setItemsInStudyList([...itemsInStudyList, id]);
-    axios.post(`${baseUrl}/users/${userId}/study_list`, { resource_id: id });
+    axios.post(`${baseUrl}/users/${userId}/study_list`, {
+      resource_id: id,
+    });
     setTimeout(function delay() {
       setLoading(false);
     }, 2000);
+    props.toggleRefetch();
   };
 
   const removeFromStudyList = () => {
@@ -76,6 +80,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     setTimeout(function delay() {
       setLoading(false);
     }, 2000);
+    props.toggleRefetch();
   };
 
   return (
@@ -124,7 +129,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           </Grid>
           <Grid item xs={9}>
             <Typography variant="body1">
-              {formatContentType(content_type)}
+              {content_type ? formatContentType(content_type) : "Not found"}
             </Typography>
           </Grid>
         </Grid>
