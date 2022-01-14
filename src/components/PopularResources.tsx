@@ -36,13 +36,13 @@ const PopularResources = (): JSX.Element => {
   return (
     <Container>
       <Typography variant="h5" my={2}>
-        Popular Resources
+        Most Popular Resources
       </Typography>
       <TableContainer component={Paper}>
         <Table
           sx={{ minWidth: "100%" }}
           size="small"
-          aria-label="most popular resources"
+          aria-label="Most popular resources"
         >
           <TableHead>
             <TableRow>
@@ -61,7 +61,16 @@ const PopularResources = (): JSX.Element => {
                 <TableCell component="th" scope="row">
                   {i + 1}
                 </TableCell>
-                <TableCell>{resource.resource_name}</TableCell>
+                <TableCell
+                  sx={{
+                    maxWidth: "150px",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {resource.resource_name}
+                </TableCell>
                 <TableCell>{fetchUserInitials(resource.user_name)}</TableCell>
                 <TableCell align="right">{resource.popularity}</TableCell>
               </TableRow>

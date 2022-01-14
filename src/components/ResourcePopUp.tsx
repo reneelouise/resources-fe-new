@@ -1,6 +1,7 @@
 import { IResource } from "../utils/interfaces";
 import CommentsSection from "./CommentsSection";
 import {
+  Box,
   Button,
   Dialog,
   DialogTitle,
@@ -39,6 +40,7 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
   return (
     <Dialog
       fullWidth
+      maxWidth={"md"}
       scroll="paper"
       open={props.open}
       onClose={() => props.handleOpen(false)}
@@ -50,9 +52,16 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
           alignItems="center"
           spacing={2}
         >
-          <Typography variant="h6" component="h6" py={1}>
-            {resource_name}
-          </Typography>
+          <Box>
+            <Typography variant="h6">{resource_name}</Typography>
+            <Typography
+              sx={{ fontSize: 14 }}
+              color="text.secondary"
+              gutterBottom
+            >
+              Posted {timestampConverter(created_at)}
+            </Typography>
+          </Box>
           <Link href={url} style={{ textDecoration: "none" }} target="_blank">
             <Button
               color="primary"
@@ -66,12 +75,12 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
       </DialogTitle>
       <DialogContent dividers={true}>
         <Grid container>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Typography variant="body1" component="h6">
               Recommended By:
             </Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <Typography variant="body1" component="h6">
               {user_name}
               {is_faculty ? " (Academy Faculty)" : ""}
@@ -79,38 +88,42 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Typography variant="body1">Content Type:</Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <Typography variant="body1">
-              {formatContentType(content_type)}
+              {content_type ? formatContentType(content_type) : "Not found"}
             </Typography>
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Typography variant="body1">Description:</Typography>
           </Grid>
-          <Grid item xs={8}>
-            <Typography variant="body1">{description}</Typography>
+          <Grid item xs={9}>
+            {description !== " " ? (
+              <Typography variant="body1">{description}</Typography>
+            ) : (
+              <Typography variant="body1">No description</Typography>
+            )}
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Typography variant="body1">Tags:</Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <Typography variant="body1">
               {!tags ? "No tags added" : tags}
             </Typography>
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Typography variant="body1">Added:</Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <Typography variant="body1">
               {timestampConverter(created_at)}
             </Typography>

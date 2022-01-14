@@ -9,10 +9,10 @@ import {
   Card,
   CardActions,
   CardContent,
+  CardHeader,
   Chip,
   CircularProgress,
   Divider,
-  Grid,
   Link,
   Stack,
   Typography,
@@ -22,7 +22,6 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import CommentIcon from "@mui/icons-material/Comment";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { timestampConverter } from "../utils/timestampConverter";
-import { formatContentType } from "../utils/formatContentType";
 
 interface ResourceCardProps {
   resource: IResource;
@@ -39,17 +38,14 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
   const {
     id,
     resource_name,
-    description,
     user_name,
     is_faculty,
-    content_type,
     tags,
     count_of_likes,
     count_of_dislikes,
     number_of_comments,
     created_at,
     recommendation_type,
-    recommendation_reason,
     url,
   } = props.resource;
 
@@ -84,24 +80,18 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
   };
 
   return (
-    <Card variant="outlined" sx={{ minWidth: "100%", mb: 2 }}>
-      <CardContent>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          spacing={2}
-        >
-          <Box>
-            <Typography variant="h5">{resource_name}</Typography>
-            <Typography
-              sx={{ fontSize: 14 }}
-              color="text.secondary"
-              gutterBottom
-            >
-              Posted {timestampConverter(created_at)}
-            </Typography>
-          </Box>
+    <Card
+      variant="outlined"
+      sx={{
+        minWidth: "100%",
+        mb: 2,
+        boxShadow: 2,
+      }}
+    >
+      <CardHeader
+        title={resource_name}
+        subheader={"Posted " + timestampConverter(created_at)}
+        action={
           <Link href={url} style={{ textDecoration: "none" }} target="_blank">
             <Button
               color="primary"
@@ -111,76 +101,36 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
               Go to resource
             </Button>
           </Link>
+        }
+      />
+
+      <CardContent sx={{ py: 1 }}>
+        <Stack direction="row" spacing={1} pb={1}>
+          {tags !== null ? (
+            tags?.split(", ").map((tag, i) => {
+              return (
+                <Chip
+                  key={i + 1}
+                  id="tag"
+                  variant="outlined"
+                  color="default"
+                  clickable={true}
+                  label={tag}
+                />
+              );
+            })
+          ) : (
+            <Typography variant="body1">No tags</Typography>
+          )}
         </Stack>
+
+        <Typography variant="body1" py={1}>
+          <strong>{user_name}</strong>
+          {is_faculty ? " (Academy Faculty)" : ""} says{" "}
+          <em>"{recommendation_type}"</em>
+        </Typography>
       </CardContent>
-      <CardContent>
-        <Grid container>
-          <Grid item>
-            <Typography variant="body1">
-              <strong>{user_name}</strong>
-              {is_faculty ? " (Academy Faculty)" : ""} says{" "}
-              <em>"{recommendation_type}"</em>
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={3}>
-            <Typography variant="body1">Content Type:</Typography>
-          </Grid>
-          <Grid item xs={9}>
-            <Typography variant="body1">
-              {content_type ? formatContentType(content_type) : "Not found"}
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={3}>
-            <Typography variant="body1">Description:</Typography>
-          </Grid>
-          <Grid item xs={9}>
-            {description !== " " ? (
-              <Typography variant="body1">{description}</Typography>
-            ) : (
-              <Typography variant="body1">No description</Typography>
-            )}
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={3}>
-            <Typography variant="body1">Tags:</Typography>
-          </Grid>
-          <Grid item xs={9}>
-            <Stack direction="row" spacing={1}>
-              {tags !== null ? (
-                tags?.split(", ").map((tag, i) => {
-                  return (
-                    <Chip
-                      key={i + 1}
-                      id="tag"
-                      variant="outlined"
-                      color="default"
-                      clickable={true}
-                      label={tag}
-                    />
-                  );
-                })
-              ) : (
-                <Typography variant="body1">No tags</Typography>
-              )}
-            </Stack>
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={6}>
-            <Typography variant="body1" component="h6"></Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography variant="body1" component="h6">
-              {recommendation_reason}
-            </Typography>
-          </Grid>
-        </Grid>
-      </CardContent>
+
       <CardActions>
         <div
           style={{
@@ -191,6 +141,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
         >
           <Stack
             direction="row"
+            alignItems="center"
             spacing={2}
             px={2}
             divider={<Divider orientation="vertical" flexItem />}
@@ -262,7 +213,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
               onClick={() => setOpen(true)}
               sx={{ mr: 1 }}
             >
-              Open
+              Expand
             </Button>
             {userId && userId === parseInt(props.resource.user_id) ? (
               <Button
@@ -278,6 +229,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           </Stack>
         </div>
       </CardActions>
+
       <ResourcePopUp
         resource={props.resource}
         open={open}
