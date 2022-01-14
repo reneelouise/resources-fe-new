@@ -26,7 +26,7 @@
     "test:watch": "react-scripts test",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "cy": "run cypress open",
+    "cy": "cypress open",
     "cy:open": "cypress open"
   },
   "browserslist": {

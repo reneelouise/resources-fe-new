@@ -99,8 +99,6 @@ export default function CreateNewResource(): JSX.Element {
     ("inherit" | "default" | "primary" | "secondary" | undefined)[]
   >(Array(tags.length).fill("primary"));
 
-  console.log(tagSelection);
-
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
   // eslint-disable-next-line
@@ -164,7 +162,7 @@ export default function CreateNewResource(): JSX.Element {
       : (setErrorAlert(true), delay(3000).then(() => setErrorAlert(false)));
   };
   return (
-    <Container maxWidth="lg">
+    <Container className="create-new-resource" maxWidth="lg">
       <Typography variant="h4" py={3}>
         Create new resource
       </Typography>
@@ -173,31 +171,36 @@ export default function CreateNewResource(): JSX.Element {
           <Grid item xs={12}>
             {resourceName ? (
               <TextField
-                name="resourceName"
+                className="resource-name-input"
                 required
                 fullWidth
+                multiline
+                rows={1}
                 id="resourceName"
                 value={resourceName}
+                placeholder="Please enter a name for the resource"
                 onChange={(e) => setResourceName(e.target.value)}
                 label="Resource Name"
-                autoFocus
               />
             ) : (
               <TextField
+                className="resource-name-input-error"
                 error
-                name="resourceName"
                 required
                 fullWidth
+                multiline
+                rows={1}
                 id="resourceName"
+                placeholder="Please enter a name for the resource"
                 value={resourceName}
                 onChange={(e) => setResourceName(e.target.value)}
                 label="Resource Name"
-                autoFocus
               />
             )}
           </Grid>
           <Grid item xs={12}>
             <TextField
+              className="resource-description-input"
               id="resourceDescription"
               label="Description"
               multiline
@@ -208,32 +211,36 @@ export default function CreateNewResource(): JSX.Element {
               placeholder="Please enter a description for the resource"
             />
           </Grid>
-          {tags.map((tag, i) => (
-            <Fab
-              key={i}
-              variant="extended"
-              size="small"
-              color={tagColour[i]}
-              aria-label="add"
-              onClick={() =>
-                tagColour[i] === "primary"
-                  ? (setTagSelection([...tagSelection, tag]),
-                    (tagColour[i] = "secondary"),
-                    setTagColour(tagColour))
-                  : (setTagSelection(tagSelection.filter((el) => el !== tag)),
-                    (tagColour[i] = "primary"),
-                    setTagColour(tagColour))
-              }
-            >
-              {tag}
-            </Fab>
-          ))}
+          <Grid className="tag-buttons" item xs={12}>
+            {tags.map((tag, i) => (
+              <Fab
+                key={i}
+                variant="extended"
+                size="small"
+                color={tagColour[i]}
+                aria-label="add"
+                onClick={() =>
+                  tagColour[i] === "primary"
+                    ? (setTagSelection([...tagSelection, tag]),
+                      (tagColour[i] = "secondary"),
+                      setTagColour(tagColour))
+                    : (setTagSelection(tagSelection.filter((el) => el !== tag)),
+                      (tagColour[i] = "primary"),
+                      setTagColour(tagColour))
+                }
+              >
+                {tag}
+              </Fab>
+            ))}
+          </Grid>
           <Grid item xs={12}>
             {url ? (
               <TextField
-                name="resourceURL"
+                className="resource-url-input"
                 required
                 fullWidth
+                multiline
+                rows={1}
                 id="resourceURL"
                 label="Resource URL"
                 value={url}
@@ -241,10 +248,12 @@ export default function CreateNewResource(): JSX.Element {
               />
             ) : (
               <TextField
+                className="resource-url-input-error"
                 error
-                name="resourceURL"
                 required
                 fullWidth
+                multiline
+                rows={1}
                 id="resourceURL"
                 label="Resource URL"
                 value={url}
@@ -253,16 +262,17 @@ export default function CreateNewResource(): JSX.Element {
             )}
           </Grid>
           <Grid item xs={12}>
-            <FormControl required fullWidth>
+            <FormControl className="resource-type-form" required fullWidth>
               <InputLabel id="content_type">Content Type</InputLabel>
               {contentType ? (
                 <Select
+                  className="resource-type-selector"
                   labelId="content_type"
                   id="select_content_type"
                   required
                   value={contentType}
                   onChange={(e) => setContentType(e.target.value)}
-                  label="Age"
+                  label="resource-type"
                 >
                   {content_type.map((el, i) => {
                     return (
@@ -274,13 +284,14 @@ export default function CreateNewResource(): JSX.Element {
                 </Select>
               ) : (
                 <Select
+                  className="resource-type-selector-error"
                   error
                   labelId="content_type"
                   id="select_content_type"
                   required
                   value={contentType}
                   onChange={(e) => setContentType(e.target.value)}
-                  label="Age"
+                  label="resource-type"
                 >
                   {content_type.map((el, i) => {
                     return (
@@ -294,10 +305,11 @@ export default function CreateNewResource(): JSX.Element {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <FormControl required fullWidth>
+            <FormControl className="mark-stage-form" required fullWidth>
               <InputLabel id="mark_stage">Select Mark Stage</InputLabel>
               {markStage ? (
                 <Select
+                  className="mark-stage-selector"
                   labelId="mark_stage"
                   id="select_mark_stage"
                   required
@@ -315,6 +327,7 @@ export default function CreateNewResource(): JSX.Element {
                 </Select>
               ) : (
                 <Select
+                  className="mark-stage-selector-error"
                   error
                   labelId="mark_stage"
                   id="select_mark_stage"
@@ -336,9 +349,14 @@ export default function CreateNewResource(): JSX.Element {
           </Grid>
           <Grid item xs={12}>
             {recommendationType ? (
-              <FormControl required component="fieldset">
+              <FormControl
+                className="recommendation-type"
+                required
+                component="fieldset"
+              >
                 <FormLabel component="legend">Recommendation Type</FormLabel>
                 <RadioGroup
+                  className="recommendation-type-radio"
                   aria-label="recommendation_type"
                   name="recommendation_type"
                   onChange={(e) => setRecommendationType(e.target.value)}
@@ -356,9 +374,15 @@ export default function CreateNewResource(): JSX.Element {
                 </RadioGroup>
               </FormControl>
             ) : (
-              <FormControl error required component="fieldset">
+              <FormControl
+                className="recommendation-type-error"
+                error
+                required
+                component="fieldset"
+              >
                 <FormLabel component="legend">Recommendation Type</FormLabel>
                 <RadioGroup
+                  className="recommendation-type-radio-error"
                   aria-label="recommendation_type"
                   name="recommendation_type"
                   onChange={(e) => setRecommendationType(e.target.value)}
@@ -379,6 +403,7 @@ export default function CreateNewResource(): JSX.Element {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              className="recommendation-reason"
               id="recommendationReason"
               label="Reason for recommendation"
               multiline
@@ -399,20 +424,27 @@ export default function CreateNewResource(): JSX.Element {
           >
             <Box sx={{ padding: "6px 12px 0 0" }}>
               {errorAlert && (
-                <Alert severity="error">
+                <Alert className="alert-error" severity="error">
                   Please complete all required fields
                 </Alert>
               )}
               {submittedAlert && (
-                <Alert severity="success">
+                <Alert className="alert-submitted" severity="success">
                   Resource successfully submitted
                 </Alert>
               )}
               {alreadyExistsAlert && (
-                <Alert severity="error">Resource already exists</Alert>
+                <Alert className="alert-already-exists" severity="error">
+                  Resource already exists
+                </Alert>
               )}
             </Box>
-            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button
+              className="submit-button"
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
               Create Resource
             </Button>
           </Box>
