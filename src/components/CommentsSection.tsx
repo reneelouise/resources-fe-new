@@ -1,4 +1,5 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
 import { UserContext } from "../contexts/UserContext";
 import { Box, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -6,7 +7,7 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import CommentIcon from "@mui/icons-material/Comment";
 import CommentList from "./CommentList";
 import SubmitComment from "./SubmitComment";
-import { IResource } from "../utils/interfaces";
+import { IResource, Comment } from "../utils/interfaces";
 
 interface CommentsSectionProps {
   resource: IResource;
@@ -15,6 +16,7 @@ interface CommentsSectionProps {
 export default function CommentsSection(
   props: CommentsSectionProps
 ): JSX.Element {
+  const [comments, setComments] = useState<Comment[]>([]);
   const [refetchValue, toggleRefetch] = useState<number>(1);
   const { userId } = useContext(UserContext);
   const {
@@ -25,6 +27,19 @@ export default function CommentsSection(
     number_of_comments,
     recommendation_type,
   } = props.resource;
+
+  useEffect(() => {
+    const baseUrl = process.env.REACT_APP_API_URL;
+    const fetchComments = async () => {
+      try {
+        const res = await axios.get(`${baseUrl}/resources/${id}/comments`);
+        setComments(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchComments();
+  }, [refetchValue]);
 
   return (
     <>
@@ -85,6 +100,7 @@ export default function CommentsSection(
         <Grid container>
           <Grid item xs={12}>
             <CommentList
+              comments={comments}
               resourceId={id}
               refetchValue={refetchValue}
               toggleRefetch={toggleRefetch}

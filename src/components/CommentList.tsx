@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { Comment } from "../utils/interfaces";
@@ -17,29 +17,14 @@ import { timestampConverter } from "../utils/timestampConverter";
 import { getInitialsFromName } from "../utils/getInitialsFromName";
 
 interface CommentListProps {
+  comments: Comment[];
   resourceId: number;
   refetchValue: number;
   toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function CommentList(props: CommentListProps): JSX.Element {
-  const { resourceId, refetchValue } = props;
-  const [comments, setComments] = useState<Comment[]>([]);
-
-  useEffect(() => {
-    const baseUrl = process.env.REACT_APP_API_URL;
-    const fetchComments = async () => {
-      try {
-        const res = await axios.get(
-          `${baseUrl}/resources/${resourceId}/comments`
-        );
-        setComments(res.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchComments();
-  }, [refetchValue, resourceId]);
+  const { resourceId, refetchValue, comments } = props;
 
   //   const handleCommentDelete = () => {
   //    const baseUrl = process.env.REACT_APP_API_URL;
