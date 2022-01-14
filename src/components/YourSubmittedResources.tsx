@@ -11,6 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
 import { Typography } from "@mui/material";
+import { getInitialsFromName } from "../utils/getInitialsFromName";
 
 export default function YourSubmittedResources(): JSX.Element {
   const { userId } = useContext(UserContext);
@@ -30,14 +31,6 @@ export default function YourSubmittedResources(): JSX.Element {
       fetchSubmittedResources();
     }
   }, [userId]);
-
-  function fetchUserInitials(userName: string) {
-    let uppercasedInitials = "";
-    userName
-      .split(" ")
-      .map((word) => (uppercasedInitials += word[0].toUpperCase()));
-    return uppercasedInitials;
-  }
 
   return (
     <Container>
@@ -69,7 +62,9 @@ export default function YourSubmittedResources(): JSX.Element {
                     {i + 1}
                   </TableCell>
                   <TableCell>{resource.resource_name}</TableCell>
-                  <TableCell>{fetchUserInitials(resource.user_name)}</TableCell>
+                  <TableCell>
+                    {getInitialsFromName(resource.user_name)}
+                  </TableCell>
                   <TableCell align="right">{resource.popularity}</TableCell>
                 </TableRow>
               ))}
