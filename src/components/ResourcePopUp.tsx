@@ -40,7 +40,6 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
     <Dialog
       maxWidth={"xl"}
       scroll="paper"
-      sx={{ height: "100%" }}
       open={props.open}
       onClose={() => props.handleOpen(false)}
     >

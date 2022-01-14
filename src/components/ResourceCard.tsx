@@ -259,13 +259,17 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
             >
               Open
             </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={handleDeleteResource}
-            >
-              Delete
-            </Button>
+            {userId && userId === parseInt(props.resource.user_id) ? (
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={handleDeleteResource}
+              >
+                Delete
+              </Button>
+            ) : (
+              <></>
+            )}
           </Stack>
         </div>
       </CardActions>
