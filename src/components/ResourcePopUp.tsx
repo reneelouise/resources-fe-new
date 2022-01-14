@@ -39,6 +39,7 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
   return (
     <Dialog
       fullWidth
+      maxWidth={"md"}
       scroll="paper"
       open={props.open}
       onClose={() => props.handleOpen(false)}
@@ -66,12 +67,12 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
       </DialogTitle>
       <DialogContent dividers={true}>
         <Grid container>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Typography variant="body1" component="h6">
               Recommended By:
             </Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <Typography variant="body1" component="h6">
               {user_name}
               {is_faculty ? " (Academy Faculty)" : ""}
@@ -79,38 +80,38 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Typography variant="body1">Content Type:</Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <Typography variant="body1">
               {formatContentType(content_type)}
             </Typography>
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Typography variant="body1">Description:</Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <Typography variant="body1">{description}</Typography>
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Typography variant="body1">Tags:</Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <Typography variant="body1">
               {!tags ? "No tags added" : tags}
             </Typography>
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <Typography variant="body1">Added:</Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <Typography variant="body1">
               {timestampConverter(created_at)}
             </Typography>
