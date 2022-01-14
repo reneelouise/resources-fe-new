@@ -41,8 +41,14 @@ export default function SubmitComment(props: SubmitCommentProps): JSX.Element {
   };
 
   return (
-    <Paper sx={{ padding: "12px", width: "100%" }} elevation={2}>
-      <Grid container>
+    <Paper
+      sx={{
+        padding: "12px",
+        width: "60%",
+      }}
+      elevation={2}
+    >
+      <Grid container justifyContent="center">
         <Grid item xs>
           <Typography variant="h6" pb={2}>
             Would you recommend this resource?
