@@ -26,6 +26,7 @@ import { formatContentType } from "../utils/formatContentType";
 
 interface ResourceCardProps {
   resource: IResource;
+  toggleRefetch: () => void;
 }
 
 export default function ResourceCard(props: ResourceCardProps): JSX.Element {
@@ -54,6 +55,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
 
   const handleDeleteResource = () => {
     axios.delete(`${baseUrl}/resources/${id}`);
+    props.toggleRefetch();
   };
 
   const addToStudyList = () => {
