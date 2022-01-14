@@ -40,14 +40,12 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     resource_name,
     user_name,
     is_faculty,
-    content_type,
     tags,
     count_of_likes,
     count_of_dislikes,
     number_of_comments,
     created_at,
     recommendation_type,
-    recommendation_reason,
     url,
   } = props.resource;
 
@@ -100,7 +98,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
       />
 
       <CardContent sx={{ py: 1 }}>
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} pb={1}>
           {tags !== null ? (
             tags?.split(", ").map((tag, i) => {
               return (
@@ -119,7 +117,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           )}
         </Stack>
 
-        <Typography variant="body1">
+        <Typography variant="body1" py={1}>
           <strong>{user_name}</strong>
           {is_faculty ? " (Academy Faculty)" : ""} says{" "}
           <em>"{recommendation_type}"</em>
