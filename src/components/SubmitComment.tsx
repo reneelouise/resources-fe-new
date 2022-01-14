@@ -13,7 +13,7 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 
 interface SubmitCommentProps {
   resource_id: number;
-  user_id: string | null;
+  user_id: number | null;
   refetchValue: number;
   toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
 }

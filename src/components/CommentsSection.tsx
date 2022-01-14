@@ -1,3 +1,5 @@
+import { useState, useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 import { Divider, Grid, Stack, Typography } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
@@ -8,13 +10,13 @@ import { IResource } from "../utils/interfaces";
 
 interface CommentsSectionProps {
   resource: IResource;
-  refetchValue: number;
-  toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function CommentsSection(
   props: CommentsSectionProps
 ): JSX.Element {
+  const [refetchValue, toggleRefetch] = useState<number>(1);
+  const { userId } = useContext(UserContext);
   const { id, count_of_likes, count_of_dislikes, number_of_comments } =
     props.resource;
 
@@ -23,9 +25,9 @@ export default function CommentsSection(
       <Grid container py={3}>
         <SubmitComment
           resource_id={id}
-          user_id={localStorage.getItem("loggedInUser")}
-          refetchValue={props.refetchValue}
-          toggleRefetch={props.toggleRefetch}
+          user_id={userId}
+          refetchValue={refetchValue}
+          toggleRefetch={toggleRefetch}
         />
       </Grid>
       <Grid container py={3}>
@@ -62,8 +64,8 @@ export default function CommentsSection(
           <Grid item xs={12}>
             <CommentList
               resourceId={id}
-              refetchValue={props.refetchValue}
-              toggleRefetch={props.toggleRefetch}
+              refetchValue={refetchValue}
+              toggleRefetch={toggleRefetch}
             />
           </Grid>
         </Grid>
