@@ -443,7 +443,8 @@ export default function CreateNewResource(): JSX.Element {
               className="submit-button"
               type="submit" 
               variant="contained" 
-              sx={{ mt: 3, mb: 2 }}>
+              sx={{ mt: 3, mb: 2 }}
+            >
               Create Resource
             </Button>
           </Box>
