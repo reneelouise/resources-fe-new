@@ -6,7 +6,7 @@ import { IResource } from "../utils/interfaces";
 import ResourceCard from "./ResourceCard";
 
 export default function StudyList(): JSX.Element {
-  const { userId } = useContext(UserContext);
+  const { userId, itemsInStudyList } = useContext(UserContext);
   const [studyListResources, setStudyListResources] = useState<IResource[]>([]);
   const [refetch, setRefetch] = useState<number>(1);
 
@@ -27,11 +27,11 @@ export default function StudyList(): JSX.Element {
       }
     };
     fetchStudyList();
-  }, [userId, refetch]);
+  }, [userId, refetch, itemsInStudyList]);
 
   return (
     <>
-      {userId && studyListResources ? (
+      {userId && itemsInStudyList.length > 0 ? (
         studyListResources.map((resource) => {
           return (
             <div key={resource.id}>
