@@ -7,7 +7,7 @@ import { UserContext } from "../contexts/UserContext";
 
 interface ResourceListProps {
   searchTerm: string;
-  tagSelection: string[]
+  tagSelection: string[];
 }
 
 export default function ResourceList(props: ResourceListProps): JSX.Element {
@@ -46,9 +46,10 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
         );
       } else if (tagSelection.length) {
         return (
-          resource.tags && resource.tags.split(', ').filter(tag => tagSelection.includes(tag)).length
-        )
-
+          resource.tags &&
+          resource.tags.split(", ").filter((tag) => tagSelection.includes(tag))
+            .length
+        );
       } else {
         return resource;
       }

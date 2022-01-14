@@ -20,7 +20,16 @@ export default function Search(props: SearchProps): JSX.Element {
 
   const [tags, setTags] = useState<Tags[]>([]);
   const [tagColour, setTagColour] = useState<
-    ("default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" | undefined)[]
+    (
+      | "default"
+      | "primary"
+      | "secondary"
+      | "error"
+      | "info"
+      | "success"
+      | "warning"
+      | undefined
+    )[]
   >(Array(tags.length).fill("primary"));
 
   useEffect(() => {
@@ -75,7 +84,9 @@ export default function Search(props: SearchProps): JSX.Element {
                         ? (setTagSelection([...tagSelection, tag.name]),
                           (tagColour[i] = "secondary"),
                           setTagColour(tagColour))
-                        : (setTagSelection(tagSelection.filter((el) => el !== tag.name)),
+                        : (setTagSelection(
+                            tagSelection.filter((el) => el !== tag.name)
+                          ),
                           (tagColour[i] = "primary"),
                           setTagColour(tagColour))
                     }

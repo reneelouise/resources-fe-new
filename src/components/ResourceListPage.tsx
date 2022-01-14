@@ -16,7 +16,8 @@ export default function ResourceListPage(): JSX.Element {
             tagSelection={tagSelection}
             setTagSelection={setTagSelection}
             searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm} />
+            setSearchTerm={setSearchTerm}
+          />
         </Grid>
       </Grid>
       <Divider variant="middle" />
