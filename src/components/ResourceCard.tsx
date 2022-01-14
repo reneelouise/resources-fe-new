@@ -62,7 +62,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     axios.post(`${baseUrl}/users/${userId}/study_list`, { resource_id: id });
     setTimeout(function delay() {
       setLoading(false);
-    }, 2001);
+    }, 2000);
   };
 
   const removeFromStudyList = () => {
@@ -77,7 +77,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
   };
 
   return (
-    <Card variant="outlined" sx={{ minWidth: "100%", mb: 2, p: 2 }}>
+    <Card variant="outlined" sx={{ minWidth: "100%", mb: 2 }}>
       <CardContent>
         <Stack
           direction="row"

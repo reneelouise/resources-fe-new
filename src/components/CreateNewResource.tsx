@@ -18,6 +18,7 @@ import {
   Typography,
   Alert,
   Fab,
+  Stack,
 } from "@mui/material";
 
 const content_type = [
@@ -163,8 +164,8 @@ export default function CreateNewResource(): JSX.Element {
       : (setErrorAlert(true), delay(3000).then(() => setErrorAlert(false)));
   };
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom sx={{ pt: 2 }} component="div">
+    <Container maxWidth="lg">
+      <Typography variant="h4" py={3}>
         Create new resource
       </Typography>
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -388,23 +389,34 @@ export default function CreateNewResource(): JSX.Element {
             />
           </Grid>
         </Grid>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Create Resource
-        </Button>
-        {errorAlert && (
-          <Alert severity="error">Please complete all required fields</Alert>
-        )}
-        {submittedAlert && (
-          <Alert severity="success">Resource successfully submitted</Alert>
-        )}
-        {alreadyExistsAlert && (
-          <Alert severity="error">Resource already exists</Alert>
-        )}
+        <Stack direction="row" justifyContent="flex-end" alignItems="center">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+          >
+            <Box sx={{ padding: "6px 12px 0 0" }}>
+              {errorAlert && (
+                <Alert severity="error">
+                  Please complete all required fields
+                </Alert>
+              )}
+              {submittedAlert && (
+                <Alert severity="success">
+                  Resource successfully submitted
+                </Alert>
+              )}
+              {alreadyExistsAlert && (
+                <Alert severity="error">Resource already exists</Alert>
+              )}
+            </Box>
+            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+              Create Resource
+            </Button>
+          </Box>
+        </Stack>
       </Box>
     </Container>
   );
