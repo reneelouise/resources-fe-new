@@ -1,18 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Box } from "@mui/material";
 import ResourceCard from "./ResourceCard";
 import { IResource } from "../utils/interfaces";
+import { UserContext } from "../contexts/UserContext";
 
 interface ResourceListProps {
   searchTerm: string;
 }
 
 export default function ResourceList(props: ResourceListProps): JSX.Element {
+  const { userId, itemsInStudyList } = useContext(UserContext);
   const { searchTerm } = props;
   const [resources, setResources] = useState<IResource[]>([]);
-  const [refetchValue, setRefetchValue] = useState<number>(1);
-  const [itemsInStudyList, setItemsInStudyList] = useState<number[]>([]);
+  const [refetch, setRefetch] = useState<number>(1);
+
+  const toggleRefetch = () => {
+    setRefetch((prev) => -prev);
+  };
 
   useEffect(() => {
     const fetchResources = async () => {
@@ -20,22 +25,12 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
       try {
         const res = await axios.get(`${baseUrl}/resources`);
         setResources(res.data.data);
-        const loggedInUser = localStorage.getItem("loggedInUser");
-        if (loggedInUser) {
-          const studylist = await axios.get(
-            `${baseUrl}/users/${loggedInUser}/study_list`
-          );
-
-          setItemsInStudyList(
-            studylist.data.data.map((resource: IResource) => resource.id)
-          );
-        }
       } catch (error) {
         console.error(error);
       }
     };
     fetchResources();
-  }, [refetchValue, searchTerm]);
+  }, [searchTerm, userId, itemsInStudyList, refetch]);
 
   const filteredResources = resources
     .filter((resource) => {
@@ -54,12 +49,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
     })
     .map((resource) => (
       <div key={resource.id}>
-        <ResourceCard
-          isOnStudyList={itemsInStudyList.includes(resource.id)}
-          resource={resource}
-          refetchValue={refetchValue}
-          toggleRefetch={setRefetchValue}
-        />
+        <ResourceCard resource={resource} toggleRefetch={toggleRefetch} />
       </div>
     ));
 
