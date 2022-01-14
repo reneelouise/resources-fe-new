@@ -7,11 +7,12 @@ import { UserContext } from "../contexts/UserContext";
 
 interface ResourceListProps {
   searchTerm: string;
+  tagSelection: string[]
 }
 
 export default function ResourceList(props: ResourceListProps): JSX.Element {
   const { userId, itemsInStudyList } = useContext(UserContext);
-  const { searchTerm } = props;
+  const { searchTerm, tagSelection } = props;
   const [resources, setResources] = useState<IResource[]>([]);
   const [refetch, setRefetch] = useState<number>(1);
 
@@ -43,6 +44,11 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
           resource.description?.toLowerCase().includes(lowercaseSearch) ||
           resource.tags?.toLowerCase().includes(lowercaseSearch)
         );
+      } else if (tagSelection.length) {
+        return (
+          resource.tags && resource.tags.split(', ').filter(tag => tagSelection.includes(tag)).length
+        )
+
       } else {
         return resource;
       }

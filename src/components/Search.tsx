@@ -4,18 +4,24 @@ import { Chip, Grid, Stack, TextField, Typography } from "@mui/material";
 
 interface Tags {
   name: string;
+  id: number;
   times_used?: number;
 }
 
 interface SearchProps {
   searchTerm: string;
+  tagSelection: string[];
+  setTagSelection: (tagSelection: string[]) => void;
   setSearchTerm: (searchTerm: string) => void;
 }
 
 export default function Search(props: SearchProps): JSX.Element {
-  const { searchTerm, setSearchTerm } = props;
+  const { searchTerm, setSearchTerm, tagSelection, setTagSelection } = props;
 
   const [tags, setTags] = useState<Tags[]>([]);
+  const [tagColour, setTagColour] = useState<
+    ("default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" | undefined)[]
+  >(Array(tags.length).fill("primary"));
 
   useEffect(() => {
     const baseUrl = process.env.REACT_APP_API_URL;
@@ -56,15 +62,23 @@ export default function Search(props: SearchProps): JSX.Element {
           <Grid container py={2} justifyContent="center" alignItems="center">
             <Stack direction="row" spacing={1}>
               <Typography pt={0.5}>Popular tags:</Typography>
-              {tags.map((tag) => {
+              {tags.map((tag, i) => {
                 return (
                   <Chip
-                    key={tag.name}
+                    key={tag.id}
                     id="tag"
-                    color="secondary"
+                    color={tagColour[i]}
                     clickable={true}
                     label={tag.name}
-                    onClick={() => setSearchTerm(tag.name)}
+                    onClick={() =>
+                      tagColour[i] === "primary"
+                        ? (setTagSelection([...tagSelection, tag.name]),
+                          (tagColour[i] = "secondary"),
+                          setTagColour(tagColour))
+                        : (setTagSelection(tagSelection.filter((el) => el !== tag.name)),
+                          (tagColour[i] = "primary"),
+                          setTagColour(tagColour))
+                    }
                   />
                 );
               })}
