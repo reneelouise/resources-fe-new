@@ -18,6 +18,7 @@ import {
   Typography,
   Alert,
   Fab,
+  Stack,
 } from "@mui/material";
 
 const content_type = [
@@ -161,8 +162,8 @@ export default function CreateNewResource(): JSX.Element {
       : (setErrorAlert(true), delay(3000).then(() => setErrorAlert(false)));
   };
   return (
-    <Container className="create-new-resource">
-      <Typography variant="h4" gutterBottom sx={{ pt: 2 }} component="div">
+    <Container className="create-new-resource" maxWidth="lg">
+      <Typography variant="h4" py={3}>
         Create new resource
       </Typography>
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -413,30 +414,41 @@ export default function CreateNewResource(): JSX.Element {
             />
           </Grid>
         </Grid>
-        <Button
-          className="submit-button"
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Create Resource
-        </Button>
-        {errorAlert && (
-          <Alert className="alert-error" severity="error">
-            Please complete all required fields
-          </Alert>
-        )}
-        {submittedAlert && (
-          <Alert className="alert-submitted" severity="success">
-            Resource successfully submitted
-          </Alert>
-        )}
-        {alreadyExistsAlert && (
-          <Alert className="alert-already-exists" severity="error">
-            Resource already exists
-          </Alert>
-        )}
+        <Stack direction="row" justifyContent="flex-end" alignItems="center">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+          >
+            <Box sx={{ padding: "6px 12px 0 0" }}>
+              {errorAlert && (
+                <Alert className="alert-error" severity="error">
+                  Please complete all required fields
+                </Alert>
+              )}
+              {submittedAlert && (
+                <Alert className="alert-submitted" severity="success">
+                  Resource successfully submitted
+                </Alert>
+              )}
+              {alreadyExistsAlert && (
+                <Alert className="alert-already-exists" severity="error">
+                  Resource already exists
+                </Alert>
+              )}
+            </Box>
+            <Button
+              className="submit-button"
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Create Resource
+            </Button>
+          </Box>
+        </Stack>
       </Box>
     </Container>
   );
