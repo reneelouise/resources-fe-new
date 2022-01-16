@@ -2,3 +2,17 @@ body {
   margin: 0px;
   padding: 0px;
 }
+
+.MuiOutlinedInput-root {
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+
+/* .MuiOutlinedInput-input{
+  
+
+}  */
+
+.tag-field .MuiOutlinedInput-input {
+  height: 0 !important;
+}

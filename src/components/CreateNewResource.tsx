@@ -17,8 +17,8 @@ import {
   Radio,
   Typography,
   Alert,
-  Fab,
   Stack,
+  Chip,
 } from "@mui/material";
 
 const content_type = [
@@ -96,7 +96,16 @@ export default function CreateNewResource(): JSX.Element {
   const [alreadyExistsAlert, setAlreadyExistsAlert] = useState<boolean>(false);
   const [tagSelection, setTagSelection] = useState<string[]>([]);
   const [tagColour, setTagColour] = useState<
-    ("inherit" | "default" | "primary" | "secondary" | undefined)[]
+    (
+      | "default"
+      | "primary"
+      | "secondary"
+      | "error"
+      | "info"
+      | "success"
+      | "warning"
+      | undefined
+    )[]
   >(Array(tags.length).fill("primary"));
 
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -213,26 +222,48 @@ export default function CreateNewResource(): JSX.Element {
             />
           </Grid>
           <Grid className="tag-buttons" item xs={12}>
-            {tags.map((tag, i) => (
-              <Fab
-                key={i}
-                variant="extended"
-                size="small"
-                color={tagColour[i]}
-                aria-label="add"
-                onClick={() =>
-                  tagColour[i] === "primary"
-                    ? (setTagSelection([...tagSelection, tag]),
-                      (tagColour[i] = "secondary"),
-                      setTagColour(tagColour))
-                    : (setTagSelection(tagSelection.filter((el) => el !== tag)),
-                      (tagColour[i] = "primary"),
-                      setTagColour(tagColour))
-                }
-              >
-                {tag}
-              </Fab>
-            ))}
+            <TextField
+              className="tag-field"
+              label="Tags"
+              rows={3}
+              fullWidth
+              disabled
+              InputLabelProps={{ shrink: true }}
+              InputProps={{
+                endAdornment: tags.map((tag, i) => {
+                  return (
+                    <>
+                      <div
+                        id="tag-chips"
+                        style={{
+                          paddingLeft: ".5em",
+                          paddingBottom: ".5em",
+                        }}
+                      >
+                        <Chip
+                          key={tag}
+                          id="tag"
+                          clickable={true}
+                          color={tagColour[i]}
+                          label={tag}
+                          onClick={() =>
+                            tagColour[i] === "primary"
+                              ? (setTagSelection([...tagSelection, tag]),
+                                (tagColour[i] = "secondary"),
+                                setTagColour(tagColour))
+                              : (setTagSelection(
+                                  tagSelection.filter((el) => el !== tag)
+                                ),
+                                (tagColour[i] = "primary"),
+                                setTagColour(tagColour))
+                          }
+                        />
+                      </div>
+                    </>
+                  );
+                }),
+              }}
+            />
           </Grid>
           <Grid item xs={12}>
             {url ? (
@@ -454,3 +485,22 @@ export default function CreateNewResource(): JSX.Element {
     </Container>
   );
 }
+
+// <Fab
+//   key={i}
+//   variant="extended"
+//   size="small"
+//   color={tagColour[i]}
+//   aria-label="add"
+//   onClick={() =>
+//     tagColour[i] === "primary"
+//       ? (setTagSelection([...tagSelection, tag]),
+//         (tagColour[i] = "secondary"),
+//         setTagColour(tagColour))
+//       : (setTagSelection(tagSelection.filter((el) => el !== tag)),
+//         (tagColour[i] = "primary"),
+//         setTagColour(tagColour))
+//   }
+// >
+//   {tag}
+// </Fab>
