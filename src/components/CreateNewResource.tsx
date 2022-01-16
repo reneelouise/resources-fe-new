@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { BadRequestError } from "../utils/interfaces";
@@ -114,6 +115,7 @@ export default function CreateNewResource(): JSX.Element {
   const isBadRequestError = (x: any): x is BadRequestError => {
     return x.response.status === 400;
   };
+  const history = useNavigate();
 
   const baseUrl = "https://bibliotech-project.herokuapp.com";
 
@@ -144,6 +146,7 @@ export default function CreateNewResource(): JSX.Element {
             tags: tagSelection,
           })
           .then(() => setSubmittedAlert(true));
+        delay(2000).then(() => history("/resources"));
         delay(3000).then(() => setSubmittedAlert(false));
         setResourceName(" ");
         setDescription(" ");
