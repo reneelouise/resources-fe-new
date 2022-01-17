@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { BadRequestError } from "../utils/interfaces";
+import { formatContentType } from "../utils/formatContentType";
 import {
   Container,
   Box,
@@ -21,6 +22,7 @@ import {
   Stack,
   Chip,
 } from "@mui/material";
+import { isEmptyStatement } from "typescript";
 
 const content_type = [
   "magazine",
@@ -227,25 +229,20 @@ export default function CreateNewResource(): JSX.Element {
           <Grid className="tag-buttons" item xs={12}>
             <TextField
               className="tag-field"
+              multiline
+              id="text-field-for-tags"
               label="Tags"
-              rows={3}
-              fullWidth
               disabled
               InputLabelProps={{ shrink: true }}
               InputProps={{
-                endAdornment: tags.map((tag, i) => {
-                  return (
-                    <>
-                      <div
-                        id="tag-chips"
-                        style={{
-                          paddingLeft: ".5em",
-                          paddingBottom: ".5em",
-                        }}
-                      >
+                startAdornment: (
+                  <Box sx={{ minWidth: "400px" }}>
+                    {tags.map((tag, i) => {
+                      return (
                         <Chip
-                          key={tag}
+                          key={i + 1}
                           id="tag"
+                          sx={{ margin: "0.1rem" }}
                           clickable={true}
                           color={tagColour[i]}
                           label={tag}
@@ -261,10 +258,10 @@ export default function CreateNewResource(): JSX.Element {
                                 setTagColour(tagColour))
                           }
                         />
-                      </div>
-                    </>
-                  );
-                }),
+                      );
+                    })}
+                  </Box>
+                ),
               }}
             />
           </Grid>
@@ -309,10 +306,10 @@ export default function CreateNewResource(): JSX.Element {
                   onChange={(e) => setContentType(e.target.value)}
                   label="resource-type"
                 >
-                  {content_type.map((el, i) => {
+                  {content_type.map((type, i) => {
                     return (
-                      <MenuItem key={i} value={el}>
-                        {el.charAt(0).toUpperCase() + el.slice(1)}
+                      <MenuItem key={i} value={type}>
+                        {formatContentType(type)}
                       </MenuItem>
                     );
                   })}
@@ -328,10 +325,10 @@ export default function CreateNewResource(): JSX.Element {
                   onChange={(e) => setContentType(e.target.value)}
                   label="resource-type"
                 >
-                  {content_type.map((el, i) => {
+                  {content_type.map((type, i) => {
                     return (
-                      <MenuItem key={i} value={el}>
-                        {el}
+                      <MenuItem key={i} value={type}>
+                        {formatContentType(type)}
                       </MenuItem>
                     );
                   })}
@@ -488,22 +485,3 @@ export default function CreateNewResource(): JSX.Element {
     </Container>
   );
 }
-
-// <Fab
-//   key={i}
-//   variant="extended"
-//   size="small"
-//   color={tagColour[i]}
-//   aria-label="add"
-//   onClick={() =>
-//     tagColour[i] === "primary"
-//       ? (setTagSelection([...tagSelection, tag]),
-//         (tagColour[i] = "secondary"),
-//         setTagColour(tagColour))
-//       : (setTagSelection(tagSelection.filter((el) => el !== tag)),
-//         (tagColour[i] = "primary"),
-//         setTagColour(tagColour))
-//   }
-// >
-//   {tag}
-// </Fab>
