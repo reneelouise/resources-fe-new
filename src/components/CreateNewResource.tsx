@@ -2,6 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { BadRequestError } from "../utils/interfaces";
+import { formatContentType } from "../utils/formatContentType";
+import {
+  content_type,
+  mark_stage,
+  recommendation_type,
+  tags,
+} from "../utils/constantsForNewForm";
 import {
   Container,
   Box,
@@ -21,68 +28,6 @@ import {
   Stack,
   Chip,
 } from "@mui/material";
-
-const content_type = [
-  "magazine",
-  "book",
-  "documentary",
-  "events",
-  "podcast",
-  "video",
-  "article",
-  "blog",
-  "course",
-  "eBook",
-  "exercise",
-  "software tool",
-  "documentation",
-  "cheatsheet",
-  "diagram",
-  "reference",
-  "youtube channel",
-  "organisation",
-  "other",
-];
-
-const mark_stage = [
-  "Week 1: Workflows",
-  "Week 2: Typescript and code quality",
-  "Week 3: React, HTML and CSS",
-  "Week 4: React and event handlers",
-  "Week 5: React and useEffect",
-  "Week 7: NodeJs and Express",
-  "Week 8: SQL and persistence",
-  "Week 10+: Full stack projects",
-];
-
-const recommendation_type = [
-  "I recommend this resource after having used it",
-  "I do not recommend this resource, having used it",
-  "I haven't used this resource but it looks promising",
-];
-
-const tags = [
-  "React",
-  "Javascript",
-  "Typescript",
-  "MERN",
-  "Express",
-  "Git",
-  "PERN",
-  "CSS",
-  "HTML",
-  "Deploying",
-  "Heroku",
-  "Jest",
-  "Testing",
-  "Cypress",
-  "Event Handlers",
-  "useState",
-  "useEffect",
-  "Databases",
-  "SQL",
-  "Projects",
-];
 
 export default function CreateNewResource(): JSX.Element {
   const [resourceName, setResourceName] = useState<string>(" ");
@@ -227,25 +172,20 @@ export default function CreateNewResource(): JSX.Element {
           <Grid className="tag-buttons" item xs={12}>
             <TextField
               className="tag-field"
+              multiline
+              id="text-field-for-tags"
               label="Tags"
-              rows={3}
-              fullWidth
               disabled
               InputLabelProps={{ shrink: true }}
               InputProps={{
-                endAdornment: tags.map((tag, i) => {
-                  return (
-                    <>
-                      <div
-                        id="tag-chips"
-                        style={{
-                          paddingLeft: ".5em",
-                          paddingBottom: ".5em",
-                        }}
-                      >
+                startAdornment: (
+                  <Box sx={{ minWidth: "400px" }}>
+                    {tags.map((tag, i) => {
+                      return (
                         <Chip
-                          key={tag}
+                          key={i + 1}
                           id="tag"
+                          sx={{ margin: "0.1rem" }}
                           clickable={true}
                           color={tagColour[i]}
                           label={tag}
@@ -261,10 +201,10 @@ export default function CreateNewResource(): JSX.Element {
                                 setTagColour(tagColour))
                           }
                         />
-                      </div>
-                    </>
-                  );
-                }),
+                      );
+                    })}
+                  </Box>
+                ),
               }}
             />
           </Grid>
@@ -309,10 +249,10 @@ export default function CreateNewResource(): JSX.Element {
                   onChange={(e) => setContentType(e.target.value)}
                   label="resource-type"
                 >
-                  {content_type.map((el, i) => {
+                  {content_type.map((type, i) => {
                     return (
-                      <MenuItem key={i} value={el}>
-                        {el.charAt(0).toUpperCase() + el.slice(1)}
+                      <MenuItem key={i} value={type}>
+                        {formatContentType(type)}
                       </MenuItem>
                     );
                   })}
@@ -328,10 +268,10 @@ export default function CreateNewResource(): JSX.Element {
                   onChange={(e) => setContentType(e.target.value)}
                   label="resource-type"
                 >
-                  {content_type.map((el, i) => {
+                  {content_type.map((type, i) => {
                     return (
-                      <MenuItem key={i} value={el}>
-                        {el}
+                      <MenuItem key={i} value={type}>
+                        {formatContentType(type)}
                       </MenuItem>
                     );
                   })}
@@ -488,22 +428,3 @@ export default function CreateNewResource(): JSX.Element {
     </Container>
   );
 }
-
-// <Fab
-//   key={i}
-//   variant="extended"
-//   size="small"
-//   color={tagColour[i]}
-//   aria-label="add"
-//   onClick={() =>
-//     tagColour[i] === "primary"
-//       ? (setTagSelection([...tagSelection, tag]),
-//         (tagColour[i] = "secondary"),
-//         setTagColour(tagColour))
-//       : (setTagSelection(tagSelection.filter((el) => el !== tag)),
-//         (tagColour[i] = "primary"),
-//         setTagColour(tagColour))
-//   }
-// >
-//   {tag}
-// </Fab>
