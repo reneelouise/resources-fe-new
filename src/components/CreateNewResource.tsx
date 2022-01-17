@@ -4,6 +4,12 @@ import axios from "axios";
 import { BadRequestError } from "../utils/interfaces";
 import { formatContentType } from "../utils/formatContentType";
 import {
+  content_type,
+  mark_stage,
+  recommendation_type,
+  tags,
+} from "../utils/constantsForNewForm";
+import {
   Container,
   Box,
   Grid,
@@ -22,68 +28,6 @@ import {
   Stack,
   Chip,
 } from "@mui/material";
-
-const content_type = [
-  "magazine",
-  "book",
-  "documentary",
-  "events",
-  "podcast",
-  "video",
-  "article",
-  "blog",
-  "course",
-  "eBook",
-  "exercise",
-  "software tool",
-  "documentation",
-  "cheatsheet",
-  "diagram",
-  "reference",
-  "youtube channel",
-  "organisation",
-  "other",
-];
-
-const mark_stage = [
-  "Week 1: Workflows",
-  "Week 2: Typescript and code quality",
-  "Week 3: React, HTML and CSS",
-  "Week 4: React and event handlers",
-  "Week 5: React and useEffect",
-  "Week 7: NodeJs and Express",
-  "Week 8: SQL and persistence",
-  "Week 10+: Full stack projects",
-];
-
-const recommendation_type = [
-  "I recommend this resource after having used it",
-  "I do not recommend this resource, having used it",
-  "I haven't used this resource but it looks promising",
-];
-
-const tags = [
-  "React",
-  "Javascript",
-  "Typescript",
-  "MERN",
-  "Express",
-  "Git",
-  "PERN",
-  "CSS",
-  "HTML",
-  "Deploying",
-  "Heroku",
-  "Jest",
-  "Testing",
-  "Cypress",
-  "Event Handlers",
-  "useState",
-  "useEffect",
-  "Databases",
-  "SQL",
-  "Projects",
-];
 
 export default function CreateNewResource(): JSX.Element {
   const [resourceName, setResourceName] = useState<string>(" ");
