@@ -1,13 +1,12 @@
 describe("Testing the CreateNewResource component", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/new");
+    cy.visit("http://localhost:3001/new");
   });
   it("Checks that the CreateNewResource form displays", () => {
     cy.get(".create-new-resource");
     cy.get(".resource-name-input");
     cy.get(".resource-description-input");
     cy.get(".tag-chips")
-      .children()
       .should('have.length', 20)
       .should('have.css', 'background-color')
       .and('eq', 'rgb(25, 118, 210)');
@@ -36,19 +35,17 @@ describe("Testing the CreateNewResource component", () => {
   });
 
   it("Checks that when I click a primary-coloured tag button it turns secondary-coloured and vice versa", () => {
-    cy.get(".tag-buttons")
-      .children()
+    cy.get(".tag-chips")
       .first()
       .click()
       .should('have.css', 'background-color')
-      .and('eq', 'rgb(156, 39, 176)')
+      .and('eq', 'rgb(123, 31, 162)')
 
-    cy.get(".tag-buttons")
-      .children()
+    cy.get(".tag-chips")
       .first()
       .click()
       .should('have.css', 'background-color')
-      .and('eq', 'rgb(25, 118, 210)')
+      .and('eq', 'rgb(21, 101, 192)')
   });
 
   it("Checks that the resource URL input field displays what the user types", () => {

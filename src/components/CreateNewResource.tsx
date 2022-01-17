@@ -238,13 +238,13 @@ export default function CreateNewResource(): JSX.Element {
                     <>
                       <div
                         id="tag-chips"
-                        className="tag-chips"
                         style={{
                           paddingLeft: ".5em",
                           paddingBottom: ".5em",
                         }}
                       >
                         <Chip
+                          className="tag-chips"
                           key={tag}
                           id="tag"
                           clickable={true}
