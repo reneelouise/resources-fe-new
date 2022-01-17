@@ -64,6 +64,7 @@ export default function Header(): JSX.Element {
     setSelectedUser("");
     setShowLogInForm(false);
     setUserId(null);
+    setItemsInStudyList([]);
   };
 
   const handleLogin = () => {
