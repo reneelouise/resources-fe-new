@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import { IPopularResource } from "../utils/interfaces";
 import axios from "axios";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Container from "@mui/material/Container";
-import { Typography } from "@mui/material";
+import {
+  Container,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 
 const PopularResources = (): JSX.Element => {
   const [popularResources, setPopularResources] = useState<IPopularResource[]>(
@@ -38,7 +40,7 @@ const PopularResources = (): JSX.Element => {
       <Typography variant="h5" my={2}>
         Most Popular Resources
       </Typography>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
         <Table
           sx={{ minWidth: "100%" }}
           size="small"
@@ -49,7 +51,7 @@ const PopularResources = (): JSX.Element => {
               <TableCell align="left">Rank</TableCell>
               <TableCell align="left">Resource</TableCell>
               <TableCell align="left">Shared By</TableCell>
-              <TableCell align="right">Score</TableCell>
+              <TableCell align="right">Popularity Score</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
