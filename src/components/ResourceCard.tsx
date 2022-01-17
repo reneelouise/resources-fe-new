@@ -21,6 +21,7 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import CommentIcon from "@mui/icons-material/Comment";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import { timestampConverter } from "../utils/timestampConverter";
 
 interface ResourceCardProps {
@@ -212,6 +213,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
               variant="outlined"
               onClick={() => setOpen(true)}
               sx={{ mr: 1 }}
+              endIcon={<OpenInFullIcon />}
             >
               Expand
             </Button>
