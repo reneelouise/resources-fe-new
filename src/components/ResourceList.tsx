@@ -79,7 +79,19 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
           Showing {filteredResources.length} of {resources.length} resources
         </Typography>
       </Box>
-      <Box>{filteredResources}</Box>
+      {filteredResources.length < 1 ? (
+        <>
+          <Typography variant="h6">
+            There are no items that match your search.
+          </Typography>
+          <Typography variant="body1">
+            Try searching by resource name, tags, description, author or content
+            type.
+          </Typography>{" "}
+        </>
+      ) : (
+        <Box>{filteredResources}</Box>
+      )}
     </>
   );
 }
