@@ -85,8 +85,8 @@ export default function Search(props: SearchProps): JSX.Element {
                           (tagColour[i] = "secondary"),
                           setTagColour(tagColour))
                         : (setTagSelection(
-                          tagSelection.filter((el) => el !== tag.name)
-                        ),
+                            tagSelection.filter((el) => el !== tag.name)
+                          ),
                           (tagColour[i] = "primary"),
                           setTagColour(tagColour))
                     }
