@@ -180,7 +180,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
                           color="primary"
                           variant="outlined"
                           onClick={() => addToStudyList()}
-                          sx={{ mr: 1 }}
+                          sx={{ mr: 1, background: "white" }}
                         >
                           Add to study list
                         </Button>
