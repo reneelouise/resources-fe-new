@@ -22,7 +22,6 @@ import {
   Stack,
   Chip,
 } from "@mui/material";
-import { isEmptyStatement } from "typescript";
 
 const content_type = [
   "magazine",
