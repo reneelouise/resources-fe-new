@@ -30,7 +30,7 @@ export default function Search(props: SearchProps): JSX.Element {
       | "warning"
       | undefined
     )[]
-  >(Array(tags.length).fill("primary"));
+  >(Array(5).fill("primary"));
 
   useEffect(() => {
     const baseUrl = process.env.REACT_APP_API_URL;
@@ -85,8 +85,8 @@ export default function Search(props: SearchProps): JSX.Element {
                           (tagColour[i] = "secondary"),
                           setTagColour(tagColour))
                         : (setTagSelection(
-                            tagSelection.filter((el) => el !== tag.name)
-                          ),
+                          tagSelection.filter((el) => el !== tag.name)
+                        ),
                           (tagColour[i] = "primary"),
                           setTagColour(tagColour))
                     }
