@@ -1,9 +1,13 @@
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
+import axios from "axios";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { Comment } from "../utils/interfaces";
 import {
   Avatar,
   Box,
+  Button,
   Grid,
   List,
   ListItem,
@@ -17,19 +21,22 @@ import { getInitialsFromName } from "../utils/getInitialsFromName";
 interface CommentListProps {
   comments: Comment[];
   resourceId: number;
-  refetchValue: number;
-  toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
+  refetchCommentsValue: number;
+  toggleCommentsRefetch: React.Dispatch<React.SetStateAction<number>>;
+  toggleRefetchResources: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function CommentList(props: CommentListProps): JSX.Element {
-  const { comments } = props;
+  const { comments, toggleCommentsRefetch } = props;
+  const { userId } = useContext(UserContext);
 
-  //   const handleCommentDelete = () => {
-  //    const baseUrl = process.env.REACT_APP_API_URL;
-  //    axios
-  //   .delete(`${baseUrl}${paste_id}/comments/${comment_id}`)
-  //   .then(() => setRefetchComments((prevRefetch) => -prevRefetch));
-  //   };
+  const handleCommentDelete = (resourceId: number, commentId: number): void => {
+    const baseUrl = process.env.REACT_APP_API_URL;
+    axios
+      .delete(`${baseUrl}/resources/${resourceId}/comments/${commentId}`)
+      .then(() => toggleCommentsRefetch((prev) => -prev))
+      .then(() => props.toggleRefetchResources((prev) => -prev));
+  };
 
   return (
     <List>
@@ -69,6 +76,21 @@ export default function CommentList(props: CommentListProps): JSX.Element {
                   <Typography variant="caption">
                     Posted {timestampConverter(comment.created_at)}
                   </Typography>
+                  <Grid item xs display="flex" justifyContent="flex-end">
+                    {userId && userId === comment.author_id ? (
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={() =>
+                          handleCommentDelete(comment.resource_id, comment.id)
+                        }
+                      >
+                        Delete my comment
+                      </Button>
+                    ) : (
+                      <></>
+                    )}
+                  </Grid>
                 </Grid>
               </Grid>
             </Paper>

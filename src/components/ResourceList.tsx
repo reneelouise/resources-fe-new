@@ -14,10 +14,10 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
   const { userId, itemsInStudyList } = useContext(UserContext);
   const { searchTerm, tagSelection } = props;
   const [resources, setResources] = useState<IResource[]>([]);
-  const [refetch, setRefetch] = useState<number>(1);
+  const [refetchResources, setRefetchResources] = useState<number>(1);
 
-  const toggleRefetch = () => {
-    setRefetch((prev) => -prev);
+  const toggleRefetchResources = () => {
+    setRefetchResources((prev) => -prev);
   };
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
       }
     };
     fetchResources();
-  }, [searchTerm, userId, itemsInStudyList, refetch]);
+  }, [searchTerm, userId, itemsInStudyList, refetchResources]);
 
   const filteredResources = resources
     .filter((resource) => {
@@ -56,7 +56,10 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
     })
     .map((resource) => (
       <div key={resource.id}>
-        <ResourceCard resource={resource} toggleRefetch={toggleRefetch} />
+        <ResourceCard
+          resource={resource}
+          toggleRefetchResources={toggleRefetchResources}
+        />
       </div>
     ));
 

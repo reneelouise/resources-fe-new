@@ -21,11 +21,12 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import CommentIcon from "@mui/icons-material/Comment";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import { timestampConverter } from "../utils/timestampConverter";
 
 interface ResourceCardProps {
   resource: IResource;
-  toggleRefetch: () => void;
+  toggleRefetchResources: () => void;
 }
 
 export default function ResourceCard(props: ResourceCardProps): JSX.Element {
@@ -51,7 +52,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
 
   const handleDeleteResource = () => {
     axios.delete(`${baseUrl}/resources/${id}`);
-    props.toggleRefetch();
+    props.toggleRefetchResources();
   };
 
   const addToStudyList = () => {
@@ -64,7 +65,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     setTimeout(function delay() {
       setLoading(false);
     }, 2000);
-    props.toggleRefetch();
+    props.toggleRefetchResources();
   };
 
   const removeFromStudyList = () => {
@@ -76,7 +77,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     setTimeout(function delay() {
       setLoading(false);
     }, 2000);
-    props.toggleRefetch();
+    props.toggleRefetchResources();
   };
 
   return (
@@ -212,6 +213,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
               variant="outlined"
               onClick={() => setOpen(true)}
               sx={{ mr: 1 }}
+              endIcon={<OpenInFullIcon />}
             >
               Expand
             </Button>
@@ -234,6 +236,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
         resource={props.resource}
         open={open}
         handleOpen={(newValue) => setOpen(newValue)}
+        toggleRefetchResources={props.toggleRefetchResources}
       />
     </Card>
   );

@@ -2,15 +2,17 @@ import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { IPopularResource } from "../utils/interfaces";
 import axios from "axios";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Container from "@mui/material/Container";
-import { Typography } from "@mui/material";
+import {
+  Container,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import { getInitialsFromName } from "../utils/getInitialsFromName";
 
 export default function YourSubmittedResources(): JSX.Element {
@@ -38,7 +40,7 @@ export default function YourSubmittedResources(): JSX.Element {
         Your Submitted Resources
       </Typography>
       {listOfResourcesSubmitted.length > 0 ? (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
           <Table
             sx={{ minWidth: "100%" }}
             size="small"
@@ -49,7 +51,7 @@ export default function YourSubmittedResources(): JSX.Element {
                 <TableCell align="left">Rank</TableCell>
                 <TableCell align="left">Resource</TableCell>
                 <TableCell align="left">Shared By</TableCell>
-                <TableCell align="right">Score</TableCell>
+                <TableCell align="right">Popularity Score</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -61,7 +63,16 @@ export default function YourSubmittedResources(): JSX.Element {
                   <TableCell component="th" scope="row">
                     {i + 1}
                   </TableCell>
-                  <TableCell>{resource.resource_name}</TableCell>
+                  <TableCell
+                    sx={{
+                      maxWidth: "150px",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {resource.resource_name}
+                  </TableCell>
                   <TableCell>
                     {getInitialsFromName(resource.user_name)}
                   </TableCell>

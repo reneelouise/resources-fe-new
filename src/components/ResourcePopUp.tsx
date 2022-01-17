@@ -20,6 +20,7 @@ interface ResourcePopUpProps {
   resource: IResource;
   handleOpen: (newValue: boolean) => void;
   open: boolean;
+  toggleRefetchResources: () => void;
 }
 
 export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
@@ -30,6 +31,7 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
     created_at,
     description,
     is_faculty,
+    mark_stage,
     url,
     content_type,
     tags,
@@ -102,11 +104,19 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
             <Typography variant="body1">Description:</Typography>
           </Grid>
           <Grid item xs={9}>
-            {description !== " " ? (
+            {description !== "" ? (
               <Typography variant="body1">{description}</Typography>
             ) : (
               <Typography variant="body1">No description</Typography>
             )}
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={3}>
+            <Typography variant="body1">Mark Stage:</Typography>
+          </Grid>
+          <Grid item xs={9}>
+            <Typography variant="body1">{mark_stage}</Typography>
           </Grid>
         </Grid>
         <Grid container>
@@ -130,15 +140,26 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item xs={6}>
-            <Typography variant="body1">{recommendation_type}</Typography>
+          <Grid item xs={3}>
+            <Typography variant="body1">{user_name} says:</Typography>
           </Grid>
-          <Grid item xs={6}>
-            <Typography variant="body1">{recommendation_reason}</Typography>
+          <Grid item xs={9}>
+            <Typography variant="body1">
+              <strong>{recommendation_type}</strong>
+            </Typography>
+
+            {recommendation_reason !== "" && (
+              <Typography>
+                <em>"{recommendation_reason}"</em>
+              </Typography>
+            )}
           </Grid>
         </Grid>
 
-        <CommentsSection resource={resource} />
+        <CommentsSection
+          resource={resource}
+          toggleRefetchResources={props.toggleRefetchResources}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={() => props.handleOpen(false)}>Close</Button>

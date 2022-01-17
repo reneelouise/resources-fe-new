@@ -11,13 +11,14 @@ import { IResource, Comment } from "../utils/interfaces";
 
 interface CommentsSectionProps {
   resource: IResource;
+  toggleRefetchResources: () => void;
 }
 
 export default function CommentsSection(
   props: CommentsSectionProps
 ): JSX.Element {
   const [comments, setComments] = useState<Comment[]>([]);
-  const [refetchValue, toggleRefetch] = useState<number>(1);
+  const [refetchCommentsValue, toggleCommentsRefetch] = useState<number>(1);
   const { userId } = useContext(UserContext);
   const {
     id,
@@ -39,10 +40,11 @@ export default function CommentsSection(
       }
     };
     fetchComments();
-  }, [refetchValue, id]);
+  }, [refetchCommentsValue, id]);
 
   const checkCommentsForUserRecommendation = (): boolean => {
-    return comments.map((comment) => comment.author_id === userId).length > 0
+    console.log(comments);
+    return comments.filter((comment) => comment.author_id === userId).length > 0
       ? true
       : false;
   };
@@ -73,8 +75,9 @@ export default function CommentsSection(
                 <SubmitComment
                   resource_id={id}
                   user_id={userId}
-                  refetchValue={refetchValue}
-                  toggleRefetch={toggleRefetch}
+                  refetchCommentsValue={refetchCommentsValue}
+                  toggleCommentsRefetch={toggleCommentsRefetch}
+                  toggleRefetchResources={props.toggleRefetchResources}
                 />
               )}
             </>
@@ -116,8 +119,9 @@ export default function CommentsSection(
             <CommentList
               comments={comments}
               resourceId={id}
-              refetchValue={refetchValue}
-              toggleRefetch={toggleRefetch}
+              refetchCommentsValue={refetchCommentsValue}
+              toggleCommentsRefetch={toggleCommentsRefetch}
+              toggleRefetchResources={props.toggleRefetchResources}
             />
           </Grid>
         </Grid>
