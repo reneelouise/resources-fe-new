@@ -79,7 +79,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
           Showing {filteredResources.length} of {resources.length} resources
         </Typography>
       </Box>
-      <Box>{filteredResources}</Box>;
+      <Box>{filteredResources}</Box>
     </>
   );
 }

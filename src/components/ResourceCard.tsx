@@ -8,11 +8,13 @@ import {
   Button,
   Card,
   CardActions,
+  CardActionArea,
   CardContent,
   CardHeader,
   Chip,
   CircularProgress,
   Divider,
+  Grid,
   Link,
   Stack,
   Typography,
@@ -131,106 +133,108 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           <em>"{recommendation_type}"</em>
         </Typography>
       </CardContent>
-
-      <CardActions>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Stack
-            direction="row"
-            alignItems="center"
-            spacing={2}
-            px={2}
-            divider={<Divider orientation="vertical" flexItem />}
+      <Grid sx={{ background: "#f5f5f5" }}>
+        <CardActions>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
           >
-            <Stack direction="row" spacing={1}>
-              <ThumbUpIcon color="success" />
-              <Typography variant="body1">{count_of_likes}</Typography>
-            </Stack>
-            <Stack direction="row" spacing={1}>
-              <ThumbDownIcon color="error" />
-              <Typography variant="body1">{count_of_dislikes}</Typography>
-            </Stack>
-            <Stack direction="row" spacing={1}>
-              <CommentIcon color="primary" />
-              <Typography variant="body1">{number_of_comments}</Typography>
-            </Stack>
-          </Stack>
-          <Stack
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="center"
-            spacing={2}
-          >
-            {userId ? (
-              <>
-                {!itemsInStudyList.includes(id) ? (
-                  <>
-                    {loading === true ? (
-                      <Box pr={3}>
-                        <CircularProgress size={20} />
-                      </Box>
-                    ) : (
-                      <Button
-                        color="primary"
-                        variant="outlined"
-                        onClick={() => addToStudyList()}
-                        sx={{ mr: 1 }}
-                      >
-                        Add to study list
-                      </Button>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {loading === true ? (
-                      <Box pr={3}>
-                        <CircularProgress size={20} />
-                      </Box>
-                    ) : (
-                      <Button
-                        color="error"
-                        variant="outlined"
-                        onClick={() => removeFromStudyList()}
-                        sx={{ mr: 1 }}
-                      >
-                        Remove from study list
-                      </Button>
-                    )}
-                  </>
-                )}
-              </>
-            ) : (
-              <></>
-            )}
-
-            <Button
-              color="primary"
-              variant="outlined"
-              onClick={() => setOpen(true)}
-              sx={{ mr: 1 }}
-              endIcon={<OpenInFullIcon />}
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={2}
+              px={2}
+              divider={<Divider orientation="vertical" flexItem />}
             >
-              Expand
-            </Button>
-            {userId && userId === parseInt(props.resource.user_id) ? (
+              <Stack direction="row" spacing={1}>
+                <ThumbUpIcon color="success" />
+                <Typography variant="body1">{count_of_likes}</Typography>
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <ThumbDownIcon color="error" />
+                <Typography variant="body1">{count_of_dislikes}</Typography>
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <CommentIcon color="primary" />
+                <Typography variant="body1">{number_of_comments}</Typography>
+              </Stack>
+            </Stack>
+            <Stack
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="center"
+              spacing={2}
+            >
+              {userId ? (
+                <>
+                  {!itemsInStudyList.includes(id) ? (
+                    <>
+                      {loading === true ? (
+                        <Box pr={3}>
+                          <CircularProgress size={20} />
+                        </Box>
+                      ) : (
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          onClick={() => addToStudyList()}
+                          sx={{ mr: 1 }}
+                        >
+                          Add to study list
+                        </Button>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {loading === true ? (
+                        <Box pr={3}>
+                          <CircularProgress size={20} />
+                        </Box>
+                      ) : (
+                        <Button
+                          color="error"
+                          variant="outlined"
+                          onClick={() => removeFromStudyList()}
+                          sx={{ mr: 1, background: "white" }}
+                        >
+                          Remove from study list
+                        </Button>
+                      )}
+                    </>
+                  )}
+                </>
+              ) : (
+                <></>
+              )}
+
               <Button
+                color="primary"
                 variant="outlined"
-                color="error"
-                onClick={handleDeleteResource}
+                onClick={() => setOpen(true)}
+                sx={{ mr: 1, background: "white" }}
+                endIcon={<OpenInFullIcon />}
               >
-                Delete
+                Expand
               </Button>
-            ) : (
-              <></>
-            )}
-          </Stack>
-        </div>
-      </CardActions>
+              {userId && userId === parseInt(props.resource.user_id) ? (
+                <Button
+                  variant="outlined"
+                  color="error"
+                  sx={{ background: "white" }}
+                  onClick={handleDeleteResource}
+                >
+                  Delete
+                </Button>
+              ) : (
+                <></>
+              )}
+            </Stack>
+          </div>
+        </CardActions>
+      </Grid>
 
       <ResourcePopUp
         resource={props.resource}
