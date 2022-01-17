@@ -238,6 +238,7 @@ export default function CreateNewResource(): JSX.Element {
                     <>
                       <div
                         id="tag-chips"
+                        className="tag-chips"
                         style={{
                           paddingLeft: ".5em",
                           paddingBottom: ".5em",
@@ -311,7 +312,11 @@ export default function CreateNewResource(): JSX.Element {
                 >
                   {content_type.map((el, i) => {
                     return (
-                      <MenuItem key={i} value={el}>
+                      <MenuItem
+                        className="content-type-item"
+                        key={i}
+                        value={el}
+                      >
                         {el.charAt(0).toUpperCase() + el.slice(1)}
                       </MenuItem>
                     );
@@ -354,7 +359,7 @@ export default function CreateNewResource(): JSX.Element {
                 >
                   {mark_stage.map((el, i) => {
                     return (
-                      <MenuItem key={i} value={el}>
+                      <MenuItem className="mark-stage-item" key={i} value={el}>
                         {el}
                       </MenuItem>
                     );
@@ -394,11 +399,13 @@ export default function CreateNewResource(): JSX.Element {
                   className="recommendation-type-radio"
                   aria-label="recommendation_type"
                   name="recommendation_type"
+                  value={recommendationType}
                   onChange={(e) => setRecommendationType(e.target.value)}
                 >
                   {recommendation_type.map((el, i) => {
                     return (
                       <FormControlLabel
+                        className="recommendation-type-item"
                         key={i}
                         value={el}
                         control={<Radio />}
@@ -420,6 +427,7 @@ export default function CreateNewResource(): JSX.Element {
                   className="recommendation-type-radio-error"
                   aria-label="recommendation_type"
                   name="recommendation_type"
+                  value={recommendationType}
                   onChange={(e) => setRecommendationType(e.target.value)}
                 >
                   {recommendation_type.map((el, i) => {
@@ -444,6 +452,7 @@ export default function CreateNewResource(): JSX.Element {
               multiline
               rows={2}
               fullWidth
+              value={recommendationReason}
               placeholder="Please enter a reason for the recommendation"
               onChange={(e) => setRecommendationReason(e.target.value)}
             />
