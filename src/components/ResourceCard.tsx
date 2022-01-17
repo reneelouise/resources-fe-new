@@ -25,7 +25,7 @@ import { timestampConverter } from "../utils/timestampConverter";
 
 interface ResourceCardProps {
   resource: IResource;
-  toggleRefetch: () => void;
+  toggleRefetchResources: () => void;
 }
 
 export default function ResourceCard(props: ResourceCardProps): JSX.Element {
@@ -51,7 +51,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
 
   const handleDeleteResource = () => {
     axios.delete(`${baseUrl}/resources/${id}`);
-    props.toggleRefetch();
+    props.toggleRefetchResources();
   };
 
   const addToStudyList = () => {
@@ -64,7 +64,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     setTimeout(function delay() {
       setLoading(false);
     }, 2000);
-    props.toggleRefetch();
+    props.toggleRefetchResources();
   };
 
   const removeFromStudyList = () => {
@@ -76,7 +76,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     setTimeout(function delay() {
       setLoading(false);
     }, 2000);
-    props.toggleRefetch();
+    props.toggleRefetchResources();
   };
 
   return (

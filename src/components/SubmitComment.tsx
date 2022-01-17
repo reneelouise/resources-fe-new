@@ -7,8 +7,8 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 interface SubmitCommentProps {
   resource_id: number;
   user_id: number | null;
-  refetchValue: number;
-  toggleRefetch: React.Dispatch<React.SetStateAction<number>>;
+  refetchCommentsValue: number;
+  toggleCommentsRefetch: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function SubmitComment(props: SubmitCommentProps): JSX.Element {
@@ -29,7 +29,7 @@ export default function SubmitComment(props: SubmitCommentProps): JSX.Element {
       )
       .then(() => setCommentInput(""))
       .then(() => setIsLike(undefined))
-      .then(() => props.toggleRefetch((prev) => -prev))
+      .then(() => props.toggleCommentsRefetch((prev) => -prev))
       .catch((err) => console.error(err));
   };
 
