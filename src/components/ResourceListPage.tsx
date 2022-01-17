@@ -21,7 +21,7 @@ export default function ResourceListPage(): JSX.Element {
         </Grid>
       </Grid>
       <Divider variant="middle" />
-      <Grid container pt={2} spacing={2}>
+      <Grid container pt={1} spacing={2}>
         <Grid item xs={8}>
           <ResourceList tagSelection={tagSelection} searchTerm={searchTerm} />
         </Grid>

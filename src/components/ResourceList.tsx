@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ResourceCard from "./ResourceCard";
 import { IResource } from "../utils/interfaces";
 import { UserContext } from "../contexts/UserContext";
@@ -63,5 +63,23 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
       </div>
     ));
 
-  return <Box>{filteredResources}</Box>;
+  return (
+    <>
+      <Box
+        component="div"
+        py={2}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h5">Browse Resources</Typography>
+        <Typography variant="caption" color="#616161">
+          Showing {filteredResources.length} of {resources.length} resources
+        </Typography>
+      </Box>
+      <Box>{filteredResources}</Box>;
+    </>
+  );
 }
