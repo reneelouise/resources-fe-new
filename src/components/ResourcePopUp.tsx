@@ -20,6 +20,7 @@ interface ResourcePopUpProps {
   resource: IResource;
   handleOpen: (newValue: boolean) => void;
   open: boolean;
+  toggleRefetchResources: () => void;
 }
 
 export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
@@ -155,7 +156,10 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
           </Grid>
         </Grid>
 
-        <CommentsSection resource={resource} />
+        <CommentsSection
+          resource={resource}
+          toggleRefetchResources={props.toggleRefetchResources}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={() => props.handleOpen(false)}>Close</Button>

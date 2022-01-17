@@ -234,6 +234,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
         resource={props.resource}
         open={open}
         handleOpen={(newValue) => setOpen(newValue)}
+        toggleRefetchResources={props.toggleRefetchResources}
       />
     </Card>
   );

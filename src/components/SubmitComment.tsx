@@ -9,6 +9,7 @@ interface SubmitCommentProps {
   user_id: number | null;
   refetchCommentsValue: number;
   toggleCommentsRefetch: React.Dispatch<React.SetStateAction<number>>;
+  toggleRefetchResources: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function SubmitComment(props: SubmitCommentProps): JSX.Element {
@@ -30,6 +31,7 @@ export default function SubmitComment(props: SubmitCommentProps): JSX.Element {
       .then(() => setCommentInput(""))
       .then(() => setIsLike(undefined))
       .then(() => props.toggleCommentsRefetch((prev) => -prev))
+      .then(() => props.toggleRefetchResources((prev) => -prev))
       .catch((err) => console.error(err));
   };
 

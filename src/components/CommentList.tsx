@@ -23,6 +23,7 @@ interface CommentListProps {
   resourceId: number;
   refetchCommentsValue: number;
   toggleCommentsRefetch: React.Dispatch<React.SetStateAction<number>>;
+  toggleRefetchResources: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function CommentList(props: CommentListProps): JSX.Element {
@@ -33,7 +34,8 @@ export default function CommentList(props: CommentListProps): JSX.Element {
     const baseUrl = process.env.REACT_APP_API_URL;
     axios
       .delete(`${baseUrl}/resources/${resourceId}/comments/${commentId}`)
-      .then(() => toggleCommentsRefetch((prev) => -prev));
+      .then(() => toggleCommentsRefetch((prev) => -prev))
+      .then(() => props.toggleRefetchResources((prev) => -prev));
   };
 
   return (

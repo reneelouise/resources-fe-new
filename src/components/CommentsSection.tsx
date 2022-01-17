@@ -11,6 +11,7 @@ import { IResource, Comment } from "../utils/interfaces";
 
 interface CommentsSectionProps {
   resource: IResource;
+  toggleRefetchResources: () => void;
 }
 
 export default function CommentsSection(
@@ -76,6 +77,7 @@ export default function CommentsSection(
                   user_id={userId}
                   refetchCommentsValue={refetchCommentsValue}
                   toggleCommentsRefetch={toggleCommentsRefetch}
+                  toggleRefetchResources={props.toggleRefetchResources}
                 />
               )}
             </>
@@ -119,6 +121,7 @@ export default function CommentsSection(
               resourceId={id}
               refetchCommentsValue={refetchCommentsValue}
               toggleCommentsRefetch={toggleCommentsRefetch}
+              toggleRefetchResources={props.toggleRefetchResources}
             />
           </Grid>
         </Grid>
