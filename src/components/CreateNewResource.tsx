@@ -312,7 +312,7 @@ export default function CreateNewResource(): JSX.Element {
                   {content_type.map((el, i) => {
                     return (
                       <MenuItem key={i} value={el}>
-                        {el}
+                        {el.charAt(0).toUpperCase() + el.slice(1)}
                       </MenuItem>
                     );
                   })}
