@@ -1,0 +1,17 @@
+name: Chrome
+
+on: push
+
+jobs:
+  chrome:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Chrome
+        uses: cypress-io/github-action@v2
+        timeout-minutes: 10
+        with:
+          build: yarn build
+          start: yarn start
+          browser: chrome
