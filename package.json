@@ -28,7 +28,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "cy": "cypress open",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [
