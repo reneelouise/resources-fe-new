@@ -106,26 +106,23 @@ export default function Header(): JSX.Element {
                 Resources
               </Button>
             </Link>
-            {userId && (
-              <>
-                <Link to="studylist" style={{ textDecoration: "none" }}>
-                  <Button
-                    className="links"
-                    sx={{ my: 2, color: "white", display: "block" }}
-                  >
-                    Study List
-                  </Button>
-                </Link>
-                <Link to="new" style={{ textDecoration: "none" }}>
-                  <Button
-                    className="links"
-                    sx={{ my: 2, color: "white", display: "block" }}
-                  >
-                    Create New Resource
-                  </Button>
-                </Link>
-              </>
-            )}
+
+            <Link to="studylist" style={{ textDecoration: "none" }}>
+              <Button
+                className="links"
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Study List
+              </Button>
+            </Link>
+            <Link to="new" style={{ textDecoration: "none" }}>
+              <Button
+                className="links"
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Create New Resource
+              </Button>
+            </Link>
           </Box>
           <Typography
             variant="h6"
