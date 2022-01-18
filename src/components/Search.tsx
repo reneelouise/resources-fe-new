@@ -74,7 +74,7 @@ export default function Search(props: SearchProps): JSX.Element {
               {tags.map((tag, i) => {
                 return (
                   <Chip
-                    key={tag.id}
+                    key={i + 1}
                     id="tag"
                     color={tagColour[i]}
                     clickable={true}
