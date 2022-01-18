@@ -196,8 +196,8 @@ export default function CreateNewResource(): JSX.Element {
                                 (tagColour[i] = "secondary"),
                                 setTagColour(tagColour))
                               : (setTagSelection(
-                                  tagSelection.filter((el) => el !== tag)
-                                ),
+                                tagSelection.filter((el) => el !== tag)
+                              ),
                                 (tagColour[i] = "primary"),
                                 setTagColour(tagColour))
                           }

@@ -2,6 +2,7 @@ describe("Testing the CreateNewResource component", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3001/new");
   });
+
   it("Checks that the CreateNewResource form displays", () => {
     cy.get(".create-new-resource");
     cy.get(".resource-name-input");
@@ -88,6 +89,31 @@ describe("Testing the CreateNewResource component", () => {
   });
 
   it("Checks that when a user clicks 'create resource' if all the required fields have inputs, a 'success' alert displays and all inputs clear", () => {
+    cy.get('.Login-Button').click();
+    cy.get('.User-Dropdown-Menu').click();
+    cy.get('.Users-In-Dropdown').first().click();
+    cy.get('.user-selected-login-btn').click();
+    cy.get('.resource-name-input').type('React Documentation').invoke('val', 'React Documentation');
+    cy.get('.tag-chips').first().click();
+    cy.get('.resource-url-input').type(`https://reactjs.org/docs/getting-started.html${Math.random()}`).invoke('val', 'https://reactjs.org/docs/getting-started.html');
+    cy.get('.resource-type-selector').click();
+    cy.get('.content-type-item').eq(12).click();
+    cy.get('.resource-type-selector').invoke('val', 'Documentation');
+    cy.get('.mark-stage-selector').click();
+    cy.get('.mark-stage-item').eq(2).click();
+    cy.get('.mark-stage-selector').invoke('val', 'Week 3: React, HTML and CSS');
+    cy.get('.recommendation-type-item').first().click();
+    cy.get('.recommendation-type-radio').invoke('val', 'I recommend this resource after having used it')
+    cy.get('.submit-button').click();
+    cy.get('.alert-submitted');
+    cy.get('.resource-list-page');
+  });
+
+  it("Checks that when a user clicks 'create resource' if the URL for the resource already exists, an error alert is displayed", () => {
+    cy.get('.Login-Button').click();
+    cy.get('.User-Dropdown-Menu').click();
+    cy.get('.Users-In-Dropdown').first().click();
+    cy.get('.user-selected-login-btn').click();
     cy.get('.resource-name-input').type('React Documentation').invoke('val', 'React Documentation');
     cy.get('.tag-chips').first().click();
     cy.get('.resource-url-input').type('https://reactjs.org/docs/getting-started.html').invoke('val', 'https://reactjs.org/docs/getting-started.html');
@@ -100,9 +126,10 @@ describe("Testing the CreateNewResource component", () => {
     cy.get('.recommendation-type-item').first().click();
     cy.get('.recommendation-type-radio').invoke('val', 'I recommend this resource after having used it')
     cy.get('.submit-button').click();
+    cy.get('.alert-already-exists');
   });
 
-  it("Checks that when a user clicks 'create resource' if all the required fields have inputs, a 'success' alert displays and all inputs clear", () => {
+  it("Checks that when a user clicks 'create resource' if not all the required fields have inputs, an error alert displays prompting to complete all required fields", () => {
     cy.get('.submit-button').click();
     cy.get('.resource-name-input-error');
     cy.get('.resource-url-input-error');

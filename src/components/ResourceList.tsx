@@ -57,6 +57,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
     .map((resource) => (
       <div key={resource.id}>
         <ResourceCard
+          searchTerm={searchTerm}
           resource={resource}
           toggleRefetchResources={toggleRefetchResources}
         />

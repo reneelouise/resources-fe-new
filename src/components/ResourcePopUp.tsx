@@ -1,5 +1,6 @@
 import { IResource } from "../utils/interfaces";
 import CommentsSection from "./CommentsSection";
+import Highlighter from "react-highlight-words";
 import {
   Box,
   Button,
@@ -17,6 +18,7 @@ import { timestampConverter } from "../utils/timestampConverter";
 import { formatContentType } from "../utils/formatContentType";
 
 interface ResourcePopUpProps {
+  searchTerm: string;
   resource: IResource;
   handleOpen: (newValue: boolean) => void;
   open: boolean;
@@ -24,7 +26,7 @@ interface ResourcePopUpProps {
 }
 
 export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
-  const { resource } = props;
+  const { resource, searchTerm } = props;
   const {
     resource_name,
     user_name,
@@ -55,7 +57,14 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
           spacing={2}
         >
           <Box>
-            <Typography variant="h6">{resource_name}</Typography>
+            <Typography variant="h6">
+              <Highlighter
+                highlightClassName="YourHighlightClass"
+                searchWords={[searchTerm]}
+                autoEscape={true}
+                textToHighlight={resource_name}
+              />
+            </Typography>
             <Typography
               sx={{ fontSize: 14 }}
               color="text.secondary"
@@ -95,7 +104,14 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
           </Grid>
           <Grid item xs={9}>
             <Typography variant="body1">
-              {content_type ? formatContentType(content_type) : "Not found"}
+              {content_type
+                ? <Highlighter
+                  highlightClassName="YourHighlightClass"
+                  searchWords={[searchTerm]}
+                  autoEscape={true}
+                  textToHighlight={formatContentType(content_type)}
+                />
+                : "Not found"}
             </Typography>
           </Grid>
         </Grid>
@@ -105,7 +121,14 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
           </Grid>
           <Grid item xs={9}>
             {description !== "" ? (
-              <Typography variant="body1">{description}</Typography>
+              <Typography variant="body1">
+                <Highlighter
+                  highlightClassName="YourHighlightClass"
+                  searchWords={[searchTerm]}
+                  autoEscape={true}
+                  textToHighlight={description}
+                />
+              </Typography>
             ) : (
               <Typography variant="body1">No description</Typography>
             )}
@@ -141,7 +164,13 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
         </Grid>
         <Grid container>
           <Grid item xs={3}>
-            <Typography variant="body1">{user_name} says:</Typography>
+            <Typography variant="body1">
+              <Highlighter
+                highlightClassName="YourHighlightClass"
+                searchWords={[searchTerm]}
+                autoEscape={true}
+                textToHighlight={user_name}
+              /> says:</Typography>
           </Grid>
           <Grid item xs={9}>
             <Typography variant="body1">
