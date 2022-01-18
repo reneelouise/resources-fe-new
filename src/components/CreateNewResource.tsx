@@ -179,7 +179,7 @@ export default function CreateNewResource(): JSX.Element {
               InputLabelProps={{ shrink: true }}
               InputProps={{
                 startAdornment: (
-                  <Box sx={{ minWidth: "400px" }}>
+                  <Box className="tag-chips" sx={{ minWidth: "400px" }}>
                     {tags.map((tag, i) => {
                       return (
                         <Chip
@@ -251,7 +251,11 @@ export default function CreateNewResource(): JSX.Element {
                 >
                   {content_type.map((type, i) => {
                     return (
-                      <MenuItem key={i} value={type}>
+                      <MenuItem
+                        className="content-type-item"
+                        key={i}
+                        value={type}
+                      >
                         {formatContentType(type)}
                       </MenuItem>
                     );
@@ -294,7 +298,7 @@ export default function CreateNewResource(): JSX.Element {
                 >
                   {mark_stage.map((el, i) => {
                     return (
-                      <MenuItem key={i} value={el}>
+                      <MenuItem className="mark-stage-item" key={i} value={el}>
                         {el}
                       </MenuItem>
                     );
@@ -339,6 +343,7 @@ export default function CreateNewResource(): JSX.Element {
                   {recommendation_type.map((el, i) => {
                     return (
                       <FormControlLabel
+                        className="recommendation-type-item"
                         key={i}
                         value={el}
                         control={<Radio />}
