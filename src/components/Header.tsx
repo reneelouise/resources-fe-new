@@ -68,9 +68,11 @@ export default function Header(): JSX.Element {
   };
 
   const handleLogin = () => {
-    localStorage.setItem("loggedInUser", selectedUser);
-    setShowLogInForm(false);
-    setUserId(Number(selectedUser));
+    if (selectedUser) {
+      localStorage.setItem("loggedInUser", selectedUser);
+      setShowLogInForm(false);
+      setUserId(Number(selectedUser));
+    }
   };
 
   const handleSelectChange = (userId: string) => {
