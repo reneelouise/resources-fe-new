@@ -104,14 +104,16 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
           </Grid>
           <Grid item xs={9}>
             <Typography variant="body1">
-              {content_type
-                ? <Highlighter
+              {content_type ? (
+                <Highlighter
                   highlightClassName="YourHighlightClass"
                   searchWords={[searchTerm]}
                   autoEscape={true}
                   textToHighlight={formatContentType(content_type)}
                 />
-                : "Not found"}
+              ) : (
+                "Not found"
+              )}
             </Typography>
           </Grid>
         </Grid>
@@ -170,7 +172,9 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
                 searchWords={[searchTerm]}
                 autoEscape={true}
                 textToHighlight={user_name}
-              /> says:</Typography>
+              />{" "}
+              says:
+            </Typography>
           </Grid>
           <Grid item xs={9}>
             <Typography variant="body1">

@@ -36,7 +36,7 @@ export default function StudyList(): JSX.Element {
           return (
             <div key={resource.id}>
               <ResourceCard
-                searchTerm=''
+                searchTerm=""
                 resource={resource}
                 toggleRefetchResources={toggleRefetchResources}
               />
