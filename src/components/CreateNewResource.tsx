@@ -179,7 +179,7 @@ export default function CreateNewResource(): JSX.Element {
               InputLabelProps={{ shrink: true }}
               InputProps={{
                 startAdornment: (
-                  <Box sx={{ minWidth: "400px" }}>
+                  <Box className="tag-chips" sx={{ minWidth: "400px" }}>
                     {tags.map((tag, i) => {
                       return (
                         <Chip

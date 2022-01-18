@@ -83,6 +83,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
 
   return (
     <Card
+      className="Resource-Card"
       variant="outlined"
       sx={{
         minWidth: "100%",
@@ -177,6 +178,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
                         </Box>
                       ) : (
                         <Button
+                          className="add_to_study_list_button"
                           color="primary"
                           variant="outlined"
                           onClick={() => addToStudyList()}
@@ -194,6 +196,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
                         </Box>
                       ) : (
                         <Button
+                          className="remove_from_study_list_button"
                           color="error"
                           variant="outlined"
                           onClick={() => removeFromStudyList()}
