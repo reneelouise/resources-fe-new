@@ -24,10 +24,12 @@ import CommentIcon from "@mui/icons-material/Comment";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import { timestampConverter } from "../utils/timestampConverter";
+import Highlighter from "react-highlight-words";
 
 interface ResourceCardProps {
   resource: IResource;
   toggleRefetchResources: () => void;
+  searchTerm: string;
 }
 
 export default function ResourceCard(props: ResourceCardProps): JSX.Element {
@@ -91,7 +93,14 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
       }}
     >
       <CardHeader
-        title={resource_name}
+        title={
+          <Highlighter
+            highlightClassName="YourHighlightClass"
+            searchWords={[props.searchTerm]}
+            autoEscape={true}
+            textToHighlight={resource_name}
+          />
+        }
         subheader={"Posted " + timestampConverter(created_at)}
         action={
           <Link href={url} style={{ textDecoration: "none" }} target="_blank">
@@ -105,7 +114,6 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           </Link>
         }
       />
-
       <CardContent sx={{ py: 1 }}>
         <Stack direction="row" spacing={1} pb={1}>
           {tags !== null ? (
@@ -127,7 +135,14 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
         </Stack>
 
         <Typography variant="body1" py={1}>
-          <strong>{user_name}</strong>
+          <strong>
+            <Highlighter
+              highlightClassName="YourHighlightClass"
+              searchWords={[props.searchTerm]}
+              autoEscape={true}
+              textToHighlight={user_name}
+            />
+          </strong>
           {is_faculty ? " (Academy Faculty)" : ""} says{" "}
           <em>"{recommendation_type}"</em>
         </Typography>
@@ -236,6 +251,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
       </Grid>
 
       <ResourcePopUp
+        searchTerm={props.searchTerm}
         resource={props.resource}
         open={open}
         handleOpen={(newValue) => setOpen(newValue)}

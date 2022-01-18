@@ -9,7 +9,7 @@ export default function ResourceListPage(): JSX.Element {
   const [tagSelection, setTagSelection] = useState<string[]>([]);
 
   return (
-    <Container maxWidth="xl">
+    <Container className="resource-list-page" maxWidth="xl">
       <Grid container>
         <Grid item xs={12}>
           <Search

@@ -57,6 +57,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
     .map((resource) => (
       <div key={resource.id}>
         <ResourceCard
+          searchTerm={searchTerm}
           resource={resource}
           toggleRefetchResources={toggleRefetchResources}
         />
@@ -86,7 +87,18 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
           </Typography>
           <Typography variant="body1">
             Try searching by resource name, tags, description, author or content
-            type.
+            type
+            {userId ? (
+              <>
+                {" "}
+                or{" "}
+                <a href="https://bibliotech-project.netlify.app/new">
+                  create a new resource
+                </a>
+              </>
+            ) : (
+              <>.</>
+            )}
           </Typography>{" "}
         </>
       ) : (
