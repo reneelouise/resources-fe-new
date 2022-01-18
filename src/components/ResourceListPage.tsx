@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PopularResources from "./PopularResources";
+import PopularContributors from "./PopularContributors";
 import Search from "./Search";
 import ResourceList from "./ResourceList";
 import { Container, Divider, Grid } from "@mui/material";
@@ -27,6 +28,7 @@ export default function ResourceListPage(): JSX.Element {
         </Grid>
         <Grid item xs={4} md={3} lg={4}>
           <PopularResources />
+          <PopularContributors />
         </Grid>
       </Grid>
     </Container>
