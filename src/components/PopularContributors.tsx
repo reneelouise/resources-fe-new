@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IPopularResource } from "../utils/interfaces";
+import { ITopContributor } from "../utils/interfaces";
 import axios from "axios";
 import {
   Container,
@@ -13,32 +13,22 @@ import {
   Typography,
 } from "@mui/material";
 
-export default function PopularResources(): JSX.Element {
-  const [popularResources, setPopularResources] = useState<IPopularResource[]>(
-    []
-  );
+export default function PopularContributors(): JSX.Element {
+  const [topContributors, setTopContributors] = useState<ITopContributor[]>([]);
 
   useEffect(() => {
     const baseUrl = process.env.REACT_APP_API_URL;
-    const fetchPopularResources = async () => {
-      const res = await axios.get(`${baseUrl}/resources/popular`);
-      setPopularResources(res.data.data);
+    const fetchTopContributors = async () => {
+      const res = await axios.get(`${baseUrl}/users/top_contributors`);
+      setTopContributors(res.data.data);
     };
-    fetchPopularResources();
+    fetchTopContributors();
   }, []);
 
-  function fetchUserInitials(userName: string) {
-    let uppercasedInitials = "";
-    userName
-      .split(" ")
-      .map((word) => (uppercasedInitials += word[0].toUpperCase()));
-    return uppercasedInitials;
-  }
-
   return (
-    <Container>
+    <Container sx={{ marginTop: "3rem" }}>
       <Typography variant="h5" my={2}>
-        Most Popular Resources
+        Top Contributors{" "}
       </Typography>
       <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
         <Table
@@ -46,18 +36,21 @@ export default function PopularResources(): JSX.Element {
           size="small"
           aria-label="Most popular resources"
         >
+          <caption>
+            Avg. popularity = (likes - dislikes) / number of resources
+          </caption>
           <TableHead>
             <TableRow>
               <TableCell align="left">Rank</TableCell>
-              <TableCell align="left">Resource</TableCell>
-              <TableCell align="left">Shared By</TableCell>
-              <TableCell align="right">Popularity Score</TableCell>
+              <TableCell align="left">User Name</TableCell>
+              <TableCell align="right">Resources Shared</TableCell>
+              <TableCell align="right">Avg. Popularity</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {popularResources.map((resource, i) => (
+            {topContributors.map((contributor, i) => (
               <TableRow
-                key={resource.id}
+                key={contributor.user_id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
@@ -71,10 +64,14 @@ export default function PopularResources(): JSX.Element {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {resource.resource_name}
+                  {contributor.user_name}
                 </TableCell>
-                <TableCell>{fetchUserInitials(resource.user_name)}</TableCell>
-                <TableCell align="right">{resource.popularity}</TableCell>
+                <TableCell align="right">
+                  {contributor.resources_contributed}
+                </TableCell>
+                <TableCell align="right">
+                  {contributor.avg_popularity}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -42,6 +42,13 @@ export interface IPopularResource {
   popularity: number;
 }
 
+export interface ITopContributor {
+  user_id: number;
+  user_name: string;
+  resources_contributed: string;
+  avg_popularity: string;
+}
+
 export interface BadRequestError {
   response: {
     status: 400;
