@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Link, Button } from "@mui/material";
 import ResourceCard from "./ResourceCard";
 import { IResource } from "../utils/interfaces";
 import { UserContext } from "../contexts/UserContext";
@@ -86,7 +86,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
           </Typography>
           <Typography variant="body1">
             Try searching by resource name, tags, description, author or content
-            type.
+            type{userId ? <> or <a href="https://bibliotech-project.netlify.app/new">create a new resource</a></> : <>.</>}
           </Typography>{" "}
         </>
       ) : (
