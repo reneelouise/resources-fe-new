@@ -117,7 +117,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
                   id="tag"
                   variant="outlined"
                   color="default"
-                  clickable={true}
+                  clickable={false}
                   label={tag}
                 />
               );
