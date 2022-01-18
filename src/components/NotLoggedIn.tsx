@@ -1,6 +1,6 @@
 import { Button, Container, Grid, Link, Typography } from "@mui/material";
 
-export default function NotLoggedIn() {
+export default function NotLoggedIn(): JSX.Element {
   return (
     <Container maxWidth="xl">
       <Grid container columns={{ xs: 12 }}>
