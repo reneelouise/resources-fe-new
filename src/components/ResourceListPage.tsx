@@ -21,11 +21,11 @@ export default function ResourceListPage(): JSX.Element {
         </Grid>
       </Grid>
       <Divider variant="middle" />
-      <Grid container pt={1} spacing={2}>
-        <Grid item xs={8}>
+      <Grid container pt={1} spacing={2} columns={{ xs: 4, md: 8, lg: 12 }}>
+        <Grid item xs={4} md={5} lg={8}>
           <ResourceList tagSelection={tagSelection} searchTerm={searchTerm} />
         </Grid>
-        <Grid item xs>
+        <Grid item xs={4} md={3} lg={4}>
           <PopularResources />
         </Grid>
       </Grid>

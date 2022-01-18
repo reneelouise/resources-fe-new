@@ -19,11 +19,11 @@ export default function StudyListPage(): JSX.Element {
         </Grid>
       </Grid>
       <Divider variant="middle" />
-      <Grid container pt={2} spacing={2}>
-        <Grid item xs={8}>
+      <Grid container pt={2} spacing={2} columns={{ xs: 4, md: 8, lg: 12 }}>
+        <Grid item xs={4} md={5} lg={8}>
           <StudyList />
         </Grid>
-        <Grid item xs>
+        <Grid item xs={4} md={3} lg={4}>
           <YourSubmittedResources />
         </Grid>
       </Grid>
