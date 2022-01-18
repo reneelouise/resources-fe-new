@@ -139,5 +139,4 @@ describe("Testing the CreateNewResource component", () => {
     cy.get('.alert-error');
   });
 
-
 });

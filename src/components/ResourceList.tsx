@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Link, Typography } from "@mui/material";
 import ResourceCard from "./ResourceCard";
 import { IResource } from "../utils/interfaces";
 import { UserContext } from "../contexts/UserContext";
@@ -14,6 +14,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
   const { userId, itemsInStudyList } = useContext(UserContext);
   const { searchTerm, tagSelection } = props;
   const [resources, setResources] = useState<IResource[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refetchResources, setRefetchResources] = useState<number>(1);
 
   const toggleRefetchResources = () => {
@@ -21,6 +22,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchResources = async () => {
       const baseUrl = process.env.REACT_APP_API_URL;
       try {
@@ -31,6 +33,7 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
       }
     };
     fetchResources();
+    setTimeout(() => setIsLoading(false), 350);
   }, [searchTerm, userId, itemsInStudyList, refetchResources]);
 
   const filteredResources = resources
@@ -80,27 +83,26 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
           Showing {filteredResources.length} of {resources.length} resources
         </Typography>
       </Box>
-      {filteredResources.length < 1 ? (
-        <>
+      {isLoading ? (
+        <Box sx={{ display: "flex", justifyContent: "center" }} mt={10}>
+          <CircularProgress size={40} />
+        </Box>
+      ) : filteredResources.length === 0 ? (
+        <Box>
           <Typography variant="h6">
             There are no items that match your search.
           </Typography>
           <Typography variant="body1">
             Try searching by resource name, tags, description, author or content
             type
-            {userId ? (
+            {userId && (
               <>
                 {" "}
-                or{" "}
-                <a href="https://bibliotech-project.netlify.app/new">
-                  create a new resource
-                </a>
+                or <Link href="new">create a new resource</Link>.
               </>
-            ) : (
-              <>.</>
             )}
-          </Typography>{" "}
-        </>
+          </Typography>
+        </Box>
       ) : (
         <Box>{filteredResources}</Box>
       )}
