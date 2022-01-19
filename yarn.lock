@@ -10019,7 +10019,7 @@ react-error-overlay@^6.0.9:
 
 react-highlight-words@^0.17.0:
   version "0.17.0"
-  resolved "https://registry.npmjs.org/react-highlight-words/-/react-highlight-words-0.17.0.tgz"
+  resolved "https://registry.yarnpkg.com/react-highlight-words/-/react-highlight-words-0.17.0.tgz#e79a559a2de301548339d7216264d6cd0f1eed6f"
   integrity sha512-uX1Qh5IGjnLuJT0Zok234QDwRC8h4hcVMnB99Cb7aquB1NlPPDiWKm0XpSZOTdSactvnClCk8LOmVlP+75dgHA==
   dependencies:
     highlight-words-core "^1.2.0"
