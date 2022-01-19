@@ -6,3 +6,8 @@ body {
 #text-field-for-tags {
   width: auto;
 }
+
+a:visited {
+  text-decoration: none;
+  color: blue;
+}
