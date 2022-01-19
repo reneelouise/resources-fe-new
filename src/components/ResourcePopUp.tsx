@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { IResource } from "../utils/interfaces";
 import CommentsSection from "./CommentsSection";
 import Highlighter from "react-highlight-words";
@@ -9,11 +10,13 @@ import {
   DialogContent,
   DialogActions,
   Grid,
+  IconButton,
   Link,
   Stack,
   Typography,
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { timestampConverter } from "../utils/timestampConverter";
 import { formatContentType } from "../utils/formatContentType";
 
@@ -27,6 +30,7 @@ interface ResourcePopUpProps {
 
 export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
   const { resource, searchTerm } = props;
+  const [isCopying, setIsCopying] = useState<boolean>(false);
   const {
     resource_name,
     user_name,
@@ -40,6 +44,12 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
     recommendation_type,
     recommendation_reason,
   } = props.resource;
+
+  const handleCopyClick = () => {
+    setIsCopying(true);
+    navigator.clipboard.writeText(url);
+    setTimeout(() => setIsCopying(false), 1500);
+  };
 
   return (
     <Dialog
@@ -96,6 +106,39 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
               {user_name}
               {is_faculty ? " (Academy Faculty)" : ""}
             </Typography>
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={3}>
+            <Typography variant="body1" component="h6">
+              URL:
+            </Typography>
+          </Grid>
+          <Grid item xs={9} sx={{ display: "flex", alignItems: "center" }}>
+            <Typography
+              variant="body1"
+              component="h6"
+              sx={{
+                fontFamily: "monospace",
+                fontSize: "0.9rem",
+                display: "inline",
+              }}
+            >
+              {url.length < 40 ? url : url.substring(0, 40) + "..."}
+            </Typography>
+            <IconButton
+              aria-label="copy-url"
+              sx={{ padding: "0", margin: "0 4px 0 4px" }}
+              onClick={handleCopyClick}
+            >
+              <ContentCopyIcon sx={{ color: "#9e9e9e", height: "20px" }} />
+            </IconButton>
+
+            {isCopying && (
+              <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
+                Copied!
+              </Typography>
+            )}
           </Grid>
         </Grid>
         <Grid container>
