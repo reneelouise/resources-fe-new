@@ -43,7 +43,6 @@ export default function CommentsSection(
   }, [refetchCommentsValue, id]);
 
   const checkCommentsForUserRecommendation = (): boolean => {
-    console.log(comments);
     return comments.filter((comment) => comment.author_id === userId).length > 0
       ? true
       : false;
