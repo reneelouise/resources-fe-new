@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import { IPopularResource } from "../utils/interfaces";
 import axios from "axios";
 import {
+  Box,
+  CircularProgress,
   Container,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -12,11 +15,13 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 export default function PopularResources(): JSX.Element {
   const [popularResources, setPopularResources] = useState<IPopularResource[]>(
     []
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const baseUrl = process.env.REACT_APP_API_URL;
@@ -25,7 +30,12 @@ export default function PopularResources(): JSX.Element {
       setPopularResources(res.data.data);
     };
     fetchPopularResources();
-  }, []);
+    setTimeout(() => setIsLoading(false), 350);
+  }, [isLoading]);
+
+  const refreshTable = () => {
+    setIsLoading(true);
+  };
 
   function fetchUserInitials(userName: string) {
     let uppercasedInitials = "";
@@ -37,9 +47,21 @@ export default function PopularResources(): JSX.Element {
 
   return (
     <Container>
-      <Typography variant="h5" my={2}>
-        Most Popular Resources
-      </Typography>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Typography variant="h5" my={2}>
+          Most Popular Resources
+        </Typography>
+        <Box>
+          <IconButton aria-label="refresh" onClick={refreshTable}>
+            {!isLoading ? (
+              <RefreshIcon color="primary" />
+            ) : (
+              <CircularProgress size={20} />
+            )}
+          </IconButton>
+        </Box>
+      </Box>
+
       <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
         <Table
           sx={{ minWidth: "100%" }}
