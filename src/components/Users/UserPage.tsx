@@ -1,10 +1,24 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, Divider, Grid, Typography } from "@mui/material";
+import {
+  Container,
+  Divider,
+  Grid,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  TableCell,
+  Typography,
+} from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import PopularResources from "../PopularResources";
 import PopularContributors from "../PopularContributors";
 import { IUser, IUserRecentRecommendations } from "../../utils/interfaces";
+import { timestampConverter } from "../../utils/timestampConverter";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 
 export default function UserPage(): JSX.Element {
   const params = useParams();
@@ -28,7 +42,7 @@ export default function UserPage(): JSX.Element {
       }
     };
     fetchUserDetails();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     const fetchRecentRecs = async () => {
@@ -46,7 +60,7 @@ export default function UserPage(): JSX.Element {
       }
     };
     fetchRecentRecs();
-  }, []);
+  }, [userId]);
 
   return (
     <>
@@ -64,13 +78,45 @@ export default function UserPage(): JSX.Element {
         <Divider variant="middle" />
         <Grid container pt={2} spacing={2} columns={{ xs: 4, md: 8, lg: 12 }}>
           <Grid item xs={4} md={5} lg={8}>
-            {recentRecs.map((rec, i) => {
-              return (
-                <Typography key={i + 1} variant="body1">
-                  {rec.text}
-                </Typography>
-              );
-            })}
+            <Typography variant="body1" py={2}>
+              {user ? user.name + "'s recent comments:" : "Recent comments:"}
+            </Typography>
+            <TableContainer>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ minWidth: "250px" }}>
+                      Resource Name
+                    </TableCell>
+                    <TableCell sx={{ minWidth: "40px" }}>Type</TableCell>
+                    <TableCell>Comment</TableCell>
+                    <TableCell align="right" sx={{ minWidth: "100px" }}>
+                      Posted
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {recentRecs.map((rec, i) => (
+                    <TableRow key={i + 1}>
+                      <TableCell component="th" scope="row">
+                        {rec.resource_name}
+                      </TableCell>
+                      <TableCell>
+                        {rec.is_like ? (
+                          <ThumbUpIcon color="success" />
+                        ) : (
+                          <ThumbDownIcon color="error" />
+                        )}
+                      </TableCell>
+                      <TableCell>{rec.text ? rec.text : "-"}</TableCell>
+                      <TableCell align="right">
+                        {timestampConverter(rec.created_at)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Grid>
           <Grid item xs={4} md={3} lg={4}>
             <PopularResources />
