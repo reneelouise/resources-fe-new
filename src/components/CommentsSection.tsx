@@ -1,7 +1,15 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../contexts/UserContext";
-import { Box, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Paper,
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import CommentIcon from "@mui/icons-material/Comment";
@@ -19,6 +27,8 @@ export default function CommentsSection(
 ): JSX.Element {
   const [comments, setComments] = useState<Comment[]>([]);
   const [refetchCommentsValue, toggleCommentsRefetch] = useState<number>(1);
+  const [filter, setFilter] = useState("all");
+
   const { userId } = useContext(UserContext);
   const {
     id,
@@ -47,6 +57,23 @@ export default function CommentsSection(
       ? true
       : false;
   };
+
+  const handleFilter = (
+    event: React.MouseEvent<HTMLElement>,
+    newFilter: string
+  ): void => {
+    setFilter(newFilter);
+  };
+
+  const filteredComments = comments.filter((comment) => {
+    if (filter === "likes") {
+      return comment.is_like === true;
+    } else if (filter === "dislikes") {
+      return comment.is_like === false;
+    } else {
+      return comment;
+    }
+  });
 
   return (
     <>
@@ -91,32 +118,42 @@ export default function CommentsSection(
             alignItems="center"
             spacing={2}
           >
-            <Typography variant="h6">Comments</Typography>
-            <Stack
-              direction="row"
-              spacing={2}
-              divider={<Divider orientation="vertical" flexItem />}
+            {filter === "all" && (
+              <Typography variant="h6">Showing all comments</Typography>
+            )}
+            {filter === "likes" && (
+              <Typography variant="h6">Showing just likes</Typography>
+            )}
+            {filter === "dislikes" && (
+              <Typography variant="h6">Showing just dislikes</Typography>
+            )}
+
+            <ToggleButtonGroup
+              color="primary"
+              value={filter}
+              exclusive
+              onChange={handleFilter}
             >
-              <Stack direction="row" spacing={1}>
-                <ThumbUpIcon color="success" />
-                <Typography variant="body1">{count_of_likes}</Typography>
-              </Stack>
-              <Stack direction="row" spacing={1}>
-                <ThumbDownIcon color="error" />
-                <Typography variant="body1">{count_of_dislikes}</Typography>
-              </Stack>
-              <Stack direction="row" spacing={1}>
-                <CommentIcon color="primary" />
-                <Typography variant="body1">{number_of_comments}</Typography>
-              </Stack>
-            </Stack>
+              <ToggleButton value="likes">
+                <ThumbUpIcon color="success" sx={{ marginRight: "6px" }} />
+                {count_of_likes}
+              </ToggleButton>
+              <ToggleButton value="dislikes">
+                <ThumbDownIcon color="error" sx={{ marginRight: "6px" }} />
+                {count_of_dislikes}
+              </ToggleButton>
+              <ToggleButton value="all">
+                <CommentIcon color="primary" sx={{ marginRight: "6px" }} />
+                {number_of_comments}
+              </ToggleButton>
+            </ToggleButtonGroup>
           </Stack>
         </Grid>
 
         <Grid container>
           <Grid item xs={12}>
             <CommentList
-              comments={comments}
+              comments={filteredComments}
               resourceId={id}
               refetchCommentsValue={refetchCommentsValue}
               toggleCommentsRefetch={toggleCommentsRefetch}
