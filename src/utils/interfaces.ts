@@ -35,6 +35,14 @@ export interface Comment {
   is_faculty: boolean;
 }
 
+export interface IUserRecentRecommendations {
+  resource_id: number;
+  resource_name: string;
+  is_like: boolean;
+  text: string;
+  created_at: string;
+}
+
 export interface IPopularResource {
   id: number;
   user_name: string;
