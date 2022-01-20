@@ -119,18 +119,6 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
         <Typography variant="caption" color="#616161">
           Showing {resources.length} of {resourcesCount} resources
         </Typography>
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-          <InputLabel id="resources-per-page">Resources per page</InputLabel>
-          <Select
-            value={itemsPerPage}
-            onChange={(e) => setItemsPerPage(Number(e.target.value))}
-            label="Resources per page"
-          >
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={10}>10</MenuItem>
-            <MenuItem value={20}>20</MenuItem>
-          </Select>
-        </FormControl>
       </Box>
       {isLoading ? (
         <Box sx={{ display: "flex", justifyContent: "center" }} mt={10}>
@@ -158,12 +146,16 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
               marginBottom: "50px",
             }}
           >
+            <Box></Box>
             <Pagination
+              sx={{
+                marginLeft: "40px",
+              }}
               count={count}
               size="large"
               page={page}
@@ -172,6 +164,20 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
                 setPage(p);
               }}
             />
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="resources-per-page">
+                Resources per page
+              </InputLabel>
+              <Select
+                value={itemsPerPage}
+                onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                label="Resources per page"
+              >
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={20}>20</MenuItem>
+                <MenuItem value={50}>50</MenuItem>
+              </Select>
+            </FormControl>
           </Box>
         </>
       )}
