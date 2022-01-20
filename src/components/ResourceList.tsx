@@ -1,6 +1,16 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Box, CircularProgress, Link, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Link,
+  Typography,
+  Pagination,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import ResourceCard from "./ResourceCard";
 import { IResource } from "../utils/interfaces";
 import { UserContext } from "../contexts/UserContext";
@@ -16,17 +26,37 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
   const [resources, setResources] = useState<IResource[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refetchResources, setRefetchResources] = useState<number>(1);
+  const [page, setPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const [resourcesCount, setResourcesCount] = useState<number>(0);
+
+  const count = Math.ceil(resourcesCount / itemsPerPage);
 
   const toggleRefetchResources = () => {
     setRefetchResources((prev) => -prev);
   };
 
   useEffect(() => {
+    const fetchResourcesCount = async () => {
+      const baseUrl = process.env.REACT_APP_API_URL;
+      try {
+        const res = await axios.get(`${baseUrl}/resources/count`);
+        setResourcesCount(Number(res.data.data[0].count));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchResourcesCount();
+  }, []);
+
+  useEffect(() => {
     setIsLoading(true);
     const fetchResources = async () => {
       const baseUrl = process.env.REACT_APP_API_URL;
       try {
-        const res = await axios.get(`${baseUrl}/resources`);
+        const res = await axios.get(
+          `${baseUrl}/resources/${page}/${itemsPerPage}`
+        );
         setResources(res.data.data);
       } catch (error) {
         console.error(error);
@@ -34,7 +64,14 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
     };
     fetchResources();
     setTimeout(() => setIsLoading(false), 350);
-  }, [searchTerm, userId, itemsInStudyList, refetchResources]);
+  }, [
+    page,
+    itemsPerPage,
+    searchTerm,
+    userId,
+    itemsInStudyList,
+    refetchResources,
+  ]);
 
   const filteredResources = resources
     .filter((resource) => {
@@ -80,8 +117,20 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
       >
         <Typography variant="h5">Browse Resources</Typography>
         <Typography variant="caption" color="#616161">
-          Showing {filteredResources.length} of {resources.length} resources
+          Showing {resources.length} of {resourcesCount} resources
         </Typography>
+        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="resources-per-page">Resources per page</InputLabel>
+          <Select
+            value={itemsPerPage}
+            onChange={(e) => setItemsPerPage(Number(e.target.value))}
+            label="Resources per page"
+          >
+            <MenuItem value={5}>5</MenuItem>
+            <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={20}>20</MenuItem>
+          </Select>
+        </FormControl>
       </Box>
       {isLoading ? (
         <Box sx={{ display: "flex", justifyContent: "center" }} mt={10}>
@@ -104,7 +153,27 @@ export default function ResourceList(props: ResourceListProps): JSX.Element {
           </Typography>
         </Box>
       ) : (
-        <Box>{filteredResources}</Box>
+        <>
+          <Box>{filteredResources}</Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: "50px",
+            }}
+          >
+            <Pagination
+              count={count}
+              size="large"
+              page={page}
+              color="primary"
+              onChange={(e, p) => {
+                setPage(p);
+              }}
+            />
+          </Box>
+        </>
       )}
     </>
   );
