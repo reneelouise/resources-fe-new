@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
+import { Link as RouterLink } from "react-router-dom";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { Comment } from "../utils/interfaces";
@@ -56,10 +57,15 @@ export default function CommentList(props: CommentListProps): JSX.Element {
                     alignItems="center"
                     spacing={2}
                   >
-                    <Typography variant="h6" gutterBottom>
-                      {comment.name}{" "}
+                    <RouterLink to={`/users/${comment.author_id}`}>
+                      <Typography variant="h6" gutterBottom>
+                        {comment.name}
+                      </Typography>
+                    </RouterLink>
+                    <Typography variant="h6">
                       {comment.is_faculty ? " (Academy Faculty)" : ""}
                     </Typography>
+
                     <Box>
                       {comment.is_like ? (
                         <ThumbUpIcon color="success" />

@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import "../styles/App.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { IUser, IResource } from "../utils/interfaces";

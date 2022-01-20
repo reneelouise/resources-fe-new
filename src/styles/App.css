@@ -6,3 +6,12 @@ body {
 #text-field-for-tags {
   width: auto;
 }
+
+a {
+  color: #1976d2;
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+  color: #1976d2;
+}

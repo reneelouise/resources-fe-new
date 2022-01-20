@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { ITopContributor } from "../utils/interfaces";
 import axios from "axios";
 import {
@@ -85,7 +86,12 @@ export default function PopularContributors(): JSX.Element {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {contributor.user_name}
+                  <Link
+                    to={`/users/${contributor.user_id}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    {contributor.user_name}{" "}
+                  </Link>
                 </TableCell>
                 <TableCell align="right">
                   {contributor.resources_contributed}

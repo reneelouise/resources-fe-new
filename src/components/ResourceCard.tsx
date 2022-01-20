@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
 import { IResource } from "../utils/interfaces";
 import ResourcePopUp from "./ResourcePopUp";
@@ -43,6 +44,7 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
     id,
     resource_name,
     user_name,
+    user_id,
     is_faculty,
     tags,
     count_of_likes,
@@ -135,17 +137,24 @@ export default function ResourceCard(props: ResourceCardProps): JSX.Element {
           )}
         </Stack>
 
-        <Typography variant="body1" py={1}>
-          <strong>
-            <Highlighter
-              highlightClassName="YourHighlightClass"
-              searchWords={[props.searchTerm]}
-              autoEscape={true}
-              textToHighlight={user_name}
-            />
-          </strong>
-          {is_faculty ? " (Academy Faculty)" : ""} says{" "}
-          <em>"{recommendation_type}"</em>
+        <RouterLink to={`/users/${user_id}`}>
+          <Typography variant="body1" py={1} sx={{ display: "inline" }}>
+            <strong>
+              <Highlighter
+                highlightClassName="YourHighlightClass"
+                searchWords={[props.searchTerm]}
+                autoEscape={true}
+                textToHighlight={user_name}
+              />
+            </strong>
+          </Typography>
+        </RouterLink>
+        <Typography variant="body1" py={1} sx={{ display: "inline" }}>
+          {is_faculty ? " (Academy Faculty)" : ""}
+        </Typography>
+        <Typography variant="body1" py={1} sx={{ display: "inline" }}>
+          {" "}
+          says <em>"{recommendation_type}"</em>
         </Typography>
       </CardContent>
       <Grid sx={{ background: "#f5f5f5" }}>

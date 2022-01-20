@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IResource } from "../utils/interfaces";
 import CommentsSection from "./CommentsSection";
+import { Link as RouterLink } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import {
   Box,
@@ -35,6 +36,7 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
   const {
     resource_name,
     user_name,
+    user_id,
     created_at,
     description,
     is_faculty,
@@ -103,8 +105,19 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
             </Typography>
           </Grid>
           <Grid item xs={9}>
-            <Typography variant="body1" component="h6">
-              {user_name}
+            <RouterLink to={`/users/${user_id}`}>
+              <Typography variant="body1" py={1} sx={{ display: "inline" }}>
+                <strong>
+                  <Highlighter
+                    highlightClassName="YourHighlightClass"
+                    searchWords={[props.searchTerm]}
+                    autoEscape={true}
+                    textToHighlight={user_name}
+                  />
+                </strong>
+              </Typography>
+            </RouterLink>
+            <Typography variant="body1" py={1} sx={{ display: "inline" }}>
               {is_faculty ? " (Academy Faculty)" : ""}
             </Typography>
           </Grid>
