@@ -7,7 +7,11 @@ body {
   width: auto;
 }
 
+a {
+  color: #1976d2;
+  text-decoration: none;
+}
 a:visited {
   text-decoration: none;
-  color: blue;
+  color: #1976d2;
 }

@@ -85,7 +85,7 @@ export default function UserPage(): JSX.Element {
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{ minWidth: "250px" }}>
+                    <TableCell sx={{ minWidth: "200px" }}>
                       Resource Name
                     </TableCell>
                     <TableCell sx={{ minWidth: "40px" }}>Type</TableCell>
