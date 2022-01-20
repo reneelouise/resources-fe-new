@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { timestampConverter } from "../utils/timestampConverter";
 import { formatContentType } from "../utils/formatContentType";
 
@@ -126,18 +127,22 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
             >
               {url.length < 40 ? url : url.substring(0, 40) + "..."}
             </Typography>
-            <IconButton
-              aria-label="copy-url"
-              sx={{ padding: "0", margin: "0 4px 0 4px" }}
-              onClick={handleCopyClick}
-            >
-              <ContentCopyIcon sx={{ color: "#9e9e9e", height: "20px" }} />
-            </IconButton>
 
-            {isCopying && (
-              <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
-                Copied!
-              </Typography>
+            {isCopying ? (
+              <>
+                <CheckCircleIcon sx={{ color: "#9e9e9e", height: "20px" }} />
+                <Typography variant="body2" sx={{ color: "#9e9e9e" }}>
+                  Copied!
+                </Typography>
+              </>
+            ) : (
+              <IconButton
+                aria-label="copy-url"
+                sx={{ padding: "0", margin: "0 4px 0 4px" }}
+                onClick={handleCopyClick}
+              >
+                <ContentCopyIcon sx={{ color: "#9e9e9e", height: "20px" }} />
+              </IconButton>
             )}
           </Grid>
         </Grid>
@@ -224,11 +229,12 @@ export default function ResourcePopUp(props: ResourcePopUpProps): JSX.Element {
               <strong>{recommendation_type}</strong>
             </Typography>
 
-            {recommendation_reason !== "" && (
-              <Typography>
-                <em>"{recommendation_reason}"</em>
-              </Typography>
-            )}
+            {recommendation_reason ||
+              (recommendation_reason !== " " && (
+                <Typography>
+                  <em>"{recommendation_reason}"</em>
+                </Typography>
+              ))}
           </Grid>
         </Grid>
 
