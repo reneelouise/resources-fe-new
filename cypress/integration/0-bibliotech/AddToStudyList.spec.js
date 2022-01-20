@@ -17,6 +17,6 @@ describe("Add a resource to study list, then remove it", () => {
     cy.get(".remove_from_study_list_button").first().click().wait(3000);
     cy.get(".add_to_study_list_button").first();
     cy.get(".logged-user-text-and-logout").children(".logout-btn").click(); //a logout button can be clicked
-    cy.get(".links").should("have.length", 1); // one navlink is showing again when user is logged out
+    cy.get(".links").should("have.length", 3); // one navlink is showing again when user is logged out
   });
 });
