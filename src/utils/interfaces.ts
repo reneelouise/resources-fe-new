@@ -63,3 +63,8 @@ export interface BadRequestError {
     message: string;
   };
 }
+
+export interface ITag {
+  id: number;
+  name: string;
+}
