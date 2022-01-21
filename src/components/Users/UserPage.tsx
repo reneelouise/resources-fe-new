@@ -76,48 +76,59 @@ export default function UserPage(): JSX.Element {
           </Grid>
         </Grid>
         <Divider variant="middle" />
+
         <Grid container pt={2} spacing={2} columns={{ xs: 4, md: 8, lg: 12 }}>
-          <Grid item xs={4} md={5} lg={8}>
-            <Typography variant="body1" py={2}>
-              {user ? user.name + "'s recent comments:" : "Recent comments:"}
-            </Typography>
-            <TableContainer>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ minWidth: "200px" }}>
-                      Resource Name
-                    </TableCell>
-                    <TableCell sx={{ minWidth: "40px" }}>Type</TableCell>
-                    <TableCell>Comment</TableCell>
-                    <TableCell align="right" sx={{ minWidth: "100px" }}>
-                      Posted
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {recentRecs.map((rec, i) => (
-                    <TableRow key={i + 1}>
-                      <TableCell component="th" scope="row">
-                        {rec.resource_name}
+          {recentRecs.length !== 0 ? (
+            <Grid item xs={4} md={5} lg={8}>
+              <Typography variant="body1" py={2}>
+                {user ? user.name + "'s recent comments:" : "Recent comments:"}
+              </Typography>
+              <TableContainer>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell sx={{ minWidth: "200px" }}>
+                        Resource Name
                       </TableCell>
-                      <TableCell>
-                        {rec.is_like ? (
-                          <ThumbUpIcon color="success" />
-                        ) : (
-                          <ThumbDownIcon color="error" />
-                        )}
-                      </TableCell>
-                      <TableCell>{rec.text ? rec.text : "-"}</TableCell>
-                      <TableCell align="right">
-                        {timestampConverter(rec.created_at)}
+                      <TableCell sx={{ minWidth: "40px" }}>Type</TableCell>
+                      <TableCell>Comment</TableCell>
+                      <TableCell align="right" sx={{ minWidth: "100px" }}>
+                        Posted
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Grid>
+                  </TableHead>
+                  <TableBody>
+                    {recentRecs.map((rec, i) => (
+                      <TableRow key={i + 1}>
+                        <TableCell component="th" scope="row">
+                          {rec.resource_name}
+                        </TableCell>
+                        <TableCell>
+                          {rec.is_like ? (
+                            <ThumbUpIcon color="success" />
+                          ) : (
+                            <ThumbDownIcon color="error" />
+                          )}
+                        </TableCell>
+                        <TableCell>{rec.text ? rec.text : "-"}</TableCell>
+                        <TableCell align="right">
+                          {timestampConverter(rec.created_at)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Grid>
+          ) : (
+            <Grid item xs={4} md={5} lg={8}>
+              <Typography variant="body1" py={2}>
+                {user
+                  ? user.name + " hasn't posted any comments yet"
+                  : "Not found"}
+              </Typography>
+            </Grid>
+          )}
           <Grid item xs={4} md={3} lg={4}>
             <PopularResources />
             <PopularContributors />
